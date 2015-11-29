@@ -9,6 +9,8 @@ import webpackConfig from './webpack.config.babel';
 
 const ROOT_PATH = __dirname;
 
+const SOURCE_PATH = 'src/**/*.{js,jsx}';
+
 const FILES_TO_CLEAN = [
   'public/*',
   '!public/editors',
@@ -22,7 +24,7 @@ const FILES_TO_CLEAN = [
 ];
 
 gulp.task('lint', () =>
-  gulp.src(['src/**/*.js', 'gulpfile.babel.js', 'webpack.config.babel.js'])
+  gulp.src([SOURCE_PATH, 'gulpfile.babel.js', 'webpack.config.babel.js'])
     .pipe(gulpEslint())
     .pipe(gulpEslint.format())
     .pipe(gulpEslint.failAfterError())
@@ -48,7 +50,7 @@ gulp.task('clean', () => {
 });
 
 gulp.task('babel:build', () =>
-  gulp.src('src/**/*.js')
+  gulp.src(SOURCE_PATH)
     .pipe(gulpPlumber())
     .pipe(gulpBabel())
     .pipe(gulp.dest(ROOT_PATH))
@@ -59,7 +61,7 @@ gulp.task('webpack:build', ['babel:build', 'webpack:build-dev']);
 gulp.task('build', ['babel:build', 'webpack:build']);
 
 gulp.task('watch', ['build'], () => {
-  gulp.watch(['src/**/*'], ['babel:build', 'webpack:build-dev']);
+  gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build-dev']);
 });
 
 gulp.task('default', ['lint', 'build']);

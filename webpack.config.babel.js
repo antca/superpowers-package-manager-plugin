@@ -13,4 +13,14 @@ export default {
     path: path.join(__dirname, 'public'),
     filename: '[name].js',
   },
+  debug: true,
+  devtool: 'eval-source-map',
+  module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'source-map-loader',
+      },
+    ],
+  },
 };
