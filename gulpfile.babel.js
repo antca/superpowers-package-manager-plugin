@@ -1,16 +1,13 @@
-import fs from 'fs';
-import path from 'path';
 import gulp from 'gulp';
 import gulpBabel from 'gulp-babel';
 import gulpPlumber from 'gulp-plumber';
 import gulpClean from 'gulp-clean';
 import gulpUtil from 'gulp-util';
+import gulpEslint from 'gulp-eslint';
 import webpack from 'webpack';
 import webpackConfig from './webpack.config.babel';
 
 const ROOT_PATH = __dirname;
-
-const DIST_PATH = path.join(__dirname, 'public');
 
 const FILES_TO_CLEAN = [
   'public/*',
@@ -24,18 +21,25 @@ const FILES_TO_CLEAN = [
   'settingsEditors',
 ];
 
-// create a single instance of the compiler to allow caching
-var webpackCompiler = webpack(webpackConfig);
+gulp.task('lint', () =>
+  gulp.src(['src/**/*.js', 'gulpfile.babel.js', 'webpack.config.babel.js'])
+    .pipe(gulpEslint())
+    .pipe(gulpEslint.format())
+    .pipe(gulpEslint.failAfterError())
+);
+
+const webpackCompiler = webpack(webpackConfig);
 
 gulp.task('webpack:build-dev', ['babel:build'], (callback) => {
-	// run webpack
-	webpackCompiler.run(function(err, stats) {
-		if(err) throw new gulpUtil.PluginError('webpack:build-dev', err);
-		gulpUtil.log('[webpack:build-dev]', stats.toString({
-			colors: true
-		}));
-		callback();
-	});
+  webpackCompiler.run((err, stats) => {
+    if(err) {
+      throw new gulpUtil.PluginError('webpack:build-dev', err);
+    }
+    gulpUtil.log('[webpack:build-dev]', stats.toString({
+      colors: true,
+    }));
+    callback();
+  });
 });
 
 gulp.task('clean', () => {
@@ -55,7 +59,7 @@ gulp.task('webpack:build', ['babel:build', 'webpack:build-dev']);
 gulp.task('build', ['babel:build', 'webpack:build']);
 
 gulp.task('watch', ['build'], () => {
-	gulp.watch(['src/**/*'], ['babel:build', 'webpack:build-dev']);
+  gulp.watch(['src/**/*'], ['babel:build', 'webpack:build-dev']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', ['lint', 'build']);

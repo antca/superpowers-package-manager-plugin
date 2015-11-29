@@ -10,7 +10,7 @@ export default {
     bundleEditor: path.join(__dirname, 'bundleEditor'),
   },
   output: {
-      path: path.join(__dirname, 'public'),
-      filename: '[name].js',
+    path: path.join(__dirname, 'public'),
+    filename: '[name].js',
   },
-}
+};
