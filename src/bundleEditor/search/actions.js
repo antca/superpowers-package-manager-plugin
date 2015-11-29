@@ -9,10 +9,11 @@ function updateSearchBarContent(newSearchBarContent) {
 }
 
 const SEARCH_PACKAGE = 'SEARCH_PACKAGE';
-function searchPackage(searchValue) {
+function searchPackage(client, searchValue) {
   return {
     type: SEARCH_PACKAGE,
     payload: {
+      promise: client.invoke('searchPackage', searchValue),
       searchValue,
     },
   };

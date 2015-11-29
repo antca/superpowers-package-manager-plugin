@@ -25,8 +25,8 @@ class BundleEditor extends Component {
 }
 
 export default radium(connect(
-  ({ message }) => ({
-    currentMessage: message,
+  ({ main }) => ({
+    currentMessage: main.message,
   }),
   {
     onInputChange: updateMessage,
