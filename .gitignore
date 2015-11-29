@@ -32,3 +32,14 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+# Compiled files
+/api
+/bundleEditor
+/components
+/componentEditors
+/data
+/runtime
+/settingsEditors
+/public/*
+!/public/editors/
