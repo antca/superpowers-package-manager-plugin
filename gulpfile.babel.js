@@ -58,7 +58,7 @@ gulp.task('babel:build', () =>
 
 gulp.task('webpack:build', ['babel:build', 'webpack:build-dev']);
 
-gulp.task('build', ['babel:build', 'webpack:build']);
+gulp.task('build', ['babel:build', 'webpack:build-dev']);
 
 gulp.task('watch', ['build'], () => {
   gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build-dev']);
