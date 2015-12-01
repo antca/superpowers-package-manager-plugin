@@ -1,11 +1,17 @@
+import { receiveAsset } from './asset/actions';
+const currentStore = require('./store');
+
+console.log(currentStore);
+
 const {
   SupClient,
 } = window;
 
 class AssetManager {
-  constructor({ project, asset: assetId }) {
-    this.project = project;
+  constructor(store, project, assetId) {
     this.assetId = assetId;
+    this.store = store;
+    this.project = project;
     this.connect();
   }
 
@@ -29,11 +35,17 @@ class AssetManager {
   }
 
   onAssetReceived(assetId, asset) {
-    this.asset = asset;
+    this.store.dispatch(receiveAsset(assetId, asset));
   }
 
   onAssetEdited(assetId, methodName, action) {
-
+    this.store.dispatch(Object.assign(action), {
+      meta: {
+        ...(action.meta || {}),
+        assetId,
+        methodName,
+      },
+    });
   }
 
   onAssetTrashed(...args) {
@@ -54,4 +66,6 @@ class AssetManager {
   }
 }
 
-export default AssetManager;
+const { project, assetId } = SupClient.query;
+
+export default new AssetManager(currentStore, project, assetId);

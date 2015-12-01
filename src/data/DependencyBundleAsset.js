@@ -17,12 +17,13 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
     super.init(options, callback);
   }
 
-  server_test(client, cb) {
-    cb(null, 'hello');
-  }
-
-  client_test(result) {
-    console.log('client_test', result);
+  server_searchPackage(client, searchValue, cb) {
+    Promise.resolve({
+      results: {
+        hello: searchValue,
+      }
+    }).then((result) => cb(null, result))
+    .catch(cb);
   }
 }
 

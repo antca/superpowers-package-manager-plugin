@@ -12,7 +12,7 @@ function mainReducer(store = initialMainStore, action) {
         message: newMessage,
       };
     },
-  }[action.type] || (() => {}))(action.payload) || store;
+  }[action.type] || (() => {}))(action.payload, action.meta) || store;
 }
 
 export default mainReducer;
