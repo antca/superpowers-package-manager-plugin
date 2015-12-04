@@ -1,29 +1,21 @@
 import { receiveAsset } from './asset/actions';
-const currentStore = require('./store');
-
-console.log(currentStore);
-
-const {
-  SupClient,
-} = window;
 
 class AssetManager {
-  constructor(store, project, assetId) {
-    this.assetId = assetId;
-    this.store = store;
-    this.project = project;
+  constructor(SupClient, dispatch) {
+    this.SupClient = SupClient;
+    this.dispatch = dispatch;
     this.connect();
   }
 
   connect() {
-    this.socket = SupClient.connect(this.project);
+    this.socket = this.SupClient.connect(this.SupClient.query.project);
     this.socket.on('connect', (...args) => this.onConnect(...args));
     this.socket.on('disconnect', (...args) => this.onDisonnect(...args));
   }
 
   onConnect() {
-    this.projectClient = new SupClient.ProjectClient(this.socket);
-    this.projectClient.subAsset(this.assetId, 'dependencyBundle', {
+    this.projectClient = new this.SupClient.ProjectClient(this.socket);
+    this.projectClient.subAsset(this.SupClient.query.asset, 'dependencyBundle', {
       onAssetReceived: (...args) => this.onAssetReceived(...args),
       onAssetEdited: (...args) => this.onAssetEdited(...args),
       onAssetTrashed: (...args) => this.onAssetTrashed(...args),
@@ -31,15 +23,15 @@ class AssetManager {
   }
 
   onDisconnect(...args) {
-    SupClient.onDisconnected(...args);
+    this.SupClient.onDisconnected(...args);
   }
 
   onAssetReceived(assetId, asset) {
-    this.store.dispatch(receiveAsset(assetId, asset));
+    this.dispatch(receiveAsset(assetId, asset));
   }
 
   onAssetEdited(assetId, methodName, action) {
-    this.store.dispatch(Object.assign(action), {
+    this.dispatch(Object.assign(action), {
       meta: {
         ...(action.meta || {}),
         assetId,
@@ -49,12 +41,12 @@ class AssetManager {
   }
 
   onAssetTrashed(...args) {
-    SupClient.onAssetTrashed(...args);
+    this.SupClient.onAssetTrashed(...args);
   }
 
   invoke(methodName, ...args) {
     return new Promise((resolve, reject) => {
-      this.socket.emit('edit:assets', this.assetId, methodName, ...args, (err, res) => {
+      this.socket.emit('edit:assets', this.SupClient.query.asset, methodName, ...args, (err, res) => {
         if(err) {
           reject(err);
         }
@@ -66,6 +58,4 @@ class AssetManager {
   }
 }
 
-const { project, assetId } = SupClient.query;
-
-export default new AssetManager(currentStore, project, assetId);
+export default AssetManager;

@@ -1,4 +1,4 @@
-import assetManager from '../assetManager';
+import { search } from '../utils/npm';
 
 const UPDATE_SEARCH_BAR_CONTENT = 'UPDATE_SEARCH_BAR_CONTENT';
 function updateSearchBarContent(newSearchBarContent) {
@@ -12,20 +12,11 @@ function updateSearchBarContent(newSearchBarContent) {
 
 const SEARCH_PACKAGE = 'SEARCH_PACKAGE';
 function searchPackage(searchValue) {
-  assetManager.invoke('searchPackage', searchValue);
   return {
     type: SEARCH_PACKAGE,
     payload: {
-      searchValue,
+      promise: search(searchValue),
     },
-  };
-}
-
-const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT';
-function receiveSearchResult(result) {
-  return {
-    type: RECEIVE_SEARCH_RESULT,
-    payload: result,
   };
 }
 
@@ -35,7 +26,4 @@ export default {
 
   SEARCH_PACKAGE,
   searchPackage,
-
-  RECEIVE_SEARCH_RESULT,
-  receiveSearchResult,
 };

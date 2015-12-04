@@ -15,11 +15,22 @@ export default {
   },
   debug: true,
   devtool: 'eval-source-map',
+  resolve: {
+    alias: {
+      npm: 'empty-module',
+    },
+  },
   module: {
     preLoaders: [
       {
         test: /\.js$/,
-        loader: 'source-map-loader',
+        loader: 'source-map',
+      },
+    ],
+    loaders: [
+      {
+        test: /\.json$/,
+        loader: 'json',
       },
     ],
   },

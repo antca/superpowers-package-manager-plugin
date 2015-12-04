@@ -16,15 +16,6 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
     };
     super.init(options, callback);
   }
-
-  server_searchPackage(client, searchValue, cb) {
-    Promise.resolve({
-      results: {
-        hello: searchValue,
-      }
-    }).then((result) => cb(null, result))
-    .catch(cb);
-  }
 }
 
 export default DependencyBundleAsset;

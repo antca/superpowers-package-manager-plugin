@@ -1,19 +1,32 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { updateSearchBarContent, searchPackage } from '../actions';
+import AssetManager from '../../AssetManager';
+
+const ErrorDisplay = ({ error }) =>
+  <div style={{ color: 'red'}}>
+   <h1>{'ERROR'}</h1>
+   <p>{error.message}</p>
+  </div>;
 
 class SearchBar extends Component {
   static propTypes = {
+    asset: T.instanceOf(AssetManager).isRequired,
     onContentChange: T.func.isRequired,
     onSeachButtonClick: T.func.isRequired,
-    searchBarContent: T.string.isRequired,
+    search: T.object.isRequired,
   }
 
   render() {
     const {
+      asset,
+      search: {
+        error,
+        result,
+        searchBarContent,
+      },
       onSeachButtonClick,
       onContentChange,
-      searchBarContent,
     } = this.props;
     return (
       <div className='SearchBar'>
@@ -22,9 +35,13 @@ class SearchBar extends Component {
           placeholder='Search on npm...'
           value={searchBarContent}
         />
-        <button onClick={() => onSeachButtonClick(searchBarContent)} >
+        <button
+          disabled={!result && !error}
+          onClick={() => onSeachButtonClick(searchBarContent)}
+        >
           {'Search'}
         </button>
+        {error ? <ErrorDisplay error={error} /> : null}
       </div>
     );
   }
@@ -32,7 +49,7 @@ class SearchBar extends Component {
 
 export default connect(
   ({ search }) => ({
-    searchBarContent: search.searchBarContent,
+    search,
   }),
   {
     onContentChange: updateSearchBarContent,
