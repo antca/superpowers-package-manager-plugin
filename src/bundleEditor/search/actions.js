@@ -1,29 +1,28 @@
-import { search } from '../utils/npm';
+import { autocompleteSearch } from '../utils/npm';
 
-const UPDATE_SEARCH_BAR_CONTENT = 'UPDATE_SEARCH_BAR_CONTENT';
-function updateSearchBarContent(newSearchBarContent) {
-  return {
-    type: UPDATE_SEARCH_BAR_CONTENT,
-    payload: {
-      newSearchBarContent,
-    },
-  };
-}
-
-const SEARCH_PACKAGE = 'SEARCH_PACKAGE';
+const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
+const SEARCH_PACKAGE_FULFILLED = 'SEARCH_PACKAGE_FULFILLED';
+const SEARCH_PACKAGE_REJECTED = 'SEARCH_PACKAGE_REJECTED';
 function searchPackage(searchValue) {
-  return {
-    type: SEARCH_PACKAGE,
-    payload: {
-      promise: search(searchValue),
-    },
+  return (dispatch) => {
+    autocompleteSearch(searchValue)
+    .then((result) => dispatch({
+      type: SEARCH_PACKAGE_FULFILLED,
+      payload: result,
+    }))
+    .catch((error) => dispatch({
+      type: SEARCH_PACKAGE_REJECTED,
+      payload: error,
+    }));
+    return {
+      type: SEARCH_PACKAGE_PENDING,
+    };
   };
 }
 
 export default {
-  UPDATE_SEARCH_BAR_CONTENT,
-  updateSearchBarContent,
-
-  SEARCH_PACKAGE,
+  SEARCH_PACKAGE_PENDING,
+  SEARCH_PACKAGE_FULFILLED,
+  SEARCH_PACKAGE_REJECTED,
   searchPackage,
 };

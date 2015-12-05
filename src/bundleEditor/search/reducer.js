@@ -1,42 +1,30 @@
 import {
-  UPDATE_SEARCH_BAR_CONTENT,
-  SEARCH_PACKAGE,
+  SEARCH_PACKAGE_PENDING,
+  SEARCH_PACKAGE_FULFILLED,
+  SEARCH_PACKAGE_REJECTED,
 } from './actions';
 
 const initialSearchStore = {
-  searchBarContent: '',
-  result: {},
   error: null,
 };
 
-const [PENDING, FULFILLED, REJECTED] = ['_PENDING', '_FULFILLED', '_REJECTED'];
-
 function searchReducer(store = initialSearchStore, action) {
   return ({
-    [UPDATE_SEARCH_BAR_CONTENT]({ newSearchBarContent }) {
-      return {
-        ...store,
-        searchBarContent: newSearchBarContent,
-      };
-    },
-    [SEARCH_PACKAGE + PENDING]() {
-      console.log('pending...');
+    [SEARCH_PACKAGE_PENDING]() {
       return {
         ...store,
         error: null,
         result: null,
       };
     },
-    [SEARCH_PACKAGE + FULFILLED](result) {
-      console.log('fulfilled !', result);
+    [SEARCH_PACKAGE_FULFILLED](result) {
       return {
         ...store,
         error: null,
         result,
       };
     },
-    [SEARCH_PACKAGE + REJECTED](error) {
-      console.log('rejected !');
+    [SEARCH_PACKAGE_REJECTED](error) {
       return {
         ...store,
         error,

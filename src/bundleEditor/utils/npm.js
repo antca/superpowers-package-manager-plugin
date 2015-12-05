@@ -1,33 +1,102 @@
-const DEFAULT_PAGE_SIZE = 100;
+import _ from 'lodash';
+import Promise from 'bluebird';
 
-function search(query, size = DEFAULT_PAGE_SIZE, from = 0) {
-  const fields = [
-    'author',
-    'created',
-    'dependencies',
-    'description',
-    'devDependencies',
-    'homepage',
-    'keywords',
-    'maintainers',
-    'modified',
-    'name',
-    'readme',
-    'repository',
-    'scripts',
-    'version',
-    'rating',
+const DEFAULT_PAGE_SIZE = 100;
+const ARRAY_PROPERTIES = ['keywords', 'dependencies', 'devDependencies'];
+const DEFAULT_FIELDS = [
+  'name',
+  'version',
+  'description',
+  'author',
+  'maintainers',
+  'homepage',
+  'repository',
+  'readme',
+  'rating',
+  'created',
+  'modified',
+  'dependencies',
+  'devDependencies',
+  'scripts',
+  'keywords',
 
 //   Currently bugged
 //  'times',
-  ];
-  return fetch(`//npmsearch.com/query?q=${query}&size=${size}&from=${from}&fields=${fields.join()}`)
+];
+
+function search(query, from = 0, size = DEFAULT_PAGE_SIZE, fields = DEFAULT_FIELDS) {
+  return fetch(`//npmsearch.com/query?q=name:${query}&size=${size}&from=${from}&fields=${fields.join()}`)
   .then((result) => {
     if(!result.ok) {
       throw new Error(result.reason);
     }
     return result.json();
-  });
+  }).then((result) =>
+    Object.assign({}, {
+      ...result,
+      results: result.results.map((item) => _.mapValues(item, (prop, key) => {
+        if(_.includes(ARRAY_PROPERTIES, key)) {
+          return prop;
+        }
+        return prop[0];
+      })),
+    })
+  );
 }
 
-export { search };
+const AUTOCOMPLETE_URL = 'http://ac.cnstrc.com/autocomplete/';
+const AUTOCOMPLETE_CALLBACK_NAME = 'searchAutocompleteCallback';
+const AUTOCOMPLETE_KEY = 'CD06z4gVeqSXRiDL2ZNK';
+const AUTOCOMPLETE_TIMEOUT = 500;
+
+let currentAutocompleteSearch = null;
+
+function cancelAndCleanAutocompleteSearch() {
+  if(currentAutocompleteSearch !== null) {
+    clearTimeout(currentAutocompleteSearch.timeout);
+    document.body.removeChild(currentAutocompleteSearch.script);
+    currentAutocompleteSearch = null;
+  }
+}
+
+function reformatResult(result) {
+  return {
+    autocomplete: true,
+    results: result.sections.packages.map((item) => ({
+      name: item.value,
+      description: item.data.description,
+    })),
+    total: result.sections.packages.length,
+  };
+}
+
+function autocompleteSearch(query) {
+  cancelAndCleanAutocompleteSearch();
+  if(!query) {
+    return Promise.resolve({
+      autocomplete: true,
+      results: [],
+      total: 0,
+    });
+  }
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('Autocomplete search timed out !')), AUTOCOMPLETE_TIMEOUT);
+    window[AUTOCOMPLETE_CALLBACK_NAME] = (result) => {
+      clearTimeout(timeout);
+      return resolve(reformatResult(result));
+    };
+    const script = document.createElement('SCRIPT');
+    const parameters = {
+      callback: AUTOCOMPLETE_CALLBACK_NAME,
+      'autocomplete_key': AUTOCOMPLETE_KEY,
+    };
+    script.src = `${AUTOCOMPLETE_URL}${query}?${_.map(parameters, (value, key) => `${key}=${value}`).join('&')}`;
+    document.body.appendChild(script);
+    currentAutocompleteSearch = {
+      timeout,
+      script,
+    };
+  }).finally(cancelAndCleanAutocompleteSearch);
+}
+
+export { search, autocompleteSearch };
