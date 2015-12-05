@@ -44,7 +44,7 @@ class AssetManager {
     this.SupClient.onAssetTrashed(...args);
   }
 
-  invoke(methodName, ...args) {
+  invoke = (methodName, ...args) => {
     return new Promise((resolve, reject) => {
       this.socket.emit('edit:assets', this.SupClient.query.asset, methodName, ...args, (err, res) => {
         if(err) {

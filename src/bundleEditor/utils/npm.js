@@ -44,7 +44,7 @@ function search(query, from = 0, size = DEFAULT_PAGE_SIZE, fields = DEFAULT_FIEL
   );
 }
 
-const AUTOCOMPLETE_URL = 'http://ac.cnstrc.com/autocomplete/';
+const AUTOCOMPLETE_URL = '//ac.cnstrc.com/autocomplete/';
 const AUTOCOMPLETE_CALLBACK_NAME = 'searchAutocompleteCallback';
 const AUTOCOMPLETE_KEY = 'CD06z4gVeqSXRiDL2ZNK';
 const AUTOCOMPLETE_TIMEOUT = 500;
@@ -99,4 +99,17 @@ function autocompleteSearch(query) {
   }).finally(cancelAndCleanAutocompleteSearch);
 }
 
-export { search, autocompleteSearch };
+const NPM_REGISTERY_URL = '//registry.npmjs.org/';
+const CORS_PROXY = '//cors.maxogden.com/';
+
+function view(packageName) {
+  return fetch(`${CORS_PROXY}${NPM_REGISTERY_URL}${packageName}`)
+    .then((result) => {
+      if(!result.ok) {
+        throw new Error(result.reason);
+      }
+      return result.json();
+    });
+}
+
+export { search, autocompleteSearch, view };

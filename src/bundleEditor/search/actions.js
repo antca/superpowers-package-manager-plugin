@@ -14,9 +14,9 @@ function searchPackage(searchValue) {
       type: SEARCH_PACKAGE_REJECTED,
       payload: error,
     }));
-    return {
+    return dispatch({
       type: SEARCH_PACKAGE_PENDING,
-    };
+    });
   };
 }
 

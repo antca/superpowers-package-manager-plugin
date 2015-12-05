@@ -1,16 +1,16 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
+import { Alert } from 'react-bootstrap';
 
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';
 
 const ErrorDisplay = ({ error }) =>
-  <div style={{ color: 'red' }}>
-   <h1>{'ERROR'}</h1>
-   <p>{error.message}</p>
-  </div>;
+  <Alert bsStyle='danger'>
+    <strong>{error.message}</strong>
+  </Alert>;
 
-class SearchPanel extends Component {
+class SearchContainer extends Component {
   static propTypes = {
     error: T.instanceOf(Error),
   }
@@ -19,11 +19,10 @@ class SearchPanel extends Component {
     return (
       <div>
         <SearchBar/>
-        {error ? <ErrorDisplay error={error}/> : null}
-        <SearchResultList/>
+        {error ? <ErrorDisplay error={error}/> : <SearchResultList/>}
       </div>
     );
   }
 }
 
-export default connect(({ search: { error } }) => ({ error }))(SearchPanel);
+export default connect(({ search: { error } }) => ({ error }))(SearchContainer);

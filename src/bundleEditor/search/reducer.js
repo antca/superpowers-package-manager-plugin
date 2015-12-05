@@ -4,6 +4,10 @@ import {
   SEARCH_PACKAGE_REJECTED,
 } from './actions';
 
+import {
+  UPDATE_PACKAGE_INFO_PENDING,
+} from '../install/actions';
+
 const initialSearchStore = {
   error: null,
 };
@@ -14,7 +18,6 @@ function searchReducer(store = initialSearchStore, action) {
       return {
         ...store,
         error: null,
-        result: null,
       };
     },
     [SEARCH_PACKAGE_FULFILLED](result) {
@@ -28,6 +31,13 @@ function searchReducer(store = initialSearchStore, action) {
       return {
         ...store,
         error,
+        result: null,
+      };
+    },
+    [UPDATE_PACKAGE_INFO_PENDING]() {
+      return {
+        ...store,
+        error: null,
         result: null,
       };
     },

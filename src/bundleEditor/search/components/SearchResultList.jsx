@@ -1,40 +1,39 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-const styles = {
-  resultList: {
-    listStyleType: 'none',
-    padding: 0,
-  },
-};
-
-const SearchResultItem = ({ item }) =>
-  <li>
-   <h3>{item.name}</h3>
-   <span style={{ float: 'right' }}>{item.version}</span>
-   <p>{item.description}</p>
-  </li>;
+import { updatePackageInfo } from '../../install/actions';
 
 class SearchResultList extends Component {
   static propTypes = {
+    onPackageSelected: T.func.isRequired,
     result: T.object,
   }
 
   render() {
-    const { result } = this.props;
+    const { result, onPackageSelected } = this.props;
     if(!result) {
       return null;
     }
     return (
-      <ul style={styles.resultList}>
+      <ListGroup>
         {result.results.map((item) =>
-          <SearchResultItem
-            item={item}
+          <ListGroupItem
+            header={item.name}
             key={item.name}
-           />)}
-      </ul>
+            onClick={() => onPackageSelected(item.name)}
+          >
+           {item.description}
+          </ListGroupItem>
+        )}
+      </ListGroup>
     );
   }
 }
 
-export default connect(({ search }) => search)(SearchResultList);
+export default connect(
+  ({ search }) => search,
+  {
+    onPackageSelected: updatePackageInfo,
+  }
+)(SearchResultList);

@@ -1,3 +1,5 @@
+import { invokePong } from '../bundleEditor/asset/actions';
+
 class DependencyBundleAsset extends SupCore.Data.Base.Asset {
   static currentFormatVersion = 0;
   static schema = {
@@ -15,6 +17,15 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
       dependencies: [],
     };
     super.init(options, callback);
+  }
+
+  server_ping(client, value, callback) {
+    console.log(client);
+    callback(null, invokePong(value));
+  }
+
+  client_ping() {
+
   }
 }
 
