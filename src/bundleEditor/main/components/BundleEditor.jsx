@@ -5,30 +5,30 @@ import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
 import { changeActivePanel } from '../actions';
 
 import SearchContainer from '../../search/components/SearchContainer';
-import InstallContainer from '../../install/components/InstallContainer';
+import ViewContainer from '../../view/components/ViewContainer';
+import ReadmeContainer from '../../view/components/ReadmeContainer';
 import ManageContainer from '../../manage/components/ManageContainer';
-import ReadmeContainer from '../../install/components/ReadmeContainer';
 
 const INFO_COL_WIDTH = 3;
 const DOC_COL_WIDTH = 9;
 
 class BundleEditor extends Component {
   static propTypes = {
+    activePanel: T.oneOf(['search', 'view', 'manage']).isRequired,
     onPanelSelect: T.func.isRequired,
-    activePanel: T.oneOf(['search', 'install', 'manage']).isRequired,
   }
   render() {
     const { onPanelSelect, activePanel } = this.props;
     return (
       <Grid fluid style={{ height: '100%', padding: '1em 0' }}>
         <Col sm={INFO_COL_WIDTH}>
-          <PanelGroup onSelect={onPanelSelect} activeKey={activePanel} accordion>
-            <Panel bsStyle='primary' header='Search' eventKey='search'><SearchContainer/></Panel>
-            <Panel bsStyle='primary' header='Install' eventKey='install'><InstallContainer/></Panel>
-            <Panel bsStyle='primary' header='Manage' eventKey='manage'><ManageContainer/></Panel>
+          <PanelGroup accordion activeKey={activePanel} onSelect={onPanelSelect} >
+            <Panel bsStyle='primary' eventKey='search' header='Search'><SearchContainer/></Panel>
+            <Panel bsStyle='primary' eventKey='view' header='View'><ViewContainer/></Panel>
+            <Panel bsStyle='primary' eventKey='manage' header='Manage'><ManageContainer/></Panel>
           </PanelGroup>
         </Col>
-        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'scroll'}}>
+        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'scroll' }}>
           <Row>
             <ReadmeContainer />
           </Row>

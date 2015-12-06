@@ -4,9 +4,9 @@ import {
   UPDATE_PACKAGE_INFO_REJECTED,
 } from './actions';
 
-const initialInstallStore = {};
+const initialViewStore = {};
 
-function installReducer(store = initialInstallStore, action) {
+function viewReducer(store = initialViewStore, action) {
   return ({
     [UPDATE_PACKAGE_INFO_PENDING]() {
       return {
@@ -33,4 +33,4 @@ function installReducer(store = initialInstallStore, action) {
   }[action.type] || (() => {}))(action.payload, action.meta) || store;
 }
 
-export default installReducer;
+export default viewReducer;

@@ -3,6 +3,7 @@ import Promise from 'bluebird';
 
 const DEFAULT_PAGE_SIZE = 100;
 const ARRAY_PROPERTIES = ['keywords', 'dependencies', 'devDependencies'];
+const SEARCH_URL = '//npmsearch.com/query';
 const DEFAULT_FIELDS = [
   'name',
   'version',
@@ -25,7 +26,7 @@ const DEFAULT_FIELDS = [
 ];
 
 function search(query, from = 0, size = DEFAULT_PAGE_SIZE, fields = DEFAULT_FIELDS) {
-  return fetch(`//npmsearch.com/query?q=name:${query}&size=${size}&from=${from}&fields=${fields.join()}`)
+  return fetch(`${SEARCH_URL}?q=name:${query}&size=${size}&from=${from}&fields=${fields.join()}`)
   .then((result) => {
     if(!result.ok) {
       throw new Error(result.reason);

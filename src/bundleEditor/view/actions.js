@@ -12,7 +12,7 @@ function updatePackageInfo(packageName) {
           type: UPDATE_PACKAGE_INFO_FULFILLED,
           payload: result,
         });
-        dispatch(changeActivePanel('install'));
+        dispatch(changeActivePanel('view'));
       }).catch((error) => {
         dispatch({
           type: UPDATE_PACKAGE_INFO_REJECTED,

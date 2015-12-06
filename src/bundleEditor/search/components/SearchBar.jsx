@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Input } from 'react-bootstrap';
 
 import { searchPackage } from '../actions';
-import { updatePackageInfo } from '../../install/actions';
+import { updatePackageInfo } from '../../view/actions';
 
 const ENTER_KEY_CODE = 13;
 

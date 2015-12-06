@@ -2,7 +2,7 @@ import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import { updatePackageInfo } from '../../install/actions';
+import { updatePackageInfo } from '../../view/actions';
 
 class SearchResultList extends Component {
   static propTypes = {

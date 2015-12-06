@@ -1,11 +1,10 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { Panel } from 'react-bootstrap';
 import marked from 'marked';
 
 const renderer = new marked.Renderer();
-renderer.link = ( href, title, text ) =>
-  '<a target="_blank" href="'+ href +'" title="' + title + '">' + text + '</a>';
+renderer.link = (href, title, text) =>
+  `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
 
 class ReadmeContainer extends Component {
   static propTypes = {
@@ -17,9 +16,14 @@ class ReadmeContainer extends Component {
       return null;
     }
     return (
-      <div dangerouslySetInnerHTML={{ __html: marked(packageInfo.readme, { renderer:renderer }) }}/>
+      <div
+        dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+          __html: marked(packageInfo.readme, { renderer }),
+        }}
+        style={{ padding: '0 1em' }}
+      />
     );
   }
 }
 
-export default connect(({ install }) => install)(ReadmeContainer);
+export default connect(({ view }) => view)(ReadmeContainer);
