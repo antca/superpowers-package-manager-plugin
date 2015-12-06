@@ -1,14 +1,14 @@
-const UPDATE_MESSAGE = 'UPDATE_MESSAGE';
-function updateMessage(newMessage) {
+const CHANGE_ACTIVE_PANEL = 'CHANGE_ACTIVE_PANEL';
+function changeActivePanel(activePanel) {
   return {
-    type: UPDATE_MESSAGE,
+    type: CHANGE_ACTIVE_PANEL,
     payload: {
-      newMessage,
+      activePanel,
     },
   };
 }
 
 export default {
-  UPDATE_MESSAGE,
-  updateMessage,
+  CHANGE_ACTIVE_PANEL,
+  changeActivePanel,
 };

@@ -5,7 +5,7 @@ import {
 } from './actions';
 
 import {
-  UPDATE_PACKAGE_INFO_PENDING,
+  UPDATE_PACKAGE_INFO_FULFILLED,
 } from '../install/actions';
 
 const initialSearchStore = {
@@ -34,7 +34,7 @@ function searchReducer(store = initialSearchStore, action) {
         result: null,
       };
     },
-    [UPDATE_PACKAGE_INFO_PENDING]() {
+    [UPDATE_PACKAGE_INFO_FULFILLED]() {
       return {
         ...store,
         error: null,

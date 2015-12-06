@@ -1,15 +1,15 @@
-import { UPDATE_MESSAGE } from './actions';
+import { CHANGE_ACTIVE_PANEL } from './actions';
 
 const initialMainStore = {
-  message: 'Hello !',
+  activePanel: 'manage',
 };
 
 function mainReducer(store = initialMainStore, action) {
   return ({
-    [UPDATE_MESSAGE]({ newMessage }) {
+    [CHANGE_ACTIVE_PANEL]({ activePanel }) {
       return {
         ...store,
-        message: newMessage,
+        activePanel,
       };
     },
   }[action.type] || (() => {}))(action.payload, action.meta) || store;
