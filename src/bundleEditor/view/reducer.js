@@ -11,7 +11,7 @@ function viewReducer(store = initialViewStore, action) {
     [UPDATE_PACKAGE_INFO_PENDING]() {
       return {
         ...store,
-        packageInfoError: null,
+        error: null,
         packageInfo: null,
       };
     },
@@ -19,14 +19,14 @@ function viewReducer(store = initialViewStore, action) {
       window.result = packageInfo;
       return {
         ...store,
-        packageInfoError: null,
+        error: null,
         packageInfo,
       };
     },
-    [UPDATE_PACKAGE_INFO_REJECTED](packageInfoError) {
+    [UPDATE_PACKAGE_INFO_REJECTED](error) {
       return {
         ...store,
-        packageInfoError,
+        error,
         packageInfo: null,
       };
     },
