@@ -28,7 +28,7 @@ class BundleEditor extends Component {
             <Panel bsStyle='primary' eventKey='manage' header='Manage'><ManageContainer/></Panel>
           </PanelGroup>
         </Col>
-        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'scroll' }}>
+        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto' }}>
           <Row>
             <ReadmeContainer />
           </Row>
