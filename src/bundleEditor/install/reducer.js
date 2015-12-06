@@ -16,7 +16,7 @@ function installReducer(store = initialInstallStore, action) {
       };
     },
     [UPDATE_PACKAGE_INFO_FULFILLED](packageInfo) {
-      console.log(packageInfo);
+      window.result = packageInfo;
       return {
         ...store,
         packageInfoError: null,

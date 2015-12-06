@@ -1,6 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { Alert } from 'react-bootstrap';
+import { Alert, Panel } from 'react-bootstrap';
 
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';

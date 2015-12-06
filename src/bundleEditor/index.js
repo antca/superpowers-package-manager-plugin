@@ -15,6 +15,8 @@ const {
 } = global;
 
 const bundleEditorDOMElement = document.createElement('div');
+bundleEditorDOMElement.style.height = '100%';
+bundleEditorDOMElement.style.padding = 0;
 document.body.appendChild(bundleEditorDOMElement);
 
 const store = createStore();
