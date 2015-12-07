@@ -1,7 +1,7 @@
 import { CHANGE_ACTIVE_PANEL } from './actions';
 
 const initialMainStore = {
-  activePanel: 'manage',
+  activePanel: 'search',
 };
 
 function mainReducer(store = initialMainStore, action) {

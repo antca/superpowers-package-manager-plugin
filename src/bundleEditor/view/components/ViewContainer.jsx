@@ -1,59 +1,67 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { ListGroup, ListGroupItem, Panel, ButtonGroup, Button } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
+
+import { changeActivePanel } from '../../main/actions';
 
 const NPM_URL = '//www.npmjs.com/package/';
 
+const Author = ({ author }) =>
+  <ListGroupItem header='Author'>
+    {author.name}{' <'}<a href={`mailto:${author.email}`}>{author.email}</a>{'>'}
+  </ListGroupItem>;
+
+const Repository = ({ repository }) =>
+  <ListGroupItem header='Repository'>
+    <a href={repository.url} target='_blank'>{repository.url}</a>
+  </ListGroupItem>;
+
 class ViewContainer extends Component {
   static propTypes = {
+    onInstallButtonClick: T.func.isRequired,
     packageInfo: T.object,
   }
   render() {
-    const { packageInfo } = this.props;
+    const { packageInfo, onInstallButtonClick } = this.props;
     if(!packageInfo) {
       return null;
     }
     const {
       name,
       description,
-      versions,
       'dist-tags': {
         latest: latestVersion,
       },
-      author: {
-        name: authorName,
-        email: authorEmail,
-      },
-      repository: {
-        url: repoURL,
-      },
-      homepage: hpURL,
-      bugs: {
-        url: bugsURL,
-      },
+      author,
+      repository,
+      homepage,
+      bugs,
       license,
     } = packageInfo;
-    const avaliableVersions = Object.keys(versions);
-    const { icon } = versions[latestVersion];
     return (
       <div>
         <ListGroup fill style={{ overflow: 'hidden' }}>
-          <ListGroupItem header='Name'>{name}</ListGroupItem>
-          <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem>
-          <ListGroupItem header='Description'>{description}</ListGroupItem>
-          <ListGroupItem header='Author'>
-            {authorName}{' <'}<a href={`mailto:${authorEmail}`}>{authorEmail}</a>{'>'}
-          </ListGroupItem>
-          <ListGroupItem header='License'>{license}</ListGroupItem>
-          <ListGroupItem header='Repository'><a target='_blank' href={repoURL}>{repoURL}</a></ListGroupItem>
-          <ListGroupItem header='Homepage'><a target='_blank' href={hpURL}>{hpURL}</a></ListGroupItem>
-          <ListGroupItem header='Bugs'><a target='_blank' href={bugsURL}>{bugsURL}</a></ListGroupItem>
+          {name ? <ListGroupItem header='Name'>{name}</ListGroupItem> : null}
+          {latestVersion ? <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem> : null}
+          {description ? <ListGroupItem header='Description'>{description}</ListGroupItem> : null}
+          {author ? <Author author={author} /> : null}
+          {license ? <ListGroupItem header='License'>{license}</ListGroupItem> : null}
+          {repository ? <Repository repository={repository}/> : null}
+          {homepage ? <ListGroupItem header='Homepage'>
+            <a href={homepage} target='_blank'>{homepage}</a>
+           </ListGroupItem> : null}
+          {bugs ? <ListGroupItem header='Bugs'><a href={bugs.url} target='_blank'>{bugs.url}</a></ListGroupItem> : null}
         </ListGroup>
-        <Button block bsStyle="info" target='_blank' href={`${NPM_URL}${name}`}>{'View on NPM'}</Button>
-        <Button block bsStyle="success">{'install'}</Button>
+        <Button block bsStyle='info' href={`${NPM_URL}${name}`} target='_blank'>{'View on NPM'}</Button>
+        <Button block bsStyle='success' onClick={() => onInstallButtonClick('install')}>{'install'}</Button>
       </div>
     );
   }
 }
 
-export default connect(({ view }) => view)(ViewContainer);
+export default connect(
+  ({ view }) => view,
+  {
+    onInstallButtonClick: changeActivePanel,
+  }
+)(ViewContainer);

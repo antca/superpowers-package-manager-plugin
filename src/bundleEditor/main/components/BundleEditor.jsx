@@ -4,30 +4,52 @@ import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
 
 import { changeActivePanel } from '../actions';
 
+import ErrorContainer from './ErrorContainer';
 import SearchContainer from '../../search/components/SearchContainer';
 import ViewContainer from '../../view/components/ViewContainer';
 import ReadmeContainer from '../../view/components/ReadmeContainer';
+import InstallContainer from '../../install/components/InstallContainer';
 import ManageContainer from '../../manage/components/ManageContainer';
-import ErrorContainer from './ErrorContainer';
 
 const INFO_COL_WIDTH = 3;
 const DOC_COL_WIDTH = 9;
 
 class BundleEditor extends Component {
   static propTypes = {
-    activePanel: T.oneOf(['search', 'view', 'manage']).isRequired,
+    install: T.object.isRequired,
+    main: T.object.isRequired,
+    manage: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
+    search: T.object.isRequired,
+    view: T.object.isRequired,
   }
   render() {
-    const { onPanelSelect, activePanel } = this.props;
+    const {
+      onPanelSelect,
+      main: {
+        activePanel,
+      },
+      view: {
+        packageInfo,
+      },
+    } = this.props;
     return (
       <Grid fluid style={{ height: '100%', padding: '1em 0' }}>
         <Col sm={INFO_COL_WIDTH}>
           <ErrorContainer/>
           <PanelGroup accordion activeKey={activePanel} onSelect={onPanelSelect} >
-            <Panel bsStyle='primary' eventKey='search' header='Search'><SearchContainer/></Panel>
-            <Panel bsStyle='primary' eventKey='view' header='View'><ViewContainer/></Panel>
-            <Panel bsStyle='primary' eventKey='manage' header='Manage'><ManageContainer/></Panel>
+            <Panel bsStyle={'primary'} eventKey='search' header='Search'>
+              <SearchContainer/>
+            </Panel>
+            <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='view' header='View'>
+              <ViewContainer/>
+            </Panel>
+            <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='install' header='Install'>
+              <InstallContainer/>
+            </Panel>
+            <Panel bsStyle={false  ? 'primary' : 'default'} eventKey='manage' header='Manage'>
+              <ManageContainer/>
+            </Panel>
           </PanelGroup>
         </Col>
         <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto  ' }}>
@@ -41,7 +63,7 @@ class BundleEditor extends Component {
 }
 
 export default connect(
-  ({ main }) => main,
+  (store) => store,
   {
     onPanelSelect: changeActivePanel,
   }
