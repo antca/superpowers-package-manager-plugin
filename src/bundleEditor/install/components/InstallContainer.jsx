@@ -1,6 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { selectVersion } from '../actions';
+import { selectVersion, updateBinding, addBinding } from '../actions';
 import {
   Input,
   ListGroup,
@@ -19,42 +19,52 @@ const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
     value={value}
   >
     {Object.keys(versions)
-        .reverse()
-        .map((version) =>
-          <option key={version}>{version}</option>)}
+      .reverse()
+      .map((version) =>
+        <option key={version}>{version}</option>
+      )}
   </Input>;
 
-const Binding = ({ moduleName, modulePath, propertyName }) =>
+const Binding = ({ moduleName, binding, bindingId, onChangeBinding }) =>
   <ListGroupItem>
     <Input
-      addonBefore={moduleName}
+      addonBefore={`${moduleName}${binding.modulePath === '' ? '' : '/'}`}
+      onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
+        ...binding,
+        modulePath: target.value,
+      })}
       standalone
       type='text'
-      value={`/${modulePath}`}
+      value={binding.modulePath}
     />
     <div style={{ textAlign: 'center' }}><Glyphicon glyph='arrow-down'/></div>
     <Input
       addonBefore={'Sup.npm.'}
+      onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
+        ...binding,
+        propertyName: target.value,
+      })}
       standalone
       type='text'
-      value={propertyName}
+      value={binding.propertyName}
     />
   </ListGroupItem>;
 
-const Bindings = ({ moduleName, bindings }) =>
+const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding }) =>
   <div>
     <label>{'Bindings'}</label>
     <Panel>
       <ListGroup fill>
-        {bindings.map(({ modulePath, propertyName }, index) =>
+        {bindings.map((binding, index) =>
           <Binding
+            binding={binding}
+            bindingId={index}
             key={index}
             moduleName={moduleName}
-            modulePath={modulePath}
-            propertyName={propertyName}
+            onChangeBinding={onChangeBinding}
           />)}
         <ListGroupItem>
-          <Button block><Glyphicon glyph='plus-sign' /></Button>
+          <Button block onClick={() => onAddBinding(moduleName)}><Glyphicon glyph='plus-sign' /></Button>
         </ListGroupItem>
       </ListGroup>
     </Panel>
@@ -63,6 +73,8 @@ const Bindings = ({ moduleName, bindings }) =>
 class InstallContainer extends Component {
   static propTypes = {
     dependency: T.object.isRequired,
+    onAddBinding: T.func.isRequired,
+    onChangeBinding: T.func.isRequired,
     onSelectVersion: T.func.isRequired,
     packageInfo: T.object,
     selectedVersion: T.string,
@@ -71,6 +83,8 @@ class InstallContainer extends Component {
     const {
       packageInfo,
       onSelectVersion,
+      onAddBinding,
+      onChangeBinding,
       dependency: {
         version,
         bindings,
@@ -87,8 +101,17 @@ class InstallContainer extends Component {
       <div>
         <h2>{name}</h2>
         <form>
-          <VersionSelect onSelectVersion={onSelectVersion} packageName={name} value={version} versions={versions}/>
-          <Bindings bindings={bindings} moduleName={name} />
+          <VersionSelect
+            onSelectVersion={onSelectVersion}
+            packageName={name}
+            value={version}
+            versions={versions}
+          />
+          <Bindings
+            bindings={bindings}
+            moduleName={name}
+            onAddBinding={onAddBinding}
+            onChangeBinding={onChangeBinding} />
         </form>
       </div>
     );
@@ -102,5 +125,7 @@ export default connect(
   }),
   {
     onSelectVersion: selectVersion,
+    onAddBinding: addBinding,
+    onChangeBinding: updateBinding,
   }
 )(InstallContainer);

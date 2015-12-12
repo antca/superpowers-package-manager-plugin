@@ -47,7 +47,11 @@ class BundleEditor extends Component {
             <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='view' header='View'>
               {packageInfo ? <ViewContainer/> : null}
             </Panel>
-            <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='install' header='Install'>
+            <Panel
+              bsStyle={packageInfo && dependencies[packageInfo.name] ? 'primary' : 'default'}
+              eventKey='install'
+              header='Install'
+            >
               {packageInfo && dependencies[packageInfo.name] ? <InstallContainer/> : null}
             </Panel>
             <Panel bsStyle={false ? 'primary' : 'default'} eventKey='manage' header='Manage'>

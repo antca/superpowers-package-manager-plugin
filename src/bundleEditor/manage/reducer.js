@@ -1,6 +1,10 @@
 import { cleanModulePath } from '../utils/node';
 import { ADD_DEPENDENCY } from '../view/actions';
-import { SELECT_VERSION } from '../install/actions';
+import {
+  SELECT_VERSION,
+  UPDATE_BINDING,
+  ADD_BINDING,
+} from '../install/actions';
 
 const initialManageStore = {
   dependencies: {},
@@ -16,6 +20,37 @@ function manageReducer(store = initialManageStore, action) {
           [packageName]: {
             ...store.dependencies[packageName],
             version,
+          },
+        },
+      };
+    },
+    [UPDATE_BINDING]({ moduleName, bindingId, binding }) {
+      return {
+        ...store,
+        dependencies: {
+          ...store.dependencies,
+          [moduleName]: {
+            ...store.dependencies[moduleName],
+            bindings: [
+              ...store.dependencies[moduleName].bindings.slice(0, bindingId),
+              store.dependencies[moduleName].bindings[bindingId] = binding,
+              ...store.dependencies[moduleName].bindings.slice(bindingId + 1),
+            ],
+          },
+        },
+      };
+    },
+    [ADD_BINDING]({ moduleName }) {
+      return {
+        ...store,
+        dependencies: {
+          ...store.dependencies,
+          [moduleName]: {
+            ...store.dependencies[moduleName],
+            bindings: [
+              ...store.dependencies[moduleName].bindings,
+              { modulePath: '', propertyName: '' },
+            ],
           },
         },
       };

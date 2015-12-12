@@ -24,7 +24,7 @@ class SearchResultList extends Component {
             key={item.name}
             onClick={() => onPackageSelected(item.name)}
           >
-           <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+           <span dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
              __html: renderMarkdown(item.description),
            }}/>
           </ListGroupItem>

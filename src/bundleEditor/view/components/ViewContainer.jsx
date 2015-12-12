@@ -46,7 +46,7 @@ class ViewContainer extends Component {
           {name ? <ListGroupItem header='Name'>{name}</ListGroupItem> : null}
           {latestVersion ? <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem> : null}
           {description ? <ListGroupItem header='Description'>
-            <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+            <span dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
               __html: renderMarkdown(description),
             }}/>
           </ListGroupItem> : null}

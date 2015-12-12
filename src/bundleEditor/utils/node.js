@@ -1,6 +1,6 @@
 const MAIN_PATH_REGEXP = /^(?:(\.|\.\.)\/)?(.*?)(:?\.js)?$/;
 
-function cleanModulePath(path) {
+function cleanModulePath(path = '/index.js') {
   const result = MAIN_PATH_REGEXP.exec(path);
   if(result === null) {
     throw new Error(`'${path}' is not a valid module path`);
