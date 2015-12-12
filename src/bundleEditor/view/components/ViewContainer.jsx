@@ -2,6 +2,7 @@ import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 
+import { addDependency } from '../actions';
 import { changeActivePanel } from '../../main/actions';
 
 const NPM_URL = '//www.npmjs.com/package/';
@@ -18,11 +19,11 @@ const Repository = ({ repository }) =>
 
 class ViewContainer extends Component {
   static propTypes = {
-    onInstallButtonClick: T.func.isRequired,
+    onAddDependencyButtonClick: T.func.isRequired,
     packageInfo: T.object,
   }
   render() {
-    const { packageInfo, onInstallButtonClick } = this.props;
+    const { packageInfo, onAddDependencyButtonClick } = this.props;
     if(!packageInfo) {
       return null;
     }
@@ -53,7 +54,13 @@ class ViewContainer extends Component {
           {bugs ? <ListGroupItem header='Bugs'><a href={bugs.url} target='_blank'>{bugs.url}</a></ListGroupItem> : null}
         </ListGroup>
         <Button block bsStyle='info' href={`${NPM_URL}${name}`} target='_blank'>{'View on NPM'}</Button>
-        <Button block bsStyle='success' onClick={() => onInstallButtonClick('install')}>{'install'}</Button>
+        <Button
+          block
+          bsStyle='success'
+          onClick={() => onAddDependencyButtonClick(packageInfo)}
+        >
+          {'Add to dependencies'}
+        </Button>
       </div>
     );
   }
@@ -61,7 +68,10 @@ class ViewContainer extends Component {
 
 export default connect(
   ({ view }) => view,
-  {
-    onInstallButtonClick: changeActivePanel,
-  }
+  (dispatch) => ({
+    onAddDependencyButtonClick: (packageInfo) => {
+      dispatch(addDependency(packageInfo));
+      dispatch(changeActivePanel('install'));
+    },
+  })
 )(ViewContainer);

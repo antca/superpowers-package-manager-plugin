@@ -4,14 +4,18 @@ import reduxLogger from 'redux-logger';
 
 import mainReducer from './main/reducer';
 import searchReducer from './search/reducer';
-import installReducer from './view/reducer';
+import viewReducer from './view/reducer';
+import installReducer from './install/reducer';
+import manageReducer from './manage/reducer';
 
 function createAppStore() {
   const middlewareStack = applyMiddleware(reduxThunk, reduxLogger())(createStore);
   const combinedReducers = combineReducers({
     main: mainReducer,
     search: searchReducer,
-    view: installReducer,
+    view: viewReducer,
+    install: installReducer,
+    manage: manageReducer,
   });
   return middlewareStack(combinedReducers);
 }

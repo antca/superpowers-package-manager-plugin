@@ -32,6 +32,9 @@ class BundleEditor extends Component {
       view: {
         packageInfo,
       },
+      manage: {
+        dependencies,
+      },
     } = this.props;
     return (
       <Grid fluid style={{ height: '100%', padding: '1em 0' }}>
@@ -42,12 +45,12 @@ class BundleEditor extends Component {
               <SearchContainer/>
             </Panel>
             <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='view' header='View'>
-              <ViewContainer/>
+              {packageInfo ? <ViewContainer/> : null}
             </Panel>
             <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='install' header='Install'>
-              <InstallContainer/>
+              {packageInfo && dependencies[packageInfo.name] ? <InstallContainer/> : null}
             </Panel>
-            <Panel bsStyle={false  ? 'primary' : 'default'} eventKey='manage' header='Manage'>
+            <Panel bsStyle={false ? 'primary' : 'default'} eventKey='manage' header='Manage'>
               <ManageContainer/>
             </Panel>
           </PanelGroup>
