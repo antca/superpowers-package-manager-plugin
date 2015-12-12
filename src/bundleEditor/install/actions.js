@@ -31,6 +31,17 @@ function addBinding(moduleName) {
   };
 }
 
+const DELETE_BINDING = 'DELETE_BINDING';
+function deleteBinding(moduleName, bindingId) {
+  return {
+    type: DELETE_BINDING,
+    payload: {
+      moduleName,
+      bindingId,
+    },
+  };
+}
+
 export default {
   SELECT_VERSION,
   selectVersion,
@@ -40,4 +51,7 @@ export default {
 
   ADD_BINDING,
   addBinding,
+
+  DELETE_BINDING,
+  deleteBinding,
 };

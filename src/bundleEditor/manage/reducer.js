@@ -4,6 +4,7 @@ import {
   SELECT_VERSION,
   UPDATE_BINDING,
   ADD_BINDING,
+  DELETE_BINDING,
 } from '../install/actions';
 
 const initialManageStore = {
@@ -50,6 +51,21 @@ function manageReducer(store = initialManageStore, action) {
             bindings: [
               ...store.dependencies[moduleName].bindings,
               { modulePath: '', propertyName: '' },
+            ],
+          },
+        },
+      };
+    },
+    [DELETE_BINDING]({ moduleName, bindingId }) {
+      return {
+        ...store,
+        dependencies: {
+          ...store.dependencies,
+          [moduleName]: {
+            ...store.dependencies[moduleName],
+            bindings: [
+              ...store.dependencies[moduleName].bindings.slice(0, bindingId),
+              ...store.dependencies[moduleName].bindings.slice(bindingId + 1),
             ],
           },
         },

@@ -1,6 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { selectVersion, updateBinding, addBinding } from '../actions';
+import { selectVersion, updateBinding, addBinding, deleteBinding } from '../actions';
 import {
   Input,
   ListGroup,
@@ -25,8 +25,13 @@ const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
       )}
   </Input>;
 
-const Binding = ({ moduleName, binding, bindingId, onChangeBinding }) =>
+const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBinding }) =>
   <ListGroupItem>
+    <div style={{ paddingBottom: '10px', textAlign: 'right' }}>
+      <Button bsSize='xsmall' bsStyle={'danger'} onClick={() => onDeleteBinding(moduleName, bindingId)}>
+        <Glyphicon glyph='remove'/>
+      </Button>
+    </div>
     <Input
       addonBefore={`${moduleName}${binding.modulePath === '' ? '' : '/'}`}
       onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
@@ -50,7 +55,7 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding }) =>
     />
   </ListGroupItem>;
 
-const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding }) =>
+const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDeleteBinding }) =>
   <div>
     <label>{'Bindings'}</label>
     <Panel>
@@ -62,9 +67,10 @@ const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding }) =>
             key={index}
             moduleName={moduleName}
             onChangeBinding={onChangeBinding}
+            onDeleteBinding={onDeleteBinding}
           />)}
         <ListGroupItem>
-          <Button block onClick={() => onAddBinding(moduleName)}><Glyphicon glyph='plus-sign' /></Button>
+          <Button block onClick={() => onAddBinding(moduleName)}><Glyphicon glyph='plus-sign'/></Button>
         </ListGroupItem>
       </ListGroup>
     </Panel>
@@ -75,6 +81,7 @@ class InstallContainer extends Component {
     dependency: T.object.isRequired,
     onAddBinding: T.func.isRequired,
     onChangeBinding: T.func.isRequired,
+    onDeleteBinding: T.func.isRequired,
     onSelectVersion: T.func.isRequired,
     packageInfo: T.object,
     selectedVersion: T.string,
@@ -85,6 +92,7 @@ class InstallContainer extends Component {
       onSelectVersion,
       onAddBinding,
       onChangeBinding,
+      onDeleteBinding,
       dependency: {
         version,
         bindings,
@@ -111,7 +119,9 @@ class InstallContainer extends Component {
             bindings={bindings}
             moduleName={name}
             onAddBinding={onAddBinding}
-            onChangeBinding={onChangeBinding} />
+            onChangeBinding={onChangeBinding}
+            onDeleteBinding={onDeleteBinding}
+          />
         </form>
       </div>
     );
@@ -127,5 +137,6 @@ export default connect(
     onSelectVersion: selectVersion,
     onAddBinding: addBinding,
     onChangeBinding: updateBinding,
+    onDeleteBinding: deleteBinding,
   }
 )(InstallContainer);

@@ -10,7 +10,11 @@ const NPM_URL = '//www.npmjs.com/package/';
 
 const Author = ({ author }) =>
   <ListGroupItem header='Author'>
-    {author.name}{' <'}<a href={`mailto:${author.email}`}>{author.email}</a>{'>'}
+    <div>
+      <span>{author.name}</span>
+      <br/>
+      <span><a href={`mailto:${author.email}`}>{author.email}</a></span>
+    </div>
   </ListGroupItem>;
 
 const Repository = ({ repository }) =>
@@ -42,7 +46,7 @@ class ViewContainer extends Component {
     } = packageInfo;
     return (
       <div>
-        <ListGroup fill style={{ overflow: 'hidden' }}>
+        <ListGroup fill style={{ wordBreak: 'break-all' }}>
           {name ? <ListGroupItem header='Name'>{name}</ListGroupItem> : null}
           {latestVersion ? <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem> : null}
           {description ? <ListGroupItem header='Description'>
