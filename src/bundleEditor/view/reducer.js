@@ -24,7 +24,6 @@ function viewReducer(store = initialViewStore, action) {
       };
     },
     [UPDATE_PACKAGE_INFO_REJECTED](error) {
-      console.error(error.stack);
       return {
         ...store,
         error,

@@ -1,10 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import marked from 'marked';
-
-const renderer = new marked.Renderer();
-renderer.link = (href, title, text) =>
-  `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
+import { renderMarkdown } from '../../utils/markdown';
 
 class ReadmeContainer extends Component {
   static propTypes = {
@@ -18,7 +14,7 @@ class ReadmeContainer extends Component {
     return (
       <div
         dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-          __html: marked(packageInfo.readme, { renderer }),
+          __html: renderMarkdown(packageInfo.readme),
         }}
         style={{ padding: '0 1em' }}
       />

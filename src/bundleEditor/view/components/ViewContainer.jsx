@@ -4,6 +4,7 @@ import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 
 import { addDependency } from '../actions';
 import { changeActivePanel } from '../../main/actions';
+import { renderMarkdown } from '../../utils/markdown';
 
 const NPM_URL = '//www.npmjs.com/package/';
 
@@ -44,7 +45,11 @@ class ViewContainer extends Component {
         <ListGroup fill style={{ overflow: 'hidden' }}>
           {name ? <ListGroupItem header='Name'>{name}</ListGroupItem> : null}
           {latestVersion ? <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem> : null}
-          {description ? <ListGroupItem header='Description'>{description}</ListGroupItem> : null}
+          {description ? <ListGroupItem header='Description'>
+            <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+              __html: renderMarkdown(description),
+            }}/>
+          </ListGroupItem> : null}
           {author ? <Author author={author} /> : null}
           {license ? <ListGroupItem header='License'>{license}</ListGroupItem> : null}
           {repository ? <Repository repository={repository}/> : null}

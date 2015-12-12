@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 import { updatePackageInfo } from '../../view/actions';
+import { renderMarkdown } from '../../utils/markdown';
 
 class SearchResultList extends Component {
   static propTypes = {
@@ -23,7 +24,9 @@ class SearchResultList extends Component {
             key={item.name}
             onClick={() => onPackageSelected(item.name)}
           >
-           {item.description}
+           <div dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+             __html: renderMarkdown(item.description),
+           }}/>
           </ListGroupItem>
         )}
       </ListGroup>
