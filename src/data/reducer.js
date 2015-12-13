@@ -76,7 +76,6 @@ function dataReducer(store = initialDataStore, action) {
       };
     },
     [ADD_DEPENDENCY]({ packageInfo }) {
-      console.log('ADD_DEPENDENCY called !');
       const { name, versions, 'dist-tags': { latest } } = packageInfo;
       const { main } = versions[latest];
       return {

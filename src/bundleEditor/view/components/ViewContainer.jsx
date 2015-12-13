@@ -75,9 +75,9 @@ class ViewContainer extends Component {
 
 export default connect(
   ({ view }) => view,
-  (dispatch) => ({
+  (dispatch, { remoteDispatch }) => ({
     onAddDependencyButtonClick: (packageInfo) => {
-      dispatch(addDependency(packageInfo));
+      remoteDispatch(addDependency(packageInfo));
       dispatch(changeActivePanel('install'));
     },
   })

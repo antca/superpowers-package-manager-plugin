@@ -1,4 +1,5 @@
 import React, { PropTypes as T, Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectVersion, updateBinding, addBinding, deleteBinding } from '../../../data/actions';
 import {
@@ -133,10 +134,10 @@ export default connect(
     packageInfo: view.packageInfo,
     dependency: data.dependencies[view.packageInfo.name],
   }),
-  {
+  (dispatch, { remoteDispatch }) => bindActionCreators({
     onSelectVersion: selectVersion,
     onAddBinding: addBinding,
     onChangeBinding: updateBinding,
     onDeleteBinding: deleteBinding,
-  }
+  }, remoteDispatch),
 )(InstallContainer);

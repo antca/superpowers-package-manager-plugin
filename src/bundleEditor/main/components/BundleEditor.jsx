@@ -20,6 +20,7 @@ class BundleEditor extends Component {
     install: T.object.isRequired,
     main: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
+    remoteDispatch: T.func.isRequired,
     search: T.object.isRequired,
     view: T.object.isRequired,
   }
@@ -35,6 +36,7 @@ class BundleEditor extends Component {
       data: {
         dependencies,
       },
+      remoteDispatch,
     } = this.props;
     return (
       <Grid fluid style={{ height: '100%', padding: '1em 0' }}>
@@ -45,14 +47,19 @@ class BundleEditor extends Component {
               <SearchContainer/>
             </Panel>
             <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='view' header='View'>
-              {packageInfo ? <ViewContainer/> : null}
+              {packageInfo ? <ViewContainer remoteDispatch={remoteDispatch}/> : null}
             </Panel>
             <Panel
               bsStyle={packageInfo && dependencies[packageInfo.name] ? 'primary' : 'default'}
               eventKey='install'
               header='Install'
             >
-              {packageInfo && dependencies[packageInfo.name] ? <InstallContainer/> : null}
+              {(() => {
+                if(packageInfo && dependencies[packageInfo.name]) {
+                  return <InstallContainer remoteDispatch={remoteDispatch}/>;
+                }
+                return null;
+              })()}
             </Panel>
             <Panel bsStyle={false ? 'primary' : 'default'} eventKey='manage' header='Manage'>
               <ManageContainer/>

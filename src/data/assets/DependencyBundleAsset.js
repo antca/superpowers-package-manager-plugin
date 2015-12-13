@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { invokePong } from '../actions';
 import { createStore } from 'redux';
 import dataReducer from '../reducer';
 
@@ -42,14 +41,6 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
   }
 
   client_load(...args) {
-  }
-
-  server_ping(client, value, callback) {
-    callback(null, invokePong(value));
-  }
-
-  client_ping() {
-
   }
 
   server_dispatch(client, action, actionCallback) {
