@@ -1,4 +1,4 @@
-import { receiveAsset } from './asset/actions';
+import { updateAssetState } from './actions';
 
 class AssetManager {
   constructor(SupClient, dispatch) {
@@ -27,7 +27,7 @@ class AssetManager {
   }
 
   onAssetReceived(assetId, asset) {
-    this.dispatch(receiveAsset(assetId, asset));
+    this.dispatch(updateAssetState(asset.pub.state));
   }
 
   onAssetEdited(assetId, methodName, action) {

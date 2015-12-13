@@ -1,6 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
-import { selectVersion, updateBinding, addBinding, deleteBinding } from '../actions';
+import { selectVersion, updateBinding, addBinding, deleteBinding } from '../../../data/actions';
 import {
   Input,
   ListGroup,
@@ -129,9 +129,9 @@ class InstallContainer extends Component {
 }
 
 export default connect(
-  ({ manage, view }) => ({
+  ({ data, view }) => ({
     packageInfo: view.packageInfo,
-    dependency: manage.dependencies[view.packageInfo.name],
+    dependency: data.dependencies[view.packageInfo.name],
   }),
   {
     onSelectVersion: selectVersion,

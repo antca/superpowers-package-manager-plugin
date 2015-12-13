@@ -6,9 +6,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
 import createStore from './createStore';
-import AssetManager from './AssetManager';
+import AssetManager from '../data/AssetManager';
 import BundleEditor from './main/components/BundleEditor';
-import { configure } from './asset/actions';
+import { configure } from '../data/actions';
 
 const {
   SupClient,

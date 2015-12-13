@@ -20,6 +20,9 @@ export default {
       npm: 'empty-module',
     },
   },
+  node: {
+    fs: 'empty',
+  },
   module: {
     preLoaders: [
       {

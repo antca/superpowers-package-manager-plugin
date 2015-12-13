@@ -2,7 +2,7 @@ import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 
-import { addDependency } from '../actions';
+import { addDependency } from '../../../data/actions';
 import { changeActivePanel } from '../../main/actions';
 import { renderMarkdown } from '../../utils/markdown';
 
@@ -10,11 +10,9 @@ const NPM_URL = '//www.npmjs.com/package/';
 
 const Author = ({ author }) =>
   <ListGroupItem header='Author'>
-    <div>
       <span>{author.name}</span>
       <br/>
       <span><a href={`mailto:${author.email}`}>{author.email}</a></span>
-    </div>
   </ListGroupItem>;
 
 const Repository = ({ repository }) =>

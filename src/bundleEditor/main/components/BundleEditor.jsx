@@ -16,9 +16,9 @@ const DOC_COL_WIDTH = 9;
 
 class BundleEditor extends Component {
   static propTypes = {
+    data: T.object.isRequired,
     install: T.object.isRequired,
     main: T.object.isRequired,
-    manage: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
     search: T.object.isRequired,
     view: T.object.isRequired,
@@ -32,7 +32,7 @@ class BundleEditor extends Component {
       view: {
         packageInfo,
       },
-      manage: {
+      data: {
         dependencies,
       },
     } = this.props;

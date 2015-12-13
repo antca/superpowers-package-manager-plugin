@@ -28,22 +28,9 @@ function updatePackageInfo(packageName) {
   };
 }
 
-const ADD_DEPENDENCY = 'ADD_DEPENDENCY';
-function addDependency(packageInfo) {
-  return {
-    type: ADD_DEPENDENCY,
-    payload: {
-      packageInfo,
-    },
-  };
-}
-
 export default {
   UPDATE_PACKAGE_INFO_PENDING,
   UPDATE_PACKAGE_INFO_FULFILLED,
   UPDATE_PACKAGE_INFO_REJECTED,
   updatePackageInfo,
-
-  ADD_DEPENDENCY,
-  addDependency,
 };

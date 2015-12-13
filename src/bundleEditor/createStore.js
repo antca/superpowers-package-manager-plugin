@@ -7,6 +7,7 @@ import searchReducer from './search/reducer';
 import viewReducer from './view/reducer';
 import installReducer from './install/reducer';
 import manageReducer from './manage/reducer';
+import dataReducer from '../data/reducer';
 
 function createAppStore() {
   const middlewareStack = applyMiddleware(reduxThunk, reduxLogger())(createStore);
@@ -16,6 +17,7 @@ function createAppStore() {
     view: viewReducer,
     install: installReducer,
     manage: manageReducer,
+    data: dataReducer,
   });
   return middlewareStack(combinedReducers);
 }
