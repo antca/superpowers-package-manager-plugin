@@ -1,4 +1,5 @@
 import { cleanModulePath } from '../bundleEditor/utils/node';
+import _ from 'lodash';
 import {
   UPDATE_ASSET_STATE,
   SELECT_VERSION,
@@ -6,6 +7,7 @@ import {
   ADD_BINDING,
   DELETE_BINDING,
   ADD_DEPENDENCY,
+  REMOVE_DEPENDENCY,
 } from './actions';
 
 const initialDataStore = {
@@ -73,6 +75,12 @@ function dataReducer(store = initialDataStore, action) {
             ],
           },
         },
+      };
+    },
+    [REMOVE_DEPENDENCY]({ packageName }) {
+      return {
+        ...store,
+        dependencies: _.omit(store.dependencies, packageName),
       };
     },
     [ADD_DEPENDENCY]({ packageInfo }) {

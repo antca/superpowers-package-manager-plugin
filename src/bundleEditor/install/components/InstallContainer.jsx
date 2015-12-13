@@ -1,7 +1,15 @@
 import React, { PropTypes as T, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { selectVersion, updateBinding, addBinding, deleteBinding } from '../../../data/actions';
+import { changeActivePanel } from '../../main/actions';
+import {
+  selectVersion,
+  updateBinding,
+  addBinding,
+  deleteBinding,
+  addDependency,
+  removeDependency,
+} from '../../../data/actions';
 import {
   Input,
   ListGroup,
@@ -9,6 +17,7 @@ import {
   Glyphicon,
   Panel,
   Button,
+  ButtonGroup,
 } from 'react-bootstrap';
 
 const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
@@ -83,6 +92,8 @@ class InstallContainer extends Component {
     onAddBinding: T.func.isRequired,
     onChangeBinding: T.func.isRequired,
     onDeleteBinding: T.func.isRequired,
+    onRemoveDependency: T.func.isRequired,
+    onResetBindings: T.func.isRequired,
     onSelectVersion: T.func.isRequired,
     packageInfo: T.object,
     selectedVersion: T.string,
@@ -90,10 +101,12 @@ class InstallContainer extends Component {
   render() {
     const {
       packageInfo,
+      onResetBindings,
       onSelectVersion,
       onAddBinding,
       onChangeBinding,
       onDeleteBinding,
+      onRemoveDependency,
       dependency: {
         version,
         bindings,
@@ -109,21 +122,33 @@ class InstallContainer extends Component {
     return (
       <div>
         <h2>{name}</h2>
-        <form>
-          <VersionSelect
-            onSelectVersion={onSelectVersion}
-            packageName={name}
-            value={version}
-            versions={versions}
-          />
-          <Bindings
-            bindings={bindings}
-            moduleName={name}
-            onAddBinding={onAddBinding}
-            onChangeBinding={onChangeBinding}
-            onDeleteBinding={onDeleteBinding}
-          />
-        </form>
+          <form>
+            <VersionSelect
+              onSelectVersion={onSelectVersion}
+              packageName={name}
+              value={version}
+              versions={versions}
+            />
+            <Bindings
+              bindings={bindings}
+              moduleName={name}
+              onAddBinding={onAddBinding}
+              onChangeBinding={onChangeBinding}
+              onDeleteBinding={onDeleteBinding}
+            />
+              <ButtonGroup justified style={{ marginTop: '10px' }}>
+                <ButtonGroup>
+                  <Button bsStyle='info' onClick={() => onResetBindings(packageInfo)}>
+                    {'Reset'}<Glyphicon glyph='repeat' style={{ marginLeft: '5px' }}/>
+                  </Button>
+                </ButtonGroup>
+                <ButtonGroup>
+                  <Button bsStyle='danger' onClick={() => onRemoveDependency(name)}>{'Remove'}
+                    <Glyphicon glyph='trash' style={{ marginLeft: '5px' }}/>
+                  </Button>
+                </ButtonGroup>
+              </ButtonGroup>
+          </form>
       </div>
     );
   }
@@ -135,6 +160,11 @@ export default connect(
     dependency: data.dependencies[view.packageInfo.name],
   }),
   (dispatch, { remoteDispatch }) => bindActionCreators({
+    onResetBindings: addDependency,
+    onRemoveDependency: (...args) => {
+      dispatch(changeActivePanel('search'));
+      return removeDependency(...args);
+    },
     onSelectVersion: selectVersion,
     onAddBinding: addBinding,
     onChangeBinding: updateBinding,

@@ -62,6 +62,16 @@ function addDependency(packageInfo) {
   };
 }
 
+const REMOVE_DEPENDENCY = 'REMOVE_DEPENDENCY';
+function removeDependency(packageName) {
+  return {
+    type: REMOVE_DEPENDENCY,
+    payload: {
+      packageName,
+    },
+  };
+}
+
 export default {
   UPDATE_ASSET_STATE,
   updateAssetState,
@@ -80,4 +90,7 @@ export default {
 
   ADD_DEPENDENCY,
   addDependency,
+
+  REMOVE_DEPENDENCY,
+  removeDependency,
 };
