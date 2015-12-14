@@ -86,7 +86,7 @@ const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDelet
     </Panel>
   </div>;
 
-class InstallContainer extends Component {
+class EditContainer extends Component {
   static propTypes = {
     dependency: T.object.isRequired,
     onAddBinding: T.func.isRequired,
@@ -170,4 +170,4 @@ export default connect(
     onChangeBinding: updateBinding,
     onDeleteBinding: deleteBinding,
   }, remoteDispatch),
-)(InstallContainer);
+)(EditContainer);

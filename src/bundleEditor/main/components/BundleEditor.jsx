@@ -8,7 +8,7 @@ import ErrorContainer from './ErrorContainer';
 import SearchContainer from '../../search/components/SearchContainer';
 import ViewContainer from '../../view/components/ViewContainer';
 import ReadmeContainer from '../../view/components/ReadmeContainer';
-import InstallContainer from '../../install/components/InstallContainer';
+import EditContainer from '../../edit/components/EditContainer';
 import ManageContainer from '../../manage/components/ManageContainer';
 
 const INFO_COL_WIDTH = 3;
@@ -17,7 +17,7 @@ const DOC_COL_WIDTH = 9;
 class BundleEditor extends Component {
   static propTypes = {
     data: T.object.isRequired,
-    install: T.object.isRequired,
+    edit: T.object.isRequired,
     main: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
     remoteDispatch: T.func.isRequired,
@@ -51,12 +51,12 @@ class BundleEditor extends Component {
             </Panel>
             <Panel
               bsStyle={packageInfo && dependencies[packageInfo.name] ? 'primary' : 'default'}
-              eventKey='install'
-              header='Install'
+              eventKey='edit'
+              header='Edit'
             >
               {(() => {
                 if(packageInfo && dependencies[packageInfo.name]) {
-                  return <InstallContainer remoteDispatch={remoteDispatch}/>;
+                  return <EditContainer remoteDispatch={remoteDispatch}/>;
                 }
                 return null;
               })()}

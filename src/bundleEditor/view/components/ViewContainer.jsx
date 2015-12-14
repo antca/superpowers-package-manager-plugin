@@ -95,7 +95,7 @@ export default connect(
       if (packageInfo) {
         remoteDispatch(addDependency(packageInfo));
       }
-      dispatch(changeActivePanel('install'));
+      dispatch(changeActivePanel('edit'));
     },
   })
 )(ViewContainer);

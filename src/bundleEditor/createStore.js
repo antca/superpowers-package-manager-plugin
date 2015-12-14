@@ -5,7 +5,7 @@ import reduxLogger from 'redux-logger';
 import mainReducer from './main/reducer';
 import searchReducer from './search/reducer';
 import viewReducer from './view/reducer';
-import installReducer from './install/reducer';
+import editReducer from './edit/reducer';
 import manageReducer from './manage/reducer';
 import dataReducer from '../data/reducer';
 
@@ -15,7 +15,7 @@ function createAppStore() {
     main: mainReducer,
     search: searchReducer,
     view: viewReducer,
-    install: installReducer,
+    edit: editReducer,
     manage: manageReducer,
     data: dataReducer,
   });
