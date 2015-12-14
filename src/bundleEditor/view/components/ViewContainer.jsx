@@ -20,13 +20,27 @@ const Repository = ({ repository }) =>
     <a href={repository.url} target='_blank'>{repository.url}</a>
   </ListGroupItem>;
 
+const AddEditButton = ({ isDepedencyInstalled, onClick }) =>
+  <Button
+    block
+    bsStyle={isDepedencyInstalled ? 'primary' : 'success'}
+    onClick={onClick}
+  >
+    {isDepedencyInstalled ? 'Edit dependencie' : 'Add to dependencies'}
+  </Button>
+
 class ViewContainer extends Component {
   static propTypes = {
-    onAddDependencyButtonClick: T.func.isRequired,
+    dependencies: T.object,
+    onMainButtonClick: T.func.isRequired,
     packageInfo: T.object,
   }
   render() {
-    const { packageInfo, onAddDependencyButtonClick } = this.props;
+    const {
+      packageInfo,
+      onMainButtonClick,
+      dependencies,
+    } = this.props;
     if(!packageInfo) {
       return null;
     }
@@ -42,6 +56,7 @@ class ViewContainer extends Component {
       bugs,
       license,
     } = packageInfo;
+    const isDepedencyInstalled = dependencies.hasOwnProperty(name);
     return (
       <div>
         <ListGroup fill style={{ wordBreak: 'break-all' }}>
@@ -61,23 +76,25 @@ class ViewContainer extends Component {
           {bugs ? <ListGroupItem header='Bugs'><a href={bugs.url} target='_blank'>{bugs.url}</a></ListGroupItem> : null}
         </ListGroup>
         <Button block bsStyle='info' href={`${NPM_URL}${name}`} target='_blank'>{'View on NPM'}</Button>
-        <Button
-          block
-          bsStyle='success'
-          onClick={() => onAddDependencyButtonClick(packageInfo)}
-        >
-          {'Add to dependencies'}
-        </Button>
+        <AddEditButton
+          isDepedencyInstalled={isDepedencyInstalled}
+          onClick={() => onMainButtonClick(isDepedencyInstalled ? null : packageInfo)}
+        />
       </div>
     );
   }
 }
 
 export default connect(
-  ({ view }) => view,
+  ({ view, data }) => ({
+    packageInfo: view.packageInfo,
+    dependencies: data.dependencies,
+  }),
   (dispatch, { remoteDispatch }) => ({
-    onAddDependencyButtonClick: (packageInfo) => {
-      remoteDispatch(addDependency(packageInfo));
+    onMainButtonClick: (packageInfo) => {
+      if (packageInfo) {
+        remoteDispatch(addDependency(packageInfo));
+      }
       dispatch(changeActivePanel('install'));
     },
   })
