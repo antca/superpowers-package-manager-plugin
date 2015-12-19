@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';
@@ -15,4 +14,4 @@ class SearchContainer extends Component {
   }
 }
 
-export default connect(({ search: { error } }) => ({ error }))(SearchContainer);
+export default SearchContainer;
