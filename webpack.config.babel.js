@@ -18,6 +18,7 @@ export default {
   resolve: {
     alias: {
       npm: 'empty-module',
+      webpack: 'empty-module',
     },
   },
   node: {

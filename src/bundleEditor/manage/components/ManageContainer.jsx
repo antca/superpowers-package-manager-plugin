@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Table, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
 
-import { removeDependency } from '../../../data/actions';
+import { removeDependency, rebuild } from '../../../data/actions';
 import { updatePackageInfo } from '../../view/actions';
 import { changeActivePanel } from '../../main/actions';
 
@@ -43,12 +43,14 @@ class ManageContainer extends Component {
     dependencies: T.object.isRequired,
     onDeleteButtonClick: T.func.isRequired,
     onEditButtonClick: T.func.isRequired,
+    onRebuildButtonClick: T.func.isRequired,
   }
   render() {
     const {
       dependencies,
       onDeleteButtonClick,
       onEditButtonClick,
+      onRebuildButtonClick,
     } = this.props;
     return (
       <div>
@@ -72,6 +74,12 @@ class ManageContainer extends Component {
               />)}
           </tbody>
         </Table>
+        <Button
+          block
+          onClick={() => onRebuildButtonClick()}
+        >
+          {'Rebuild'}
+        </Button>
       </div>
     );
   }
@@ -88,5 +96,8 @@ export default connect(
     onDeleteButtonClick(packageName) {
       remoteDispatch(removeDependency(packageName));
     },
+    onRebuildButtonClick() {
+      remoteDispatch(rebuild());
+    }
   })
 )(ManageContainer);

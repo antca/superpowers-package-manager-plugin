@@ -72,6 +72,30 @@ function removeDependency(packageName) {
   };
 }
 
+const REBUILD = 'REBUILD';
+function rebuild() {
+  return {
+    type: REBUILD,
+  };
+}
+
+const REBUILD_FINISHED = 'REBUILD_FINISHED';
+function rebuildFinished() {
+  return {
+    type: REBUILD_FINISHED,
+  };
+}
+
+const REBUILD_FAILED = 'REBUILD_FAILED';
+function rebuildFailed(error) {
+  return {
+    type: REBUILD_FAILED,
+    payload: {
+      error,
+    },
+  };
+}
+
 export default {
   UPDATE_ASSET_STATE,
   updateAssetState,
@@ -93,4 +117,13 @@ export default {
 
   REMOVE_DEPENDENCY,
   removeDependency,
+
+  REBUILD,
+  rebuild,
+
+  REBUILD_FINISHED,
+  rebuildFinished,
+
+  REBUILD_FAILED,
+  rebuildFailed,
 };

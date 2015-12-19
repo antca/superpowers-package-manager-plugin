@@ -8,10 +8,15 @@ import {
   DELETE_BINDING,
   ADD_DEPENDENCY,
   REMOVE_DEPENDENCY,
+  REBUILD,
+  REBUILD_FINISHED,
+  REBUILD_FAILED,
 } from './actions';
 
 const initialDataStore = {
   dependencies: {},
+  building: false,
+  error: null,
 };
 
 function dataReducer(store = initialDataStore, action) {
@@ -95,6 +100,27 @@ function dataReducer(store = initialDataStore, action) {
             bindings: [{ modulePath: cleanModulePath(main), propertyName: name }],
           },
         },
+      };
+    },
+    [REBUILD]() {
+      return {
+        ...store,
+        building: true,
+        error: null,
+      };
+    },
+    [REBUILD_FINISHED]() {
+      return {
+        ...store,
+        building: false,
+        error: null,
+      };
+    },
+    [REBUILD_FAILED]({ error }) {
+      return {
+        ...store,
+        building: false,
+        error,
       };
     },
   }[action.type] || (() => {}))(action.payload, action.meta) || store;
