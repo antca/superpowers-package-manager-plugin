@@ -16,7 +16,6 @@ function viewReducer(store = initialViewStore, action) {
       };
     },
     [UPDATE_PACKAGE_INFO_FULFILLED](packageInfo) {
-      window.result = packageInfo;
       return {
         ...store,
         error: null,

@@ -1,3 +1,4 @@
+import { REMOVE_DEPENDENCY } from '../../data/actions';
 import { CHANGE_ACTIVE_PANEL } from './actions';
 
 const initialMainStore = {
@@ -10,6 +11,12 @@ function mainReducer(store = initialMainStore, action) {
       return {
         ...store,
         activePanel,
+      };
+    },
+    [REMOVE_DEPENDENCY]() {
+      return {
+        ...store,
+        activePanel: 'manage',
       };
     },
   }[action.type] || (() => {}))(action.payload, action.meta) || store;

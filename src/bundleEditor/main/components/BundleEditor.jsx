@@ -45,7 +45,7 @@ class BundleEditor extends Component {
           <ErrorContainer/>
           <PanelGroup accordion activeKey={activePanel} onSelect={onPanelSelect} >
             <Panel bsStyle={_.isEmpty(dependencies) ? 'default' : 'primary'} eventKey='manage' header='Manage'>
-              <ManageContainer/>
+              <ManageContainer remoteDispatch={remoteDispatch}/>
             </Panel>
             <Panel bsStyle={'primary'} eventKey='search' header='Search'>
               <SearchContainer/>

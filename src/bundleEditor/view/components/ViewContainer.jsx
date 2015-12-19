@@ -93,9 +93,10 @@ export default connect(
   (dispatch, { remoteDispatch }) => ({
     onMainButtonClick: (packageInfo) => {
       if (packageInfo) {
-        remoteDispatch(addDependency(packageInfo));
+        remoteDispatch(addDependency(packageInfo)).then(() =>
+          dispatch(changeActivePanel('edit'))
+        );
       }
-      dispatch(changeActivePanel('edit'));
     },
   })
 )(ViewContainer);

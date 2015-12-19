@@ -2,17 +2,16 @@ import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import { updatePackageInfo } from '../../view/actions';
 import { renderMarkdown } from '../../utils/markdown';
 
 class SearchResultList extends Component {
   static propTypes = {
-    onPackageSelected: T.func.isRequired,
+    onResultSelect: T.func.isRequired,
     result: T.object,
   }
 
   render() {
-    const { result, onPackageSelected } = this.props;
+    const { result, onResultSelect } = this.props;
     if(!result) {
       return null;
     }
@@ -22,7 +21,7 @@ class SearchResultList extends Component {
           <ListGroupItem
             header={item.name}
             key={item.name}
-            onClick={() => onPackageSelected(item.name)}
+            onClick={() => onResultSelect(item.name)}
           >
            <span dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
              __html: renderMarkdown(item.description),
@@ -35,8 +34,5 @@ class SearchResultList extends Component {
 }
 
 export default connect(
-  ({ search }) => search,
-  {
-    onPackageSelected: updatePackageInfo,
-  }
+  ({ search }) => search
 )(SearchResultList);

@@ -169,10 +169,7 @@ export default connect(
   }),
   (dispatch, { remoteDispatch }) => bindActionCreators({
     onResetBindings: addDependency,
-    onRemoveDependency: (...args) => {
-      dispatch(changeActivePanel('manage'));
-      return removeDependency(...args);
-    },
+    onRemoveDependency: removeDependency,
     onSelectVersion: selectVersion,
     onAddBinding: addBinding,
     onChangeBinding: updateBinding,
