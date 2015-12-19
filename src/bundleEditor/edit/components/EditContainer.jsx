@@ -36,12 +36,12 @@ const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
   </Input>;
 
 const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBinding }) =>
-  <ListGroupItem>
-    <div style={{ paddingBottom: '10px', textAlign: 'right' }}>
-      <Button bsSize='xsmall' bsStyle={'danger'} onClick={() => onDeleteBinding(moduleName, bindingId)}>
-        <Glyphicon glyph='remove'/>
-      </Button>
-    </div>
+  <ListGroupItem style={{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }}>
     <Input
       addonBefore={`${moduleName}${binding.modulePath === '' ? '' : '/'}`}
       onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
@@ -52,7 +52,7 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
       type='text'
       value={binding.modulePath}
     />
-    <div style={{ textAlign: 'center' }}><Glyphicon glyph='arrow-down'/></div>
+    <div style={{ margin: '5px' }}><Glyphicon glyph='arrow-right'/></div>
     <Input
       addonBefore={'Sup.npm.'}
       onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
@@ -63,6 +63,14 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
       type='text'
       value={binding.propertyName}
     />
+    <Button
+      bsSize='xsmall'
+      bsStyle={'danger'}
+      onClick={() => onDeleteBinding(moduleName, bindingId)}
+      style={{ marginLeft: '5px' }}
+    >
+      <Glyphicon glyph='remove'/>
+    </Button>
   </ListGroupItem>;
 
 const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDeleteBinding }) =>
@@ -162,7 +170,7 @@ export default connect(
   (dispatch, { remoteDispatch }) => bindActionCreators({
     onResetBindings: addDependency,
     onRemoveDependency: (...args) => {
-      dispatch(changeActivePanel('search'));
+      dispatch(changeActivePanel('manage'));
       return removeDependency(...args);
     },
     onSelectVersion: selectVersion,

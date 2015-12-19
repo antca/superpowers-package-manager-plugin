@@ -1,6 +1,7 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
+import _ from 'lodash';
 
 import { changeActivePanel } from '../actions';
 
@@ -11,8 +12,8 @@ import ReadmeContainer from '../../view/components/ReadmeContainer';
 import EditContainer from '../../edit/components/EditContainer';
 import ManageContainer from '../../manage/components/ManageContainer';
 
-const INFO_COL_WIDTH = 3;
-const DOC_COL_WIDTH = 9;
+const INFO_COL_WIDTH = 4;
+const DOC_COL_WIDTH = 8;
 
 class BundleEditor extends Component {
   static propTypes = {
@@ -43,6 +44,9 @@ class BundleEditor extends Component {
         <Col sm={INFO_COL_WIDTH}>
           <ErrorContainer/>
           <PanelGroup accordion activeKey={activePanel} onSelect={onPanelSelect} >
+            <Panel bsStyle={_.isEmpty(dependencies) ? 'default' : 'primary'} eventKey='manage' header='Manage'>
+              <ManageContainer/>
+            </Panel>
             <Panel bsStyle={'primary'} eventKey='search' header='Search'>
               <SearchContainer/>
             </Panel>
@@ -60,9 +64,6 @@ class BundleEditor extends Component {
                 }
                 return null;
               })()}
-            </Panel>
-            <Panel bsStyle={false ? 'primary' : 'default'} eventKey='manage' header='Manage'>
-              <ManageContainer/>
             </Panel>
           </PanelGroup>
         </Col>
