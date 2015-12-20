@@ -11,11 +11,13 @@ import {
   REBUILD,
   REBUILD_FINISHED,
   REBUILD_FAILED,
+  THROW_ERROR,
 } from './actions';
 
 const initialDataStore = {
   dependencies: {},
   building: false,
+  dirty: true,
   error: null,
 };
 
@@ -27,6 +29,7 @@ function dataReducer(store = initialDataStore, action) {
     [SELECT_VERSION]({ packageName, version }) {
       return {
         ...store,
+        dirty: true,
         dependencies: {
           ...store.dependencies,
           [packageName]: {
@@ -39,6 +42,7 @@ function dataReducer(store = initialDataStore, action) {
     [UPDATE_BINDING]({ moduleName, bindingId, binding }) {
       return {
         ...store,
+        dirty: true,
         dependencies: {
           ...store.dependencies,
           [moduleName]: {
@@ -55,6 +59,7 @@ function dataReducer(store = initialDataStore, action) {
     [ADD_BINDING]({ moduleName }) {
       return {
         ...store,
+        dirty: true,
         dependencies: {
           ...store.dependencies,
           [moduleName]: {
@@ -70,6 +75,7 @@ function dataReducer(store = initialDataStore, action) {
     [DELETE_BINDING]({ moduleName, bindingId }) {
       return {
         ...store,
+        dirty: true,
         dependencies: {
           ...store.dependencies,
           [moduleName]: {
@@ -85,6 +91,7 @@ function dataReducer(store = initialDataStore, action) {
     [REMOVE_DEPENDENCY]({ packageName }) {
       return {
         ...store,
+        dirty: true,
         dependencies: _.omit(store.dependencies, packageName),
       };
     },
@@ -93,6 +100,7 @@ function dataReducer(store = initialDataStore, action) {
       const { main } = versions[latest];
       return {
         ...store,
+        dirty: true,
         dependencies: {
           ...store.dependencies,
           [name]: {
@@ -105,6 +113,7 @@ function dataReducer(store = initialDataStore, action) {
     [REBUILD]() {
       return {
         ...store,
+        dirty: false,
         building: true,
         error: null,
       };
@@ -112,6 +121,7 @@ function dataReducer(store = initialDataStore, action) {
     [REBUILD_FINISHED]() {
       return {
         ...store,
+        dirty: false,
         building: false,
         error: null,
       };
@@ -119,7 +129,14 @@ function dataReducer(store = initialDataStore, action) {
     [REBUILD_FAILED]({ error }) {
       return {
         ...store,
+        dirty: true,
         building: false,
+        error,
+      };
+    },
+    [THROW_ERROR]({ error }) {
+      return {
+        ...store,
         error,
       };
     },

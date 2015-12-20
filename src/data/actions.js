@@ -96,6 +96,17 @@ function rebuildFailed(error) {
   };
 }
 
+const THROW_ERROR = 'THROW_ERROR';
+function throwError(error) {
+  return {
+    type: THROW_ERROR,
+    payload: {
+      error,
+    },
+  };
+}
+
+
 export default {
   UPDATE_ASSET_STATE,
   updateAssetState,
@@ -126,4 +137,7 @@ export default {
 
   REBUILD_FAILED,
   rebuildFailed,
+
+  THROW_ERROR,
+  throwError,
 };
