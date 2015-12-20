@@ -53,12 +53,12 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
     />
     <div style={{ margin: '5px' }}><Glyphicon glyph='arrow-right'/></div>
     <Input
-      addonBefore={'Sup.npm.'}
       onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
         ...binding,
         propertyName: target.value,
       })}
       standalone
+      style={{ minWidth: '128px' }}
       type='text'
       value={binding.propertyName}
     />

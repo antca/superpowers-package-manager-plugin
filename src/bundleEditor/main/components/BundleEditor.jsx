@@ -63,7 +63,7 @@ class BundleEditor extends Component {
             </Panel>
           </PanelGroup>
         </Col>
-        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto  ' }}>
+        <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto' }}>
           <Row>
             <ReadmeContainer/>
           </Row>
