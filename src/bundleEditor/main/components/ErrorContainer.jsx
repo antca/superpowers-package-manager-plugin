@@ -24,6 +24,6 @@ class ErrorContainer extends Component {
 export default connect(
   (state) => ({
     errors: _.map(state, (section, key) => ({ origin: key, error: section.error }))
-      .filter((section) => !!section.error),
+      .filter((section) => section.error),
   }),
 )(ErrorContainer);

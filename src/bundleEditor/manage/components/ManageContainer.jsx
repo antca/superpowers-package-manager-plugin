@@ -25,14 +25,14 @@ const DependencyEntry = ({ name, version, bindings, onEditButtonClick, onDeleteB
           bsStyle={'info'}
           onClick={() => onEditButtonClick(name)}
         >
-          <Glyphicon glyph='edit' />
+          <Glyphicon glyph='edit'/>
         </Button>
         <Button
           bsSize='xsmall'
           bsStyle={'danger'}
           onClick={() => onDeleteButtonClick(name)}
         >
-        <Glyphicon glyph='remove' />
+        <Glyphicon glyph='remove'/>
         </Button>
       </ButtonGroup>
     </td>
@@ -50,6 +50,9 @@ class ManageContainer extends Component {
       onDeleteButtonClick,
       onEditButtonClick,
     } = this.props;
+    if(_.isEmpty(dependencies)) {
+      return <h3>{'The bundle is empty.'}</h3>;
+    }
     return (
       <div>
         <label>{'Dependencies'}</label>

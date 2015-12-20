@@ -2,7 +2,7 @@ import { REMOVE_DEPENDENCY } from '../../data/actions';
 import { CHANGE_ACTIVE_PANEL } from './actions';
 
 const initialMainStore = {
-  activePanel: 'search',
+  activePanel: 'manage',
 };
 
 function mainReducer(store = initialMainStore, action) {

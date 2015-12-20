@@ -4,6 +4,7 @@ import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
 import _ from 'lodash';
 
 import { changeActivePanel } from '../actions';
+import { selectTextBoxContent } from '../../search/actions';
 
 import ErrorContainer from './ErrorContainer';
 import SearchContainer from '../../search/components/SearchContainer';
@@ -58,18 +59,13 @@ class BundleEditor extends Component {
               eventKey='edit'
               header='Edit'
             >
-              {(() => {
-                if(packageInfo && dependencies[packageInfo.name]) {
-                  return <EditContainer remoteDispatch={remoteDispatch}/>;
-                }
-                return null;
-              })()}
+              <EditContainer remoteDispatch={remoteDispatch}/>
             </Panel>
           </PanelGroup>
         </Col>
         <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto  ' }}>
           <Row>
-            <ReadmeContainer />
+            <ReadmeContainer/>
           </Row>
         </Col>
       </Grid>
@@ -79,7 +75,12 @@ class BundleEditor extends Component {
 
 export default connect(
   (store) => store,
-  {
-    onPanelSelect: changeActivePanel,
-  }
+  (dispatch) => ({
+    onPanelSelect(panel) {
+      if(panel === 'search') {
+        dispatch(selectTextBoxContent());
+      }
+      dispatch(changeActivePanel(panel));
+    },
+  }),
 )(BundleEditor);

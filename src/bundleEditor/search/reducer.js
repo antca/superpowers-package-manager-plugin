@@ -2,10 +2,12 @@ import {
   SEARCH_PACKAGE_PENDING,
   SEARCH_PACKAGE_FULFILLED,
   SEARCH_PACKAGE_REJECTED,
+  SELECT_TEXTBOX_CONTENT,
 } from './actions';
 
 const initialSearchStore = {
   error: null,
+  textSelected: false,
 };
 
 function searchReducer(store = initialSearchStore, action) {
@@ -14,6 +16,7 @@ function searchReducer(store = initialSearchStore, action) {
       return {
         ...store,
         error: null,
+        textSelected: false,
       };
     },
     [SEARCH_PACKAGE_FULFILLED](result) {
@@ -28,6 +31,12 @@ function searchReducer(store = initialSearchStore, action) {
         ...store,
         error,
         result: null,
+      };
+    },
+    [SELECT_TEXTBOX_CONTENT]() {
+      return {
+        ...store,
+        textSelected: true,
       };
     },
   }[action.type] || (() => {}))(action.payload, action.meta) || store;

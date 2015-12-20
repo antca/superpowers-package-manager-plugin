@@ -67,7 +67,7 @@ class ViewContainer extends Component {
               __html: renderMarkdown(description),
             }}/>
           </ListGroupItem> : null}
-          {author ? <Author author={author} /> : null}
+          {author ? <Author author={author}/> : null}
           {license ? <ListGroupItem header='License'>{license}</ListGroupItem> : null}
           {repository ? <Repository repository={repository}/> : null}
           {homepage ? <ListGroupItem header='Homepage'>
@@ -92,11 +92,10 @@ export default connect(
   }),
   (dispatch, { remoteDispatch }) => ({
     onMainButtonClick: (packageInfo) => {
-      if (packageInfo) {
-        remoteDispatch(addDependency(packageInfo)).then(() =>
+      (packageInfo ? remoteDispatch(addDependency(packageInfo)) : Promise.resolve())
+        .then(() =>
           dispatch(changeActivePanel('edit'))
         );
-      }
     },
   })
 )(ViewContainer);

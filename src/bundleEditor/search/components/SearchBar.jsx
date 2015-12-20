@@ -1,4 +1,5 @@
 import React, { PropTypes as T, Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Input } from 'react-bootstrap';
 
@@ -12,6 +13,7 @@ class SearchBar extends Component {
     onContentChange: T.func.isRequired,
     onEnterKeyPress: T.func.isRequired,
     result: T.object,
+    textSelected: T.bool.isRequired,
   }
 
   constructor(...args) {
@@ -19,6 +21,16 @@ class SearchBar extends Component {
     this.state = {
       searchBarContent: '',
     };
+  }
+
+  componentDidUpdate() {
+    const { textSelected } = this.props;
+    if(textSelected) {
+      console.log(textSelected);
+      console.log(this.refs);
+      window.test = this.refs.textbox;
+      this.refs.textbox.getInputDOMNode().select();
+    }
   }
 
   onSearchInputChange({ target: { value } }) {
@@ -45,9 +57,10 @@ class SearchBar extends Component {
            onChange={(e) => this.onSearchInputChange(e)}
            onKeyPress={(e) => this.onKeyPress(e)}
            placeholder='Search on npm...'
+           ref='textbox'
            type='text'
            value={searchBarContent}
-        />
+         />
       </div>
     );
   }

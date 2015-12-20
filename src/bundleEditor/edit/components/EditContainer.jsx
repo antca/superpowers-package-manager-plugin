@@ -1,7 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeActivePanel } from '../../main/actions';
 import {
   selectVersion,
   updateBinding,
@@ -96,7 +95,7 @@ const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDelet
 
 class EditContainer extends Component {
   static propTypes = {
-    dependency: T.object.isRequired,
+    dependencies: T.object.isRequired,
     onAddBinding: T.func.isRequired,
     onChangeBinding: T.func.isRequired,
     onDeleteBinding: T.func.isRequired,
@@ -115,18 +114,19 @@ class EditContainer extends Component {
       onChangeBinding,
       onDeleteBinding,
       onRemoveDependency,
-      dependency: {
-        version,
-        bindings,
-      },
+      dependencies,
     } = this.props;
-    if(!packageInfo) {
+    if(!packageInfo || !dependencies[packageInfo.name]) {
       return null;
     }
     const {
       versions,
       name,
     } = packageInfo;
+    const {
+      version,
+      bindings,
+    } = dependencies[name];
     return (
       <div>
         <h2>{name}</h2>
@@ -165,7 +165,7 @@ class EditContainer extends Component {
 export default connect(
   ({ data, view }) => ({
     packageInfo: view.packageInfo,
-    dependency: data.dependencies[view.packageInfo.name],
+    dependencies: data.dependencies,
   }),
   (dispatch, { remoteDispatch }) => bindActionCreators({
     onResetBindings: addDependency,

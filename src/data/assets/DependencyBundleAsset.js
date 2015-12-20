@@ -109,7 +109,6 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
 
   publish(buildPath, callback) {
     const { dirty, building } = this.store.getState();
-    console.log('dirty', dirty, 'building', building);
     if(building) {
       const assetPath = this.server.data.entries.getPathFromId(this.id);
       const error = new Error(`The bundle ${assetPath} is building. Please retry later...`);

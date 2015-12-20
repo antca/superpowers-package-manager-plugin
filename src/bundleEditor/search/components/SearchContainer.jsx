@@ -14,8 +14,8 @@ class SearchContainer extends Component {
     const { onView } = this.props;
     return (
       <div>
-        <SearchBar onEnterKeyPress={onView} />
-        <SearchResultList onResultSelect={onView} />
+        <SearchBar onEnterKeyPress={onView}/>
+        <SearchResultList onResultSelect={onView}/>
       </div>
     );
   }
