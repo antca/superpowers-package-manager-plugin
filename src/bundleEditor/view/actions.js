@@ -1,5 +1,5 @@
 import serializeError from 'serialize-error';
-import { view } from '../utils/npm';
+import { view } from '../../utils/npm';
 
 const UPDATE_PACKAGE_INFO_PENDING = 'UPDATE_PACKAGE_INFO_PENDING';
 const UPDATE_PACKAGE_INFO_FULFILLED = 'UPDATE_PACKAGE_INFO_FULFILLED';

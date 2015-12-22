@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 
 import { addDependency } from '../../../data/actions';
 import { changeActivePanel } from '../../main/actions';
-import { renderMarkdown } from '../../utils/markdown';
+import { renderMarkdown } from '../../../utils/markdown';
 
 const NPM_URL = '//www.npmjs.com/package/';
 

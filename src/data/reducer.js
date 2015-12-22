@@ -1,4 +1,4 @@
-import { cleanModulePath } from '../bundleEditor/utils/node';
+import { cleanModulePath } from '../utils/node';
 import _ from 'lodash';
 import {
   UPDATE_ASSET_STATE,

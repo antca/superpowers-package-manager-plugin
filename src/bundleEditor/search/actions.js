@@ -1,5 +1,5 @@
 import serializeError from 'serialize-error';
-import { autocompleteSearch } from '../utils/npm';
+import { autocompleteSearch } from '../../utils/npm';
 
 const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
 const SEARCH_PACKAGE_FULFILLED = 'SEARCH_PACKAGE_FULFILLED';
