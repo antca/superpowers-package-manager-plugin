@@ -36,14 +36,24 @@ function install(assetPath, dependencies) {
 
 function bundle(assetId, assetPath, dependencies) {
   const config = {
-    context: assetPath,
-    entry: './entry.js',
+    entry: path.join(assetPath, 'entry.js'),
     output: {
       path: assetPath,
       filename: 'bundle.js',
     },
+    node: {
+      fs: 'empty',
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.json$/,
+          loader: 'json',
+        },
+      ],
+    },
   };
-  return fs.writeFileAsync(path.join(config.context, config.entry), template(assetId, dependencies))
+  return fs.writeFileAsync(path.join(config.entry), template(assetId, dependencies))
     .then(() => new Promise((resolve, reject) => webpack(config, (error, stats) => {
       if(error) {
         return reject(error);
