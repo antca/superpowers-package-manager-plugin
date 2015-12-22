@@ -106,7 +106,7 @@ function throwError(error) {
   };
 }
 
-export default {
+export {
   UPDATE_ASSET_STATE,
   updateAssetState,
 

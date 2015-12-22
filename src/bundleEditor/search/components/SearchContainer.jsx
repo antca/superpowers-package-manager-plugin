@@ -1,10 +1,10 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updatePackageInfo } from '../../view/actions';
-import { changeActivePanel } from '../../main/actions';
 import SearchBar from './SearchBar';
 import SearchResultList from './SearchResultList';
+import { changeActivePanel } from '../../main/actions';
+import { updatePackageInfo } from '../../view/actions';
 
 class SearchContainer extends Component {
   static propTypes = {

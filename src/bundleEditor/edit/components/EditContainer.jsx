@@ -1,14 +1,4 @@
 import React, { PropTypes as T, Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import {
-  selectVersion,
-  updateBinding,
-  addBinding,
-  deleteBinding,
-  addDependency,
-  removeDependency,
-} from '../../../data/actions';
 import {
   Input,
   ListGroup,
@@ -18,6 +8,17 @@ import {
   Button,
   ButtonGroup,
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import {
+  selectVersion,
+  updateBinding,
+  addBinding,
+  deleteBinding,
+  addDependency,
+  removeDependency,
+} from '../../../data/actions';
 
 const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
   <Input

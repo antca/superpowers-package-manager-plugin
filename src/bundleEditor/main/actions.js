@@ -8,7 +8,7 @@ function changeActivePanel(activePanel) {
   };
 }
 
-export default {
+export {
   CHANGE_ACTIVE_PANEL,
   changeActivePanel,
 };

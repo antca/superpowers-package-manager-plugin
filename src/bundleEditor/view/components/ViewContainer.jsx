@@ -1,10 +1,10 @@
 import React, { PropTypes as T, Component } from 'react';
-import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import { addDependency } from '../../../data/actions';
-import { changeActivePanel } from '../../main/actions';
 import { renderMarkdown } from '../../../utils/markdown';
+import { changeActivePanel } from '../../main/actions';
 
 const NPM_URL = '//www.npmjs.com/package/';
 

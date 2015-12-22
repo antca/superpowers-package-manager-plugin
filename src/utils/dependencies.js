@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
 import _ from 'lodash';
+import fs from 'fs';
 import ied from 'ied';
+import path from 'path';
 import webpack from 'webpack';
 import Promise from 'bluebird';
 

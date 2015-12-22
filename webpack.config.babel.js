@@ -1,4 +1,5 @@
 import path from 'path';
+
 export default {
   entry: {
     api: path.join(__dirname, 'api'),

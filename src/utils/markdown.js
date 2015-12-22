@@ -9,4 +9,4 @@ function renderMarkdown(markdown) {
   return marked(markdown, { renderer });
 }
 
-export default { renderMarkdown };
+export { renderMarkdown };

@@ -1,10 +1,11 @@
 import gulp from 'gulp';
 import gulpBabel from 'gulp-babel';
-import gulpPlumber from 'gulp-plumber';
 import gulpClean from 'gulp-clean';
-import gulpUtil from 'gulp-util';
 import gulpEslint from 'gulp-eslint';
+import gulpPlumber from 'gulp-plumber';
+import gulpUtil from 'gulp-util';
 import webpack from 'webpack';
+
 import webpackConfig from './webpack.config.babel';
 
 const ROOT_PATH = __dirname;

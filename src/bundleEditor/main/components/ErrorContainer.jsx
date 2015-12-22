@@ -1,7 +1,7 @@
-import React, { PropTypes as T, Component } from 'react';
-import { connect } from 'react-redux';
-import { Alert } from 'react-bootstrap';
 import _ from 'lodash';
+import React, { PropTypes as T, Component } from 'react';
+import { Alert } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 class ErrorContainer extends Component {
   static propTypes = {

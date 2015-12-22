@@ -1,4 +1,5 @@
 import serializeError from 'serialize-error';
+
 import { autocompleteSearch } from '../../utils/npm';
 
 const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
@@ -29,7 +30,7 @@ function selectTextBoxContent() {
     type: SELECT_TEXTBOX_CONTENT,
   };
 }
-export default {
+export {
   SEARCH_PACKAGE_PENDING,
   SEARCH_PACKAGE_FULFILLED,
   SEARCH_PACKAGE_REJECTED,

@@ -1,12 +1,12 @@
 import fs from 'fs';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import Promise from 'bluebird';
 import { createStore } from 'redux';
-import mkdirp from 'mkdirp';
 
+import dataReducer from '../reducer';
 import { build } from '../../utils/dependencies';
 import { copyFile } from '../../utils/fs';
-import dataReducer from '../reducer';
 import { rebuild, rebuildFinished, rebuildFailed, throwError } from '../actions';
 
 const mkdirpAsync = Promise.promisify(mkdirp);

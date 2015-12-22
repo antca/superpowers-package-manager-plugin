@@ -1,17 +1,16 @@
-import React, { PropTypes as T, Component } from 'react';
-import { connect } from 'react-redux';
-import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
 import _ from 'lodash';
+import React, { PropTypes as T, Component } from 'react';
+import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-import { changeActivePanel } from '../actions';
-import { selectTextBoxContent } from '../../search/actions';
-
+import EditContainer from '../../edit/components/EditContainer';
 import ErrorContainer from './ErrorContainer';
+import ManageContainer from '../../manage/components/ManageContainer';
+import ReadmeContainer from '../../view/components/ReadmeContainer';
 import SearchContainer from '../../search/components/SearchContainer';
 import ViewContainer from '../../view/components/ViewContainer';
-import ReadmeContainer from '../../view/components/ReadmeContainer';
-import EditContainer from '../../edit/components/EditContainer';
-import ManageContainer from '../../manage/components/ManageContainer';
+import { selectTextBoxContent } from '../../search/actions';
+import { changeActivePanel } from '../actions';
 
 const INFO_COL_WIDTH = 4;
 const DOC_COL_WIDTH = 8;

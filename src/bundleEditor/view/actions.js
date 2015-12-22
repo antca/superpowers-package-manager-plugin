@@ -1,4 +1,5 @@
 import serializeError from 'serialize-error';
+
 import { view } from '../../utils/npm';
 
 const UPDATE_PACKAGE_INFO_PENDING = 'UPDATE_PACKAGE_INFO_PENDING';
@@ -28,7 +29,7 @@ function updatePackageInfo(packageName) {
   };
 }
 
-export default {
+export {
   UPDATE_PACKAGE_INFO_PENDING,
   UPDATE_PACKAGE_INFO_FULFILLED,
   UPDATE_PACKAGE_INFO_REJECTED,

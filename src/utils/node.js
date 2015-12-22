@@ -10,4 +10,4 @@ function cleanModulePath(path = '/index.js') {
   return `${isNotDirrectPath ? '../' : ''}${cleanPath}`;
 }
 
-export default { cleanModulePath };
+export { cleanModulePath };

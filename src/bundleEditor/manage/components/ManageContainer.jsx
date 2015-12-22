@@ -1,11 +1,11 @@
-import React, { PropTypes as T, Component } from 'react';
-import { connect } from 'react-redux';
 import _ from 'lodash';
+import React, { PropTypes as T, Component } from 'react';
 import { Table, Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import { removeDependency } from '../../../data/actions';
-import { updatePackageInfo } from '../../view/actions';
 import { changeActivePanel } from '../../main/actions';
+import { updatePackageInfo } from '../../view/actions';
 
 function depsArray(dependencies) {
   return _.map(dependencies, (value, key) => Object.assign({}, value, { name: key }));

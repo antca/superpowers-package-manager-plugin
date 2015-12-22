@@ -9,4 +9,4 @@ function copyFile(src, dest) {
   );
 }
 
-export default { copyFile };
+export { copyFile };

@@ -1,6 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
-import { connect } from 'react-redux';
 import { Input } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import { searchPackage } from '../actions';
 

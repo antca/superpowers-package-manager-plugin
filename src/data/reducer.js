@@ -1,5 +1,6 @@
-import { cleanModulePath } from '../utils/node';
 import _ from 'lodash';
+
+import { cleanModulePath } from '../utils/node';
 import {
   UPDATE_ASSET_STATE,
   SELECT_VERSION,

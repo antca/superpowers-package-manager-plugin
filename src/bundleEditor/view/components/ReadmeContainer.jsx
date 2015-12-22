@@ -1,5 +1,6 @@
 import React, { PropTypes as T, Component } from 'react';
 import { connect } from 'react-redux';
+
 import { renderMarkdown } from '../../../utils/markdown';
 
 class ReadmeContainer extends Component {
