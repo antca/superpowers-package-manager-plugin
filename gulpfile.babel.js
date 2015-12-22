@@ -20,6 +20,7 @@ const FILES_TO_CLEAN = [
   'componentEditors',
   'data',
   'runtime',
+  'utils',
   'settingsEditors',
 ];
 

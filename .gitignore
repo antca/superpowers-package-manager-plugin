@@ -41,5 +41,6 @@ node_modules
 /data
 /runtime
 /settingsEditors
+/utils
 /public/*
 !/public/editors/

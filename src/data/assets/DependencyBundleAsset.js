@@ -2,16 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import Promise from 'bluebird';
 import { createStore } from 'redux';
-
 import mkdirp from 'mkdirp';
 
 import { build } from '../../utils/dependencies';
+import { copyFile } from '../../utils/fs';
 import dataReducer from '../reducer';
 import { rebuild, rebuildFinished, rebuildFailed, throwError } from '../actions';
 
 const mkdirpAsync = Promise.promisify(mkdirp);
-
 Promise.promisifyAll(fs);
+
+const BUNDLE_NAME = 'bundle.js';
 
 class DependencyBundleAsset extends SupCore.Data.Base.Asset {
   static currentFormatVersion = 0;
@@ -49,7 +50,7 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
 
   publish(buildPath, callback) {
     const { dirty, building, dependencies } = this.store.getState();
-    const folderPath = `${buildPath}/assets/${this.server.data.entries.getStoragePathFromId(this.id)}`;
+    const folderPath = path.join(buildPath, 'assets', this.server.data.entries.getStoragePathFromId(this.id));
     if(building) {
       const assetPath = this.server.data.entries.getPathFromId(this.id);
       const error = new Error(`The bundle ${assetPath} is building. Please retry later...`);
@@ -58,14 +59,8 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
     }
     this.dispatch(rebuild());
     return (dirty ? build(this.id, this.assetPath, dependencies) : Promise.resolve())
-    .then(() => mkdirpAsync(folderPath).then(() => {
-      return new Promise((resolve, reject) => {
-        fs.createReadStream(path.join(this.assetPath, 'bundle.js'))
-          .pipe(fs.createWriteStream(path.join(folderPath, 'bundle.js')))
-          .on('finish', resolve)
-          .on('error', reject);
-      });
-    }))
+    .then(() => mkdirpAsync(folderPath))
+    .then(() => copyFile(path.join(this.assetPath, BUNDLE_NAME), path.join(folderPath, BUNDLE_NAME)))
     .then(() => {
       this.dispatch(rebuildFinished());
       return callback();
