@@ -18,7 +18,6 @@ const DOC_COL_WIDTH = 8;
 class BundleEditor extends Component {
   static propTypes = {
     data: T.object.isRequired,
-    edit: T.object.isRequired,
     main: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
     remoteDispatch: T.func.isRequired,
