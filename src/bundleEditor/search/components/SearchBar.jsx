@@ -1,5 +1,4 @@
 import React, { PropTypes as T, Component } from 'react';
-import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Input } from 'react-bootstrap';
 
@@ -26,8 +25,6 @@ class SearchBar extends Component {
   componentDidUpdate() {
     const { textSelected } = this.props;
     if(textSelected) {
-      console.log(textSelected);
-      console.log(this.refs);
       window.test = this.refs.textbox;
       this.refs.textbox.getInputDOMNode().select();
     }
