@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import npm from 'npm';
+import ied from 'ied';
 import webpack from 'webpack';
 import _ from 'lodash';
 import Promise from 'bluebird';
@@ -22,25 +22,25 @@ function template(assetId, dependencies) {
 }
 
 function formatDependencies(dependencies) {
-  return _.map(dependencies, ({ version }, name) => `${name}@${version}`);
+  return _.map(dependencies, ({ version }, name) => [name, version]);
 }
 
 function install(assetPath, dependencies) {
-  return new Promise((resolve, reject) => {
-    const dependenciesArray = formatDependencies(dependencies);
-    npm.load({}, (loadError) => {
-      if(loadError) {
-        return reject(loadError);
-      }
-      const installer = new npm.commands.install.Installer(assetPath, false, dependenciesArray);
-      installer.run((installError) => {
-        if(installError) {
-          return reject(installError);
-        }
-        resolve();
-      });
-    });
-  });
+  const installAsync = Promise.promisify(ied.install);
+  const exposeAsync = Promise.promisify(ied.expose);
+  const nodeModules = path.join(assetPath, 'node_modules');
+  const dependenciesArray = formatDependencies(dependencies);
+  return dependenciesArray.reduce(
+    (prev, dependency) =>
+      prev.then(() =>
+        installAsync(nodeModules, ...dependency))
+        .then((pkg) => exposeAsync(nodeModules, pkg))
+        .catch((error) => {
+          if(error.code !== 'LOCKED') {
+            throw error;
+          }
+        }),
+    Promise.resolve());
 }
 
 function bundle(assetId, assetPath, dependencies) {
