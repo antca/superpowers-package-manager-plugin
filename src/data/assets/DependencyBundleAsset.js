@@ -41,7 +41,11 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
       }
 
       this.pub = JSON.parse(json);
-      this.store = createStore(dataReducer, this.pub.state);
+      this.store = createStore(dataReducer, Object.assign({}, this.pub.state, {
+        building: false,
+        dirty: true,
+        error: null,
+      }));
       this.store.subscribe(() => this.updatePub());
       this.setup();
       this.emit('load');

@@ -1,9 +1,12 @@
 import _ from 'lodash';
 import fs from 'fs';
 import ied from 'ied';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import webpack from 'webpack';
 import Promise from 'bluebird';
+
+const mkdirpAsync = Promise.promisify(mkdirp);
 
 function template(assetId, dependencies) {
   return `window.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
@@ -21,17 +24,14 @@ function install(assetPath, dependencies) {
   const exposeAsync = Promise.promisify(ied.expose);
   const nodeModules = path.join(assetPath, 'node_modules');
   const dependenciesArray = formatDependencies(dependencies);
-  return dependenciesArray.reduce(
-    (prev, dependency) =>
-      prev.then(() =>
-        installAsync(nodeModules, ...dependency))
-        .then((pkg) => exposeAsync(nodeModules, pkg))
-        .catch((error) => {
-          if(error.code !== 'LOCKED') {
-            throw error;
-          }
-        }),
-    Promise.resolve());
+  return mkdirpAsync(path.join(nodeModules, '.bin'))
+    .then(() => Promise.all(dependenciesArray.map((dependency) => installAsync(nodeModules, ...dependency))))
+    .then((pkgs) => Promise.all(pkgs.map((pkg) => exposeAsync(nodeModules, pkg))))
+    .catch((error) => {
+      if(error.code !== 'LOCKED') {
+        throw error;
+      }
+    });
 }
 
 function bundle(assetId, assetPath, dependencies) {
