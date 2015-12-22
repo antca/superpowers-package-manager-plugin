@@ -126,7 +126,7 @@ function dataReducer(store = initialDataStore, action) {
         error: null,
       };
     },
-    [REBUILD_FAILED]({ error }) {
+    [REBUILD_FAILED](error) {
       return {
         ...store,
         dirty: true,
@@ -134,7 +134,7 @@ function dataReducer(store = initialDataStore, action) {
         error,
       };
     },
-    [THROW_ERROR]({ error }) {
+    [THROW_ERROR](error) {
       return {
         ...store,
         error,

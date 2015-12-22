@@ -1,3 +1,5 @@
+import serializeError from 'serialize-error';
+
 const UPDATE_ASSET_STATE = 'UPDATE_ASSET_STATE';
 function updateAssetState(state) {
   return {
@@ -90,9 +92,8 @@ const REBUILD_FAILED = 'REBUILD_FAILED';
 function rebuildFailed(error) {
   return {
     type: REBUILD_FAILED,
-    payload: {
-      error,
-    },
+    payload: serializeError(error),
+    error: true,
   };
 }
 
@@ -100,12 +101,10 @@ const THROW_ERROR = 'THROW_ERROR';
 function throwError(error) {
   return {
     type: THROW_ERROR,
-    payload: {
-      error,
-    },
+    payload: serializeError(error),
+    error: true,
   };
 }
-
 
 export default {
   UPDATE_ASSET_STATE,

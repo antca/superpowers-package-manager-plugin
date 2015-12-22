@@ -1,3 +1,4 @@
+import serializeError from 'serialize-error';
 import { autocompleteSearch } from '../utils/npm';
 
 const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
@@ -13,7 +14,8 @@ function searchPackage(searchValue) {
     }))
     .catch((error) => dispatch({
       type: SEARCH_PACKAGE_REJECTED,
-      payload: error,
+      payload: serializeError(error),
+      error: true,
     }));
     return dispatch({
       type: SEARCH_PACKAGE_PENDING,

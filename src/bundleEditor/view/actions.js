@@ -1,3 +1,4 @@
+import serializeError from 'serialize-error';
 import { view } from '../utils/npm';
 
 const UPDATE_PACKAGE_INFO_PENDING = 'UPDATE_PACKAGE_INFO_PENDING';
@@ -20,7 +21,8 @@ function updatePackageInfo(packageName) {
       }).catch((error) => {
         dispatch({
           type: UPDATE_PACKAGE_INFO_REJECTED,
-          payload: error,
+          payload: serializeError(error),
+          error: true,
         });
       });
   };
