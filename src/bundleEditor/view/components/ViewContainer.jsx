@@ -27,7 +27,7 @@ const AddEditButton = ({ isDepedencyInstalled, onClick }) =>
     onClick={onClick}
   >
     {isDepedencyInstalled ? 'Edit dependencie' : 'Add to dependencies'}
-  </Button>
+  </Button>;
 
 class ViewContainer extends Component {
   static propTypes = {
