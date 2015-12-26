@@ -5,7 +5,7 @@ import Promise from 'bluebird';
 import { createStore } from 'redux';
 
 import dataReducer from '../reducer';
-import { build } from '../../utils/dependencies';
+import { build } from '../../utils/ied';
 import { copyFile } from '../../utils/fs';
 import { rebuild, rebuildFinished, rebuildFailed, throwError } from '../actions';
 

@@ -4,6 +4,7 @@ import gulpClean from 'gulp-clean';
 import gulpEslint from 'gulp-eslint';
 import gulpPlumber from 'gulp-plumber';
 import gulpUtil from 'gulp-util';
+import gulpMocha from 'gulp-mocha';
 import webpack from 'webpack';
 
 import webpackConfig from './webpack.config.babel';
@@ -32,10 +33,18 @@ gulp.task('lint', () =>
     .pipe(gulpEslint.failAfterError())
 );
 
-const webpackCompiler = webpack(webpackConfig);
+gulp.task('test', () => {
+  return gulp.src(['test/**/*.js'], { read: false })
+    .pipe(gulpMocha({ reporter: 'spec' }))
+    .on('error', gulpUtil.log);
+});
+
+gulp.task('watch-test', () => {
+  gulp.watch(['src/**', 'test/**'], ['test']);
+});
 
 gulp.task('webpack:build-dev', ['babel:build'], (callback) => {
-  webpackCompiler.run((err, stats) => {
+  webpack(webpackConfig).run((err, stats) => {
     if(err) {
       throw new gulpUtil.PluginError('webpack:build-dev', err);
     }

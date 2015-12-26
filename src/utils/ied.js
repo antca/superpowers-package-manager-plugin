@@ -5,11 +5,15 @@ import mkdirp from 'mkdirp';
 import path from 'path';
 import webpack from 'webpack';
 import Promise from 'bluebird';
+import rimraf from 'rimraf';
+
+const rimrafAsync = Promise.promisify(rimraf);
 
 const mkdirpAsync = Promise.promisify(mkdirp);
+const writeFileAsync = Promise.promisify(fs.writeFile);
 
-function template(assetId, dependencies) {
-  return `window.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
+function createEntryModule(assetId, dependencies) {
+  return `global.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
     `${bindings.map(({ propertyName, modulePath }) =>
       `'${propertyName}':require('${moduleName}${modulePath === '' ? '' : `/${modulePath}`}'),`).join('')}`
   ).join('')}}`;
@@ -24,13 +28,12 @@ function install(assetPath, dependencies) {
   const exposeAsync = Promise.promisify(ied.expose);
   const nodeModules = path.join(assetPath, 'node_modules');
   const dependenciesArray = formatDependencies(dependencies);
-  return mkdirpAsync(path.join(nodeModules, '.bin'))
+  return rimrafAsync(nodeModules)
+    .then(() => mkdirpAsync(path.join(nodeModules, '.bin')))
     .then(() => Promise.all(dependenciesArray.map((dependency) => installAsync(nodeModules, ...dependency))))
     .then((pkgs) => Promise.all(pkgs.map((pkg) => exposeAsync(nodeModules, pkg))))
     .catch((error) => {
-      if(error.code !== 'LOCKED') {
-        throw error;
-      }
+      throw error;
     });
 }
 
@@ -53,13 +56,15 @@ function bundle(assetId, assetPath, dependencies) {
       ],
     },
   };
-  return fs.writeFileAsync(path.join(config.entry), template(assetId, dependencies))
-    .then(() => new Promise((resolve, reject) => webpack(config, (error, stats) => {
-      if(error) {
-        return reject(error);
-      }
-      return resolve(stats);
-    })));
+  return writeFileAsync(path.join(config.entry), createEntryModule(assetId, dependencies))
+    .then(() => new Promise((resolve, reject) =>
+      webpack(config, (error, stats) => {
+        if(error) {
+          return reject(error);
+        }
+        return resolve(stats);
+      })
+    ));
 }
 
 function build(assetId, assetPath, dependencies) {
@@ -67,4 +72,10 @@ function build(assetId, assetPath, dependencies) {
     .then(() => bundle(assetId, assetPath, dependencies));
 }
 
-export { build };
+export {
+  createEntryModule,
+  formatDependencies,
+  install,
+  bundle,
+  build,
+};
