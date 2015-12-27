@@ -88,7 +88,6 @@ describe(location, function buildTest() {
     })
   );
 
-  // Skipped beacause of https://github.com/alexanderGugel/ied/issues/38
   describe('install', () => {
     it('should install the dependencies', () => {
       const { dependencies, assetPath } = fixture;
