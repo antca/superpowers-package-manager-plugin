@@ -31,7 +31,7 @@ const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
     {Object.keys(versions)
       .reverse()
       .map((version) =>
-        <option key={version}>{version}</option>
+        <option key={version} value={version}>{version}</option>
       )}
   </Input>;
 
