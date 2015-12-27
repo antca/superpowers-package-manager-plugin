@@ -6,7 +6,6 @@ const {
 
 SupRuntime.registerPlugin('dependencyBundle', {
   loadAsset(player, asset, callback) {
-    console.log(asset);
     window.__npm = window.__npm || {};
     const bundleScript = document.createElement('SCRIPT');
     bundleScript.addEventListener('load', () => {
