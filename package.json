@@ -47,10 +47,11 @@
   "dependencies": {
     "babel-polyfill": "^6.3.14",
     "bluebird": "^3.0.6",
-    "ied": "^0.3.6",
+    "decache": "^3.0.3",
     "json-loader": "^0.5.4",
     "marked": "^0.3.5",
     "mkdirp": "^0.5.1",
+    "npm": "^3.5.2",
     "react": "^0.14.3",
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.3",

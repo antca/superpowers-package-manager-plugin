@@ -1,16 +1,9 @@
 import _ from 'lodash';
 import fs from 'fs';
-import ied from 'ied';
-import mkdirp from 'mkdirp';
 import path from 'path';
 import webpack from 'webpack';
 import Promise from 'bluebird';
-import rimraf from 'rimraf';
-
-const rimrafAsync = Promise.promisify(rimraf);
-
-const mkdirpAsync = Promise.promisify(mkdirp);
-const writeFileAsync = Promise.promisify(fs.writeFile);
+import decache from 'decache';
 
 function createEntryModule(assetId, dependencies) {
   return `global.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
@@ -19,25 +12,29 @@ function createEntryModule(assetId, dependencies) {
   ).join('')}}`;
 }
 
-function formatDependencies(dependencies) {
-  return _.map(dependencies, ({ version }, name) => [name, version]);
-}
-
 function install(assetPath, dependencies) {
-  const installAsync = Promise.promisify(ied.install);
-  const exposeAsync = Promise.promisify(ied.expose);
-  const nodeModules = path.join(assetPath, 'node_modules');
-  const dependenciesArray = formatDependencies(dependencies);
-  return rimrafAsync(nodeModules)
-    .then(() => mkdirpAsync(path.join(nodeModules, '.bin')))
-    .then(() => Promise.all(dependenciesArray.map((dependency) => installAsync(nodeModules, ...dependency))))
-    .then((pkgs) => Promise.all(pkgs.map((pkg) => exposeAsync(nodeModules, pkg))))
-    .catch((error) => {
-      throw error;
+  // Hack necessary to avoid wierd bugs
+  decache('npm');
+  const npm = require('npm'); // eslint-disable-line global-require
+  return new Promise((resolve, reject) => {
+    const dependenciesArray = _.map(dependencies, ({ version }, name) => `${name}@${version}`);
+    npm.load({ loglevel: 'silent' }, (loadError) => {
+      if(loadError) {
+        return reject(loadError);
+      }
+      const installer = new npm.commands.install.Installer(assetPath, false, dependenciesArray);
+      installer.run((installError) => {
+        if(installError) {
+          return reject(installError);
+        }
+        resolve();
+      });
     });
+  });
 }
 
 function bundle(assetId, assetPath, dependencies) {
+  const writeFileAsync = Promise.promisify(fs.writeFile);
   const config = {
     entry: path.join(assetPath, 'entry.js'),
     output: {
@@ -73,9 +70,7 @@ function build(assetId, assetPath, dependencies) {
 }
 
 export {
-  createEntryModule,
-  formatDependencies,
-  install,
-  bundle,
   build,
+  createEntryModule,
+  install,
 };

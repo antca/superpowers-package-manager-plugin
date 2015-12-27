@@ -4,9 +4,8 @@ import { readFile } from 'fs';
 import {
   build,
   createEntryModule,
-  formatDependencies,
   install,
-} from '../../src/utils/ied';
+} from '../../src/utils/build';
 import { rm, ls } from 'shelljs';
 import _ from 'lodash';
 import Promise from 'bluebird';
@@ -88,21 +87,8 @@ describe(location, () => {
     })
   );
 
-  describe('formatDependencies', () =>
-    it('should create an array of the dependencies as name-version tuples', () => {
-      const expectedResult = [
-        ['mathjs', '2.5.0'],
-        ['should', '7.0.2'],
-        ['lodash', '3.9.1'],
-      ];
-      const { dependencies } = fixture;
-      const result = formatDependencies(dependencies);
-      assert.deepStrictEqual(result, expectedResult, 'The result is the the expected array of dependencies');
-    })
-  );
-
   // Skipped beacause of https://github.com/alexanderGugel/ied/issues/38
-  describe.skip('install', function installest() {
+  describe('install', function installest() {
     const buildTestTimeout = 10000;
     this.timeout(buildTestTimeout);
     it('should install the dependencies', () => {
@@ -114,7 +100,7 @@ describe(location, () => {
     });
 
     it('should change the version of the dependency', async () => { // eslint-disable-line arrow-parens
-      const { dependencies, assetPath } = fixture;
+      const { assetPath, dependencies } = fixture;
       const lodashPackagePath = join(assetPath, 'node_modules', 'lodash', 'package.json');
       await install(assetPath, dependencies);
       const modules = ls(join(assetPath, 'node_modules'));
