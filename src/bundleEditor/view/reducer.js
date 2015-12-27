@@ -4,7 +4,9 @@ import {
   UPDATE_PACKAGE_INFO_REJECTED,
 } from './actions';
 
-const initialViewStore = {};
+const initialViewStore = {
+  loading: false,
+};
 
 function viewReducer(store = initialViewStore, action) {
   return ({
@@ -13,6 +15,7 @@ function viewReducer(store = initialViewStore, action) {
         ...store,
         error: null,
         packageInfo: null,
+        loading: true,
       };
     },
     [UPDATE_PACKAGE_INFO_FULFILLED](packageInfo) {
@@ -20,6 +23,7 @@ function viewReducer(store = initialViewStore, action) {
         ...store,
         error: null,
         packageInfo,
+        loading: false,
       };
     },
     [UPDATE_PACKAGE_INFO_REJECTED](error) {
@@ -27,6 +31,7 @@ function viewReducer(store = initialViewStore, action) {
         ...store,
         error,
         packageInfo: null,
+        loading: false,
       };
     },
   }[action.type] || (() => {}))(action.payload, action.meta) || store;

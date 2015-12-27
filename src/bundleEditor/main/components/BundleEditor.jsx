@@ -32,6 +32,7 @@ class BundleEditor extends Component {
       },
       view: {
         packageInfo,
+        loading,
       },
       data: {
         dependencies,
@@ -63,7 +64,7 @@ class BundleEditor extends Component {
         </Col>
         <Col sm={DOC_COL_WIDTH} style={{ maxHeight: '100%', overflowY: 'auto' }}>
           <Row>
-            <ReadmeContainer/>
+            {loading ? <h1>{'Loading...'}</h1> : <ReadmeContainer/>}
           </Row>
         </Col>
       </Grid>
