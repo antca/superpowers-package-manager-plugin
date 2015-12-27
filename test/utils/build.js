@@ -55,15 +55,16 @@ const fixture = {
   },
 };
 
-describe(location, () => {
+describe(location, function buildTest() {
+  const buildTestTimeout = 20000;
+  this.timeout(buildTestTimeout);
 
   afterEach(() => {
     rm('-rf', tmpFolder);
   });
 
-  describe('build', function buildTest() {
-    const buildTestTimeout = 10000;
-    this.timeout(buildTestTimeout);
+  describe('build', () => {
+
     it('should build the asset correctly', () => {
       const { assetId, assetPath, dependencies } = fixture;
       return build(assetId, assetPath, dependencies).then(() => {
@@ -88,9 +89,7 @@ describe(location, () => {
   );
 
   // Skipped beacause of https://github.com/alexanderGugel/ied/issues/38
-  describe('install', function installest() {
-    const buildTestTimeout = 10000;
-    this.timeout(buildTestTimeout);
+  describe('install', () => {
     it('should install the dependencies', () => {
       const { dependencies, assetPath } = fixture;
       return install(assetPath, dependencies).then(() => {
