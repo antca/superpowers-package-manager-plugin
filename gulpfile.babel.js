@@ -26,6 +26,23 @@ const FILES_TO_CLEAN = [
   'settingsEditors',
 ];
 
+function buildWebpack(debug = false) {
+  return (callback) => {
+    webpack(Object.assign({}, webpackConfig, {
+      debug,
+      devtool: debug ? webpackConfig.devtool : false,
+    })).run((err, stats) => {
+      if(err) {
+        throw new gulpUtil.PluginError('webpack:build-dev', err);
+      }
+      gulpUtil.log('[webpack:build-dev]', stats.toString({
+        colors: true,
+      }));
+      callback();
+    });
+  };
+}
+
 gulp.task('lint', () =>
   gulp.src([SOURCE_PATH, 'gulpfile.babel.js', 'webpack.config.babel.js'])
     .pipe(gulpEslint())
@@ -43,17 +60,8 @@ gulp.task('watch-test', () => {
   gulp.watch(['src/**', 'test/**'], ['test']);
 });
 
-gulp.task('webpack:build-dev', ['babel:build'], (callback) => {
-  webpack(webpackConfig).run((err, stats) => {
-    if(err) {
-      throw new gulpUtil.PluginError('webpack:build-dev', err);
-    }
-    gulpUtil.log('[webpack:build-dev]', stats.toString({
-      colors: true,
-    }));
-    callback();
-  });
-});
+gulp.task('webpack:build-dev', ['babel:build'], buildWebpack(true));
+gulp.task('webpack:build-prod', ['babel:build'], buildWebpack(false));
 
 gulp.task('clean', () => {
   return gulp.src(FILES_TO_CLEAN)
@@ -69,7 +77,8 @@ gulp.task('babel:build', () =>
 
 gulp.task('webpack:build', ['babel:build', 'webpack:build-dev']);
 
-gulp.task('build', ['babel:build', 'webpack:build-dev']);
+gulp.task('build', ['babel:build', 'webpack:build-prod']);
+gulp.task('build-dev', ['babel:build', 'webpack:build-dev']);
 
 gulp.task('watch', ['build'], () => {
   gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build-dev']);
