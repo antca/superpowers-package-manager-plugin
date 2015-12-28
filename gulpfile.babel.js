@@ -1,6 +1,6 @@
 import gulp from 'gulp';
 import gulpBabel from 'gulp-babel';
-import gulpClean from 'gulp-clean';
+import gulpRimraf from 'gulp-rimraf';
 import gulpEslint from 'gulp-eslint';
 import gulpPlumber from 'gulp-plumber';
 import gulpUtil from 'gulp-util';
@@ -57,7 +57,7 @@ gulp.task('webpack:build-dev', ['babel:build'], (callback) => {
 
 gulp.task('clean', () => {
   return gulp.src(FILES_TO_CLEAN)
-    .pipe(gulpClean());
+    .pipe(gulpRimraf());
 });
 
 gulp.task('babel:build', () =>
