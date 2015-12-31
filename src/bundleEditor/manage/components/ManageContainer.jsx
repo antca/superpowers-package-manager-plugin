@@ -7,11 +7,13 @@ import { removeDependency } from '../../../data/actions';
 import { changeActivePanel } from '../../main/actions';
 import { updatePackageInfo } from '../../view/actions';
 
+const [VIEW, EDIT, DELETE] = ['view', 'edit', 'delete'];
+
 function depsArray(dependencies) {
   return _.map(dependencies, (value, key) => Object.assign({}, value, { name: key }));
 }
 
-const DependencyEntry = ({ name, version, bindings, onEditButtonClick, onDeleteButtonClick }) =>
+const DependencyEntry = ({ name, version, bindings, onButtonClick }) =>
   <tr>
     <td>{name}</td>
     <td>{version}</td>
@@ -19,18 +21,25 @@ const DependencyEntry = ({ name, version, bindings, onEditButtonClick, onDeleteB
       {_.map(bindings, (binding) => binding.propertyName).filter((prop) => prop).join(', ')}
     </td>
     <td>
-      <ButtonGroup>
+      <ButtonGroup style={{ minWidth: '75px' }}>
         <Button
           bsSize='xsmall'
           bsStyle={'info'}
-          onClick={() => onEditButtonClick(name)}
+          onClick={() => onButtonClick(name, VIEW)}
+        >
+        <Glyphicon glyph='eye-open'/>
+        </Button>
+        <Button
+          bsSize='xsmall'
+          bsStyle={'primary'}
+          onClick={() => onButtonClick(name, EDIT)}
         >
           <Glyphicon glyph='edit'/>
         </Button>
         <Button
           bsSize='xsmall'
           bsStyle={'danger'}
-          onClick={() => onDeleteButtonClick(name)}
+          onClick={() => onButtonClick(name, DELETE)}
         >
         <Glyphicon glyph='remove'/>
         </Button>
@@ -41,14 +50,12 @@ const DependencyEntry = ({ name, version, bindings, onEditButtonClick, onDeleteB
 class ManageContainer extends Component {
   static propTypes = {
     dependencies: T.object.isRequired,
-    onDeleteButtonClick: T.func.isRequired,
-    onEditButtonClick: T.func.isRequired,
+    onButtonClick: T.func.isRequired,
   }
   render() {
     const {
       dependencies,
-      onDeleteButtonClick,
-      onEditButtonClick,
+      onButtonClick,
     } = this.props;
     if(_.isEmpty(dependencies)) {
       return <h3>{'The bundle is empty.'}</h3>;
@@ -56,7 +63,7 @@ class ManageContainer extends Component {
     return (
       <div>
         <label>{'Dependencies'}</label>
-        <Table bordered stripped>
+        <Table bordered responsive stripped>
           <thead>
             <tr>
               <th>{'Name'}</th>
@@ -69,8 +76,7 @@ class ManageContainer extends Component {
             {depsArray(dependencies).map((dependency) =>
               <DependencyEntry
                 key={dependency.name}
-                onDeleteButtonClick={onDeleteButtonClick}
-                onEditButtonClick={onEditButtonClick}
+                onButtonClick={onButtonClick}
                 {...dependency}
               />)}
           </tbody>
@@ -83,13 +89,13 @@ class ManageContainer extends Component {
 export default connect(
   ({ data }) => data,
   (dispatch, { remoteDispatch }) => ({
-    onEditButtonClick(packageName) {
-      dispatch(updatePackageInfo(packageName)).then(() => {
-        dispatch(changeActivePanel('edit'));
-      });
-    },
-    onDeleteButtonClick(packageName) {
-      remoteDispatch(removeDependency(packageName));
+    onButtonClick(packageName, which) {
+      if(which === DELETE) {
+        return remoteDispatch(removeDependency(packageName));
+      }
+      return dispatch(updatePackageInfo(packageName)).then(() =>
+        dispatch(changeActivePanel(which))
+      );
     },
   })
 )(ManageContainer);
