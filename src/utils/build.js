@@ -5,6 +5,8 @@ import webpack from 'webpack';
 import Promise from 'bluebird';
 import decache from 'decache';
 
+import { ignoreScripts } from '../config';
+
 function createEntryModule(assetId, dependencies) {
   return `global.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
     `${bindings.map(({ propertyName, modulePath }) =>
@@ -18,7 +20,7 @@ function install(assetPath, dependencies) {
   const npm = require('npm'); // eslint-disable-line global-require
   return new Promise((resolve, reject) => {
     const dependenciesArray = _.map(dependencies, ({ version }, name) => `${name}@${version}`);
-    npm.load({ loglevel: 'silent' }, (loadError) => {
+    npm.load({ loglevel: 'silent', 'ignore-scripts': ignoreScripts }, (loadError) => {
       if(loadError) {
         return reject(loadError);
       }
