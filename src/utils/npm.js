@@ -100,8 +100,8 @@ function autocompleteSearch(query) {
   }).finally(cancelAndCleanAutocompleteSearch);
 }
 
-const NPM_REGISTERY_URL = '//registry.npmjs.org/';
-const CORS_PROXY = '//cors.maxogden.com/';
+const NPM_REGISTERY_URL = 'http://registry.npmjs.org/';
+const CORS_PROXY = '//crossorigin.me/';
 
 function view(packageName) {
   return fetch(`${CORS_PROXY}${NPM_REGISTERY_URL}${packageName}`)
