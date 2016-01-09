@@ -18,9 +18,9 @@ export default {
   devtool: 'eval-source-map',
   resolve: {
     alias: {
-      npm: 'empty-module',
-      webpack: 'empty-module',
-      decache: 'empty-module',
+      npm: 'empty/object',
+      webpack: 'empty/object',
+      decache: 'empty/object',
     },
   },
   node: {
