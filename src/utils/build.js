@@ -8,7 +8,7 @@ import decache from 'decache';
 import { ignoreScripts } from '../config';
 
 function createEntryModule(assetId, dependencies) {
-  return `global.__npm[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
+  return `global.__dependencyBundles[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
     `${bindings.map(({ propertyName, modulePath }) =>
       `'${propertyName}':require('${moduleName}${modulePath === '' ? '' : `/${modulePath}`}'),`).join('')}`
   ).join('')}}`;

@@ -6,10 +6,10 @@ const {
 
 SupRuntime.registerPlugin('dependencyBundle', {
   loadAsset(player, asset, callback) {
-    window.__npm = window.__npm || {};
+    window.__dependencyBundles = window.__dependencyBundles || {};
     const bundleScript = document.createElement('SCRIPT');
     bundleScript.addEventListener('load', () => {
-      callback(null, window.__npm[asset.id]);
+      callback(null, window.__dependencyBundles[asset.id]);
     });
     bundleScript.src = path.join(player.dataURL, 'assets', asset.storagePath, 'bundle.js');
     document.body.appendChild(bundleScript);

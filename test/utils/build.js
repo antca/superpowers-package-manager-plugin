@@ -69,9 +69,9 @@ describe(location, function buildTest() {
       const { assetId, assetPath, dependencies } = fixture;
       return build(assetId, assetPath, dependencies).then(() => {
         const files = ls(assetPath);
-        assert(includesAll(files, ['entry.js', 'bundle.js']), 'Asset directory contains expected files');
+        assert(includesAll(files, ['entry.js', 'bundle.js']), 'Asset directory contains expected files.');
         const modules = ls(join(assetPath, 'node_modules'));
-        assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed');
+        assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed.');
       });
     });
   });
@@ -79,12 +79,12 @@ describe(location, function buildTest() {
   describe('createEntryModule', () =>
     it('should output the correct entry.js file content', () => {
       const expectedResult = [
-        'global.__npm[3]={\'mathjs\':require(\'mathjs/index\'),\'should\'',
+        'global.__dependencyBundles[3]={\'mathjs\':require(\'mathjs/index\'),\'should\'',
         ':require(\'should/as-function\'),\'lodash\':require(\'lodash/index\'),}',
       ].join('');
       const { assetId, dependencies } = fixture;
       const result = createEntryModule(assetId, dependencies);
-      assert(result === expectedResult, 'The result is the same the expected entry module content');
+      assert(result === expectedResult, 'The result is the same as the expected entry module content.');
     })
   );
 
@@ -93,7 +93,7 @@ describe(location, function buildTest() {
       const { dependencies, assetPath } = fixture;
       return install(assetPath, dependencies).then(() => {
         const modules = ls(join(assetPath, 'node_modules'));
-        assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed');
+        assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed.');
       });
     });
 
@@ -102,10 +102,10 @@ describe(location, function buildTest() {
       const lodashPackagePath = join(assetPath, 'node_modules', 'lodash', 'package.json');
       await install(assetPath, dependencies);
       const modules = ls(join(assetPath, 'node_modules'));
-      assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed');
+      assert(includesAll(modules, Object.keys(dependencies)), 'Modules in dependencies are installed.');
       const lodashPackage = await readFileAsync(lodashPackagePath, 'utf8');
       const lodashVersion = JSON.parse(lodashPackage).version;
-      assert(lodashVersion === dependencies.lodash.version, 'The installed version is the one specified');
+      assert(lodashVersion === dependencies.lodash.version, 'The installed version is the one specified.');
 
       const updatedDependencies = Object.assign(_.cloneDeep(dependencies), {
         lodash: {
@@ -121,7 +121,7 @@ describe(location, function buildTest() {
       await install(assetPath, updatedDependencies);
       const newLodashPackage = await readFileAsync(lodashPackagePath, 'utf8');
       const newLodashVersion = JSON.parse(newLodashPackage).version;
-      assert(newLodashVersion === updatedDependencies.lodash.version, 'The installed version is the new one');
+      assert(newLodashVersion === updatedDependencies.lodash.version, 'The installed version is the new one.');
     });
   });
 });

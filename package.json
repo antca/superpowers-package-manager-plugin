@@ -1,18 +1,18 @@
 {
-  "name": "superpower-plugin-npm",
+  "name": "superpower-plugin-package-manager",
   "version": "0.0.0",
-  "description": "A plugin to use and manage npm packages in superpowers projects",
+  "description": "A plugin to use and manage external packages in superpowers projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "test": "gulp test"
   },
   "keywords": [
     "superpowers",
     "plugin",
     "npm"
   ],
-  "author": "Anthony Camboni <antca@users.noreply.github.com>",
+  "author": "Anthony Camboni",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.3.21",
