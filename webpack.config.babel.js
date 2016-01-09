@@ -1,6 +1,9 @@
 import path from 'path';
 
-export default {
+import _ from 'lodash';
+import webpack from 'webpack';
+
+const baseConfig = {
   entry: {
     api: path.join(__dirname, 'api'),
     componentEditors: path.join(__dirname, 'componentEditors'),
@@ -14,8 +17,6 @@ export default {
     path: path.join(__dirname, 'public'),
     filename: '[name].js',
   },
-  debug: true,
-  devtool: 'eval-source-map',
   resolve: {
     alias: {
       npm: 'empty/object',
@@ -49,3 +50,32 @@ export default {
     ],
   },
 };
+
+const transforms = {
+  developement(base) {
+    return Object.assign(base, {
+      debug: true,
+      devtool: 'eval-source-map',
+    });
+  },
+  production(base) {
+    return Object.assign(base, {
+      plugins: (base.plugins || []).concat([
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+          minimize: true,
+          comments: false,
+          compress: {
+            warnings: false,
+          },
+        }),
+      ]),
+    });
+  },
+};
+
+const envConfig = (transforms[process.env.NODE_ENV] || _.identity)(_.cloneDeep(baseConfig));
+
+export default Object.assign(envConfig, {
+  configs: _.mapValues(transforms, (transform) => transform(_.cloneDeep(baseConfig))),
+});

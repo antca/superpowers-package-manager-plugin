@@ -28,15 +28,13 @@ const FILES_TO_CLEAN = [
 ];
 
 function buildWebpack(debug = false) {
+  const { developement, production } = webpackConfig.configs;
   return (callback) => {
-    webpack(Object.assign({}, webpackConfig, {
-      debug,
-      devtool: debug ? webpackConfig.devtool : false,
-    })).run((err, stats) => {
+    webpack(debug ? developement : production).run((err, stats) => {
       if(err) {
-        throw new gulpUtil.PluginError('webpack:build-dev', err);
+        throw new gulpUtil.PluginError('webpack:build', err);
       }
-      gulpUtil.log('[webpack:build-dev]', stats.toString({
+      gulpUtil.log('[webpack:build]', stats.toString({
         colors: true,
       }));
       callback();
