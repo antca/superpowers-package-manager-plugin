@@ -17,7 +17,6 @@ class ReadmeContainer extends Component {
         dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
           __html: renderMarkdown(packageInfo.readme),
         }}
-        style={{ padding: '0 1em' }}
       />
     );
   }

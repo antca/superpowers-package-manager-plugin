@@ -21,7 +21,7 @@ const DependencyEntry = ({ name, version, bindings, onButtonClick }) =>
       {_.map(bindings, (binding) => binding.propertyName).filter((prop) => prop).join(', ')}
     </td>
     <td>
-      <ButtonGroup style={{ minWidth: '75px' }}>
+      <ButtonGroup style={{ minWidth: '5em' }}>
         <Button
           bsSize='xsmall'
           bsStyle={'info'}

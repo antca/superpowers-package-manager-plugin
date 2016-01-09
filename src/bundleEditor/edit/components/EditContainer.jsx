@@ -52,14 +52,14 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
       type='text'
       value={binding.modulePath}
     />
-    <div style={{ margin: '5px' }}><Glyphicon glyph='arrow-right'/></div>
+    <div style={{ margin: '0.3em' }}><Glyphicon glyph='arrow-right'/></div>
     <Input
       onChange={({ target }) => onChangeBinding(moduleName, bindingId, {
         ...binding,
         propertyName: target.value,
       })}
       standalone
-      style={{ minWidth: '128px' }}
+      style={{ minWidth: '8em' }}
       type='text'
       value={binding.propertyName}
     />
@@ -67,7 +67,7 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
       bsSize='xsmall'
       bsStyle={'danger'}
       onClick={() => onDeleteBinding(moduleName, bindingId)}
-      style={{ marginLeft: '5px' }}
+      style={{ marginLeft: '0.3em' }}
     >
       <Glyphicon glyph='remove'/>
     </Button>
@@ -145,15 +145,15 @@ class EditContainer extends Component {
               onChangeBinding={onChangeBinding}
               onDeleteBinding={onDeleteBinding}
             />
-              <ButtonGroup justified style={{ marginTop: '10px' }}>
+              <ButtonGroup justified style={{ marginTop: '0.6em' }}>
                 <ButtonGroup>
                   <Button bsStyle='info' onClick={() => onResetBindings(packageInfo)}>
-                    {'Reset'}<Glyphicon glyph='repeat' style={{ marginLeft: '5px' }}/>
+                    {'Reset'}<Glyphicon glyph='repeat' style={{ marginLeft: '0.3em' }}/>
                   </Button>
                 </ButtonGroup>
                 <ButtonGroup>
                   <Button bsStyle='danger' onClick={() => onRemoveDependency(name)}>{'Remove'}
-                    <Glyphicon glyph='trash' style={{ marginLeft: '5px' }}/>
+                    <Glyphicon glyph='trash' style={{ marginLeft: '0.3em' }}/>
                   </Button>
                 </ButtonGroup>
               </ButtonGroup>
