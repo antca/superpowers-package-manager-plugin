@@ -26,7 +26,7 @@ const AddEditButton = ({ isDepedencyInstalled, onClick }) =>
     bsStyle={isDepedencyInstalled ? 'primary' : 'success'}
     onClick={onClick}
   >
-    {isDepedencyInstalled ? 'Edit dependencie' : 'Add to dependencies'}
+    {isDepedencyInstalled ? 'Edit dependency' : 'Add to dependencies'}
   </Button>;
 
 class ViewContainer extends Component {
