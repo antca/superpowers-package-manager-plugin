@@ -59,17 +59,24 @@ const transforms = {
     });
   },
   production(base) {
+    const plugins = (base.plugins || []).concat([
+      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        comments: false,
+        compress: {
+          warnings: false,
+        },
+      }),
+    ]);
+    const resolve = _.merge(base.resolve, {
+      alias: {
+        'redux-logger': 'empty/object',
+      },
+    });
     return Object.assign(base, {
-      plugins: (base.plugins || []).concat([
-        new webpack.optimize.DedupePlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          minimize: true,
-          comments: false,
-          compress: {
-            warnings: false,
-          },
-        }),
-      ]),
+      plugins,
+      resolve,
     });
   },
 };
