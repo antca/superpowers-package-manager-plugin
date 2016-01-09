@@ -14,7 +14,7 @@ const baseConfig = {
     bundleEditor: path.join(__dirname, 'bundleEditor'),
   },
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'public/bundles'),
     filename: '[name].js',
   },
   resolve: {
@@ -45,7 +45,7 @@ const baseConfig = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000',
+        loader: 'url-loader?limit=100000&name=../assets/webpack/[hash].[ext]',
       },
     ],
   },
