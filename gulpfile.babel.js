@@ -24,6 +24,7 @@ const FILES_TO_CLEAN = [
   'runtime',
   'utils',
   'settingsEditors',
+  'config',
 ];
 
 function buildWebpack(debug = false) {

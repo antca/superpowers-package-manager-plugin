@@ -38,6 +38,7 @@ node_modules
 /bundleEditor
 /components
 /componentEditors
+/config
 /data
 /runtime
 /settingsEditors
