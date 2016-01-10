@@ -1,0 +1,50 @@
+{
+  "manage": {
+    "panelTitle": "Manage",
+    "emptyBundle": "This bundle is empty.",
+    "labels": {
+      "dependencies": "Dependencies"
+    },
+    "headers": {
+      "name": "Name",
+      "version": "Version",
+      "bindings": "Bindings",
+      "actions": "Actions"
+    }
+  },
+  "search": {
+    "panelTitle": "Search",
+    "searchBar": {
+      "placeholder": "Search on npm..."
+    }
+  },
+  "view": {
+    "panelTitle": "View",
+    "props": {
+      "name": "Name",
+      "latestVersion": "Latest version",
+      "description": "Description",
+      "author": "Author",
+      "license": "License",
+      "repository": "Repository",
+      "homepage": "Homepage",
+      "bugs": "Bugs"
+    },
+    "buttons": {
+      "viewOnNpm": "View on npm",
+      "add": "Add dependency",
+      "edit": "Edit dependency"
+    }
+  },
+  "edit": {
+    "panelTitle": "Edit",
+    "labels": {
+      "version": "Version",
+      "bindings": "Bindings"
+    },
+    "buttons": {
+      "reset": "Reset",
+      "remove": "Remove"
+    }
+  }
+}

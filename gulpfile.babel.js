@@ -15,7 +15,7 @@ const SOURCE_PATH = 'src/**/*.{js,jsx}';
 
 const FILES_TO_CLEAN = [
   'public/*',
-  '!public/editors',
+  '!public/{editors,locales}',
   'api',
   'bundleEditor',
   'components',

@@ -45,3 +45,4 @@ node_modules
 /utils
 /public/*
 !/public/editors/
+!/public/locales/

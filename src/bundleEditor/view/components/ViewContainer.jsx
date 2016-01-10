@@ -8,30 +8,55 @@ import { changeActivePanel } from '../../main/actions';
 
 const NPM_URL = '//www.npmjs.com/package/';
 
-const Author = ({ author }) =>
-  <ListGroupItem header='Author'>
+const PackageProperty = ({ children, header, isMarkdown = false }) => {
+  if(!children) {
+    return <noscript />;
+  }
+  return (
+    <ListGroupItem header={header}>
+      {(() => {
+        if(isMarkdown) {
+          return (
+            <span dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+              __html: renderMarkdown(children),
+            }}/>
+          );
+        }
+        if(typeof children === 'string' && children.match(/^https?:\/\//)) {
+          return <a href={children} target='_blank'>{children}</a>;
+        }
+        return children;
+      })()}
+    </ListGroupItem>
+  );
+};
+
+const Author = ({ author, header }) => {
+  if(!author) {
+    return <noscript />;
+  }
+  return (
+    <PackageProperty header={header}>
       <span>{author.name}</span>
       <br/>
       <span><a href={`mailto:${author.email}`}>{author.email}</a></span>
-  </ListGroupItem>;
+    </PackageProperty>
+  );
+};
 
-const Repository = ({ repository }) =>
-  <ListGroupItem header='Repository'>
-    <a href={repository.url} target='_blank'>{repository.url}</a>
-  </ListGroupItem>;
-
-const AddEditButton = ({ isDepedencyInstalled, onClick }) =>
+const AddEditButton = ({ isDepedencyInstalled, onClick, i18n }) =>
   <Button
     block
     bsStyle={isDepedencyInstalled ? 'primary' : 'success'}
     onClick={onClick}
   >
-    {isDepedencyInstalled ? 'Edit dependency' : 'Add to dependencies'}
+    {i18n(`bundleEditor:view.buttons.${isDepedencyInstalled ? 'edit' : 'add'}`)}
   </Button>;
 
 class ViewContainer extends Component {
   static propTypes = {
     dependencies: T.object,
+    i18n: T.func.isRequired,
     onMainButtonClick: T.func.isRequired,
     packageInfo: T.object,
   }
@@ -40,6 +65,7 @@ class ViewContainer extends Component {
       packageInfo,
       onMainButtonClick,
       dependencies,
+      i18n,
     } = this.props;
     if(!packageInfo) {
       return null;
@@ -60,23 +86,26 @@ class ViewContainer extends Component {
     return (
       <div>
         <ListGroup fill style={{ wordBreak: 'break-all' }}>
-          {name ? <ListGroupItem header='Name'>{name}</ListGroupItem> : null}
-          {latestVersion ? <ListGroupItem header='Latest version'>{latestVersion}</ListGroupItem> : null}
-          {description ? <ListGroupItem header='Description'>
-            <span dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
-              __html: renderMarkdown(description),
-            }}/>
-          </ListGroupItem> : null}
-          {author ? <Author author={author}/> : null}
-          {license ? <ListGroupItem header='License'>{license}</ListGroupItem> : null}
-          {repository ? <Repository repository={repository}/> : null}
-          {homepage ? <ListGroupItem header='Homepage'>
-            <a href={homepage} target='_blank'>{homepage}</a>
-           </ListGroupItem> : null}
-          {bugs ? <ListGroupItem header='Bugs'><a href={bugs.url} target='_blank'>{bugs.url}</a></ListGroupItem> : null}
+          <PackageProperty header={i18n('bundleEditor:view.props.name')}>{name}</PackageProperty>
+          <PackageProperty header={i18n('bundleEditor:view.props.latestVersion')}>{latestVersion}</PackageProperty>
+          <PackageProperty header={i18n('bundleEditor:view.props.description')} isMarkdown>
+            {description}
+          </PackageProperty>
+          <Author author={author} header={i18n('bundleEditor:view.props.author')}/>
+          <PackageProperty header={i18n('bundleEditor:view.props.license')}>{license}</PackageProperty>
+          <PackageProperty header={i18n('bundleEditor:view.props.repository')}>
+            {repository && repository.url}
+          </PackageProperty>
+          <PackageProperty header={i18n('bundleEditor:view.props.homepage')}>{homepage}</PackageProperty>
+          <PackageProperty header={i18n('bundleEditor:view.props.bugs')}>
+            {bugs && bugs.url}
+          </PackageProperty>
         </ListGroup>
-        <Button block bsStyle='info' href={`${NPM_URL}${name}`} target='_blank'>{'View on NPM'}</Button>
+        <Button block bsStyle='info' href={`${NPM_URL}${name}`} target='_blank'>
+          {i18n('bundleEditor:view.buttons.viewOnNpm')}
+        </Button>
         <AddEditButton
+          i18n={i18n}
           isDepedencyInstalled={isDepedencyInstalled}
           onClick={() => onMainButtonClick(isDepedencyInstalled ? null : packageInfo)}
         />

@@ -20,10 +20,10 @@ import {
   removeDependency,
 } from '../../../data/actions';
 
-const VersionSelect = ({ versions, onSelectVersion, value, packageName }) =>
+const VersionSelect = ({ versions, onSelectVersion, value, packageName, label }) =>
   <Input
     bsSize='small'
-    label='Version'
+    label={label}
     onChange={({ target }) => onSelectVersion(packageName, target.value)}
     type='select'
     value={value}
@@ -73,9 +73,9 @@ const Binding = ({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
     </Button>
   </ListGroupItem>;
 
-const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDeleteBinding }) =>
+const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDeleteBinding, label }) =>
   <div>
-    <label>{'Bindings'}</label>
+    <label>{label}</label>
     <Panel>
       <ListGroup fill>
         {bindings.map((binding, index) =>
@@ -97,6 +97,7 @@ const Bindings = ({ moduleName, bindings, onChangeBinding, onAddBinding, onDelet
 class EditContainer extends Component {
   static propTypes = {
     dependencies: T.object.isRequired,
+    i18n: T.func.isRequired,
     onAddBinding: T.func.isRequired,
     onChangeBinding: T.func.isRequired,
     onDeleteBinding: T.func.isRequired,
@@ -116,6 +117,7 @@ class EditContainer extends Component {
       onDeleteBinding,
       onRemoveDependency,
       dependencies,
+      i18n,
     } = this.props;
     if(!packageInfo || !dependencies[packageInfo.name]) {
       return null;
@@ -133,6 +135,7 @@ class EditContainer extends Component {
         <h2>{name}</h2>
           <form>
             <VersionSelect
+              label={i18n('bundleEditor:edit.labels.version')}
               onSelectVersion={onSelectVersion}
               packageName={name}
               value={version}
@@ -140,6 +143,7 @@ class EditContainer extends Component {
             />
             <Bindings
               bindings={bindings}
+              label={i18n('bundleEditor:edit.labels.bindings')}
               moduleName={name}
               onAddBinding={onAddBinding}
               onChangeBinding={onChangeBinding}
@@ -148,12 +152,12 @@ class EditContainer extends Component {
               <ButtonGroup justified style={{ marginTop: '0.6em' }}>
                 <ButtonGroup>
                   <Button bsStyle='info' onClick={() => onResetBindings(packageInfo)}>
-                    {'Reset'}<Glyphicon glyph='repeat' style={{ marginLeft: '0.3em' }}/>
+                    {i18n('bundleEditor:edit.buttons.reset')}<Glyphicon glyph='repeat' style={{ marginLeft: '0.3em' }}/>
                   </Button>
                 </ButtonGroup>
                 <ButtonGroup>
-                  <Button bsStyle='danger' onClick={() => onRemoveDependency(name)}>{'Remove'}
-                    <Glyphicon glyph='trash' style={{ marginLeft: '0.3em' }}/>
+                  <Button bsStyle='danger' onClick={() => onRemoveDependency(name)}>
+                    {i18n('bundleEditor:edit.buttons.remove')}<Glyphicon glyph='trash' style={{ marginLeft: '0.3em' }}/>
                   </Button>
                 </ButtonGroup>
               </ButtonGroup>

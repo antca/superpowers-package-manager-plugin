@@ -9,6 +9,7 @@ const ENTER_KEY_CODE = 13;
 class SearchBar extends Component {
   static propTypes = {
     error: T.instanceOf(Error),
+    i18n: T.func.isRequired,
     onContentChange: T.func.isRequired,
     onEnterKeyPress: T.func.isRequired,
     result: T.object,
@@ -47,13 +48,14 @@ class SearchBar extends Component {
   }
 
   render() {
+    const { i18n } = this.props;
     const { searchBarContent } = this.state;
     return (
       <div>
          <Input
            onChange={(e) => this.onSearchInputChange(e)}
            onKeyPress={(e) => this.onKeyPress(e)}
-           placeholder='Search on npm...'
+           placeholder={i18n('bundleEditor:search.searchBar.placeholder')}
            ref='textbox'
            type='text'
            value={searchBarContent}

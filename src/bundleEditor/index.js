@@ -1,6 +1,8 @@
 import 'babel-polyfill';
 import 'bootswatch/yeti/bootstrap.css';
 
+import path from 'path';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -11,6 +13,7 @@ import BundleEditor from './main/components/BundleEditor';
 
 const {
   SupClient,
+  location,
 } = global;
 
 const bundleEditorDOMElement = document.createElement('div');
@@ -21,9 +24,14 @@ document.body.appendChild(bundleEditorDOMElement);
 const store = createStore();
 const asset = new AssetManager(SupClient, store.dispatch);
 
-ReactDOM.render(
-  <Provider store={store}>
-    <BundleEditor remoteDispatch={asset.dispatch}/>
-  </Provider>,
-  bundleEditorDOMElement
+SupClient.i18n.load([{
+  root: path.join(location.pathname, '..', '..'),
+  name: 'bundleEditor',
+}], () =>
+  ReactDOM.render(
+    <Provider store={store}>
+      <BundleEditor i18n={SupClient.i18n.t} remoteDispatch={asset.dispatch}/>
+    </Provider>,
+    bundleEditorDOMElement
+  )
 );

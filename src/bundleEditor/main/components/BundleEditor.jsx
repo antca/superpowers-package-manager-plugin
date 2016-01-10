@@ -18,6 +18,7 @@ const DOC_COL_WIDTH = 8;
 class BundleEditor extends Component {
   static propTypes = {
     data: T.object.isRequired,
+    i18n: T.func.isRequired,
     main: T.object.isRequired,
     onPanelSelect: T.func.isRequired,
     remoteDispatch: T.func.isRequired,
@@ -38,27 +39,36 @@ class BundleEditor extends Component {
         dependencies,
       },
       remoteDispatch,
+      i18n,
     } = this.props;
     return (
       <Grid fluid style={{ height: '100%', padding: '1em 0' }}>
         <Col sm={INFO_COL_WIDTH}>
           <ErrorContainer/>
           <PanelGroup accordion activeKey={activePanel} onSelect={onPanelSelect} >
-            <Panel bsStyle={_.isEmpty(dependencies) ? 'default' : 'primary'} eventKey='manage' header='Manage'>
-              <ManageContainer remoteDispatch={remoteDispatch}/>
+            <Panel
+              bsStyle={_.isEmpty(dependencies) ? 'default' : 'primary'}
+              eventKey='manage'
+              header={i18n('bundleEditor:manage.panelTitle')}
+            >
+              <ManageContainer i18n={i18n} remoteDispatch={remoteDispatch}/>
             </Panel>
-            <Panel bsStyle={'primary'} eventKey='search' header='Search'>
-              <SearchContainer/>
+            <Panel bsStyle={'primary'} eventKey='search' header={i18n('bundleEditor:search.panelTitle')}>
+              <SearchContainer i18n={i18n}/>
             </Panel>
-            <Panel bsStyle={packageInfo ? 'primary' : 'default'} eventKey='view' header='View'>
-              {packageInfo ? <ViewContainer remoteDispatch={remoteDispatch}/> : null}
+            <Panel
+              bsStyle={packageInfo ? 'primary' : 'default'}
+              eventKey='view'
+              header={i18n('bundleEditor:view.panelTitle')}
+            >
+              {packageInfo ? <ViewContainer i18n={i18n} remoteDispatch={remoteDispatch}/> : null}
             </Panel>
             <Panel
               bsStyle={packageInfo && dependencies[packageInfo.name] ? 'primary' : 'default'}
               eventKey='edit'
-              header='Edit'
+              header={i18n('bundleEditor:edit.panelTitle')}
             >
-              <EditContainer remoteDispatch={remoteDispatch}/>
+              <EditContainer i18n={i18n} remoteDispatch={remoteDispatch}/>
             </Panel>
           </PanelGroup>
         </Col>

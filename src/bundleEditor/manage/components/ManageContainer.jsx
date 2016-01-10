@@ -50,26 +50,28 @@ const DependencyEntry = ({ name, version, bindings, onButtonClick }) =>
 class ManageContainer extends Component {
   static propTypes = {
     dependencies: T.object.isRequired,
+    i18n: T.func.isRequired,
     onButtonClick: T.func.isRequired,
   }
   render() {
     const {
       dependencies,
       onButtonClick,
+      i18n,
     } = this.props;
     if(_.isEmpty(dependencies)) {
-      return <h3>{'The bundle is empty.'}</h3>;
+      return <h3>{i18n('bundleEditor:manage.emptyBundle')}</h3>;
     }
     return (
       <div>
-        <label>{'Dependencies'}</label>
+        <label>{i18n('bundleEditor:manage.labels.dependencies')}</label>
         <Table bordered responsive stripped>
           <thead>
             <tr>
-              <th>{'Name'}</th>
-              <th>{'Version'}</th>
-              <th>{'Bindings'}</th>
-              <th>{'Actions'}</th>
+              <th>{i18n('bundleEditor:manage.headers.name')}</th>
+              <th>{i18n('bundleEditor:manage.headers.version')}</th>
+              <th>{i18n('bundleEditor:manage.headers.bindings')}</th>
+              <th>{i18n('bundleEditor:manage.headers.actions')}</th>
             </tr>
           </thead>
           <tbody>

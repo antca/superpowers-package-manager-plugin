@@ -8,13 +8,14 @@ import { updatePackageInfo } from '../../view/actions';
 
 class SearchContainer extends Component {
   static propTypes = {
+    i18n: T.func.isRequired,
     onView: T.func.isRequired,
   }
   render() {
-    const { onView } = this.props;
+    const { onView, i18n } = this.props;
     return (
       <div>
-        <SearchBar onEnterKeyPress={onView}/>
+        <SearchBar i18n={i18n} onEnterKeyPress={onView}/>
         <SearchResultList onResultSelect={onView}/>
       </div>
     );
