@@ -4,6 +4,7 @@
   "description": "A plugin to use and manage external packages in superpowers projects",
   "main": "index.js",
   "scripts": {
+    "build": "gulp build",
     "gulp": "gulp",
     "test": "gulp test"
   },
