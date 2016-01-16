@@ -65,7 +65,7 @@ class ManageContainer extends Component {
     return (
       <div>
         <label>{i18n('bundleEditor:manage.labels.dependencies')}</label>
-        <Table bordered responsive stripped>
+        <Table bordered responsive striped>
           <thead>
             <tr>
               <th>{i18n('bundleEditor:manage.headers.name')}</th>
