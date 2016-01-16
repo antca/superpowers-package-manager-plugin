@@ -14,7 +14,7 @@ const baseConfig = {
     bundleEditor: path.join(__dirname, 'bundleEditor'),
   },
   output: {
-    path: path.join(__dirname, 'public/bundles'),
+    path: path.join(__dirname, 'public', 'bundles'),
     filename: '[name].js',
   },
   resolve: {
@@ -28,12 +28,6 @@ const baseConfig = {
     fs: 'empty',
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'source-map',
-      },
-    ],
     loaders: [
       {
         test: /\.json$/,
@@ -56,6 +50,14 @@ const transforms = {
     return Object.assign(base, {
       debug: true,
       devtool: 'eval-source-map',
+      module: _.merge(module, {
+        preLoaders: [
+          {
+            test: /\.js$/,
+            loader: 'source-map',
+          },
+        ],
+      }),
     });
   },
   production(base) {
