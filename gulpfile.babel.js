@@ -49,11 +49,11 @@ gulp.task('lint', () =>
     .pipe(gulpEslint.failAfterError())
 );
 
-gulp.task('test', () => {
-  return gulp.src(['test/**/*.js'], { read: false })
+gulp.task('test', () =>
+  gulp.src(['test/**/*.js'], { read: false })
     .pipe(gulpMocha({ reporter: 'spec' }))
-    .on('error', gulpUtil.log);
-});
+    .on('error', gulpUtil.log)
+);
 
 gulp.task('watch-test', () => {
   gulp.watch(['src/**', 'test/**'], ['test']);
@@ -62,10 +62,10 @@ gulp.task('watch-test', () => {
 gulp.task('webpack:build-dev', ['babel:build'], buildWebpack(true));
 gulp.task('webpack:build-prod', ['babel:build'], buildWebpack(false));
 
-gulp.task('clean', () => {
-  return gulp.src(FILES_TO_CLEAN)
-    .pipe(gulpRimraf());
-});
+gulp.task('clean', () =>
+  gulp.src(FILES_TO_CLEAN)
+    .pipe(gulpRimraf())
+);
 
 gulp.task('babel:build', () =>
   gulp.src(SOURCE_PATH)

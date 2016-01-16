@@ -34,7 +34,7 @@ function viewReducer(store = initialViewStore, action) {
         loading: false,
       };
     },
-  }[action.type] || (() => {}))(action.payload, action.meta) || store;
+  }[action.type] || (() => void 0))(action.payload, action.meta) || store;
 }
 
 export default viewReducer;

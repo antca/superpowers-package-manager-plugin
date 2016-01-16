@@ -9,6 +9,10 @@ import { build } from '../../utils/build';
 import { copyFile } from '../../utils/fs';
 import { rebuild, rebuildFinished, rebuildFailed, throwError } from '../actions';
 
+const {
+  SupCore,
+} = global;
+
 const mkdirpAsync = Promise.promisify(mkdirp);
 Promise.promisifyAll(fs);
 
