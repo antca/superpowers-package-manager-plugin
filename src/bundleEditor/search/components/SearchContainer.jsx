@@ -10,7 +10,8 @@ class SearchContainer extends Component {
   static propTypes = {
     i18n: T.func.isRequired,
     onView: T.func.isRequired,
-  }
+  };
+
   render() {
     const { onView, i18n } = this.props;
     return (

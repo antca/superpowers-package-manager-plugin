@@ -8,7 +8,7 @@ class SearchResultList extends Component {
   static propTypes = {
     onResultSelect: T.func.isRequired,
     result: T.object,
-  }
+  };
 
   render() {
     const { result, onResultSelect } = this.props;

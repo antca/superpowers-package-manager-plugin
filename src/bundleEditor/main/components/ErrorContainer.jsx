@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 class ErrorContainer extends Component {
   static propTypes = {
     errors: T.array.isRequired,
-  }
+  };
+
   render() {
     const { errors } = this.props;
     return (

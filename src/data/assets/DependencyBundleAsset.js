@@ -23,7 +23,7 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
   static schema = {
     formatVersion: { type: 'integer' },
     state: { type: 'object' },
-  }
+  };
 
   constructor(id, pub, server) {
     super(id, pub, DependencyBundleAsset.schema, server);

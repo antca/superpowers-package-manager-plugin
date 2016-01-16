@@ -24,7 +24,8 @@ class BundleEditor extends Component {
     remoteDispatch: T.func.isRequired,
     search: T.object.isRequired,
     view: T.object.isRequired,
-  }
+  };
+
   render() {
     const {
       onPanelSelect,

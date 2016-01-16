@@ -52,7 +52,8 @@ class ManageContainer extends Component {
     dependencies: T.object.isRequired,
     i18n: T.func.isRequired,
     onButtonClick: T.func.isRequired,
-  }
+  };
+
   render() {
     const {
       dependencies,

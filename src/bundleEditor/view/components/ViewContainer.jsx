@@ -59,7 +59,8 @@ class ViewContainer extends Component {
     i18n: T.func.isRequired,
     onMainButtonClick: T.func.isRequired,
     packageInfo: T.object,
-  }
+  };
+
   render() {
     const {
       packageInfo,

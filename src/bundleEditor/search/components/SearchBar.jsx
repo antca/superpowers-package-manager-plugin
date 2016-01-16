@@ -14,7 +14,7 @@ class SearchBar extends Component {
     onEnterKeyPress: T.func.isRequired,
     result: T.object,
     textSelected: T.bool.isRequired,
-  }
+  };
 
   constructor(...args) {
     super(...args);

@@ -6,7 +6,8 @@ import { renderMarkdown } from '../../../utils/markdown';
 class ReadmeContainer extends Component {
   static propTypes = {
     packageInfo: T.object,
-  }
+  };
+
   render() {
     const { packageInfo } = this.props;
     if(!packageInfo) {

@@ -106,7 +106,8 @@ class EditContainer extends Component {
     onSelectVersion: T.func.isRequired,
     packageInfo: T.object,
     selectedVersion: T.string,
-  }
+  };
+
   render() {
     const {
       packageInfo,
