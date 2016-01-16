@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import 'bootswatch/yeti/bootstrap.css';
 
 import path from 'path';
