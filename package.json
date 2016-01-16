@@ -39,6 +39,7 @@
     "gulp-util": "^3.0.7",
     "less-loader": "^2.2.2",
     "mocha": "^2.3.4",
+    "react-addons-update": "^0.14.6",
     "redux-logger": "^2.0.4",
     "shelljs": "^0.5.3",
     "source-map-loader": "^0.1.5",

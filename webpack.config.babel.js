@@ -1,6 +1,7 @@
 import path from 'path';
 
 import _ from 'lodash';
+import update from 'react-addons-update';
 import webpack from 'webpack';
 
 const baseConfig = {
@@ -28,6 +29,7 @@ const baseConfig = {
     fs: 'empty',
   },
   module: {
+    preLoaders: [],
     loaders: [
       {
         test: /\.json$/,
@@ -43,42 +45,45 @@ const baseConfig = {
       },
     ],
   },
+  plugins: [],
 };
 
 const transforms = {
   developement(base) {
-    return Object.assign(base, {
-      debug: true,
-      devtool: 'eval-source-map',
-      module: _.merge(module, {
-        preLoaders: [
-          {
+    return update(base, {
+      debug: { $set: true },
+      devtool: { $set: 'eval-source-map' },
+      module: {
+        preLoaders: {
+          $push: [{
             test: /\.js$/,
             loader: 'source-map',
-          },
-        ],
-      }),
+          }],
+        },
+      },
     });
   },
   production(base) {
-    const plugins = (base.plugins || []).concat([
-      new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.UglifyJsPlugin({
-        minimize: true,
-        comments: false,
-        compress: {
-          warnings: false,
-        },
-      }),
-    ]);
-    const resolve = _.merge(base.resolve, {
-      alias: {
-        'redux-logger': 'empty/object',
+    return update(base, {
+      plugins: {
+        $push: [
+          new webpack.optimize.DedupePlugin(),
+          new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            comments: false,
+            compress: {
+              warnings: false,
+            },
+          }),
+        ],
       },
-    });
-    return Object.assign(base, {
-      plugins,
-      resolve,
+      resolve: {
+        alias: {
+          $merge: {
+            'redux-logger': 'empty/object',
+          },
+        },
+      },
     });
   },
 };
