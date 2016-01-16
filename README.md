@@ -1,6 +1,6 @@
 # superpowers-package-manager-plugin
 
-The easiest way to use external dependencies with your superpowers project.
+A plugin to use and manage external packages in superpowers projects.
 
 ## Motivation
 
@@ -27,8 +27,8 @@ There will be a system/plugin manager in superpowers 1.0 but for now, you need t
 cd ${superpowersPath}/systems/supGame/plugins
 mkdir antca
 cd antca
-git clone git://github.com:antca/superpower-package-manager-plugin
-cd superpower-package-manager-plugin
+git clone git@github.com:antca/superpowers-package-manager-plugin.git
+cd superpowers-package-manager-plugin
 npm install && npm run gulp build
 ```
 
