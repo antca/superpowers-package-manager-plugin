@@ -10,16 +10,15 @@ const ENTER_KEY_CODE = 13;
 @connect(
   ({ search }) => search,
   {
-    onContentChange: searchPackage,
+    onSearchInputChange: searchPackage,
   }
 )
 @autobind
 class SearchBarContainer extends Component {
   static propTypes = {
     i18n: T.func.isRequired,
-    onContentChange: T.func.isRequired,
     onEnterKeyPress: T.func.isRequired,
-    result: T.object,
+    onSearchInputChange: T.func.isRequired,
   };
 
   constructor(...args) {
@@ -29,12 +28,12 @@ class SearchBarContainer extends Component {
     };
   }
 
-  onSearchInputChange({ target: { value } }) {
-    const { onContentChange } = this.props;
+  onInputChange({ target: { value } }) {
+    const { onSearchInputChange } = this.props;
     this.setState({
       searchBarContent: value,
     });
-    onContentChange(value);
+    onSearchInputChange(value);
   }
 
   onKeyPress(e) {
@@ -50,8 +49,8 @@ class SearchBarContainer extends Component {
       <SearchBar
         {...this.props}
         {...this.state}
+        onInputChange={this.onInputChange}
         onKeyPress={this.onKeyPress}
-        onSearchInputChange={this.onSearchInputChange}
       />
     );
   }

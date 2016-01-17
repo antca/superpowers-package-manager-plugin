@@ -26,24 +26,24 @@ function BundleEditor({ onPanelSelect, main, view, data, remoteDispatch, i18n })
             eventKey='manage'
             header={i18n('bundleEditor:manage.panelTitle')}
           >
-            <ManageBody i18n={i18n} remoteDispatch={remoteDispatch}/>
+            {activePanel === 'manage' ? <ManageBody i18n={i18n} remoteDispatch={remoteDispatch}/> : null}
           </Panel>
           <Panel bsStyle={'primary'} eventKey='search' header={i18n('bundleEditor:search.panelTitle')}>
-            <SearchBody i18n={i18n}/>
+            {activePanel === 'search' ? <SearchBody i18n={i18n}/> : null}
           </Panel>
           <Panel
             bsStyle={packageInfo ? 'primary' : 'default'}
             eventKey='view'
             header={i18n('bundleEditor:view.panelTitle')}
           >
-            {packageInfo ? <ViewBody i18n={i18n} remoteDispatch={remoteDispatch}/> : null}
+            {activePanel === 'view' ? <ViewBody i18n={i18n} remoteDispatch={remoteDispatch}/> : null}
           </Panel>
           <Panel
             bsStyle={packageInfo && dependencies[packageInfo.name] ? 'primary' : 'default'}
             eventKey='edit'
             header={i18n('bundleEditor:edit.panelTitle')}
           >
-            <EditBody i18n={i18n} remoteDispatch={remoteDispatch}/>
+            {activePanel === 'edit' ? <EditBody i18n={i18n} remoteDispatch={remoteDispatch}/> : null}
           </Panel>
         </PanelGroup>
       </Col>

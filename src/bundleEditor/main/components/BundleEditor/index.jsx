@@ -2,20 +2,14 @@ import React, { Component, PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import autobind from 'autobind-decorator';
 
-import { selectTextBoxContent } from '../../../search/actions';
 import { changeActivePanel } from '../../actions';
 import BundleEditor from './BundleEditor';
 
 @connect(
   (store) => store,
-  (dispatch) => ({
-    onPanelSelect(panel) {
-      if(panel === 'search') {
-        dispatch(selectTextBoxContent());
-      }
-      dispatch(changeActivePanel(panel));
-    },
-  }),
+  {
+    onPanelSelect: changeActivePanel,
+  },
 )
 @autobind
 class BundleEditorContainer extends Component {
