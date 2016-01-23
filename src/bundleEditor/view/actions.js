@@ -6,18 +6,22 @@ const UPDATE_PACKAGE_INFO_PENDING = 'UPDATE_PACKAGE_INFO_PENDING';
 const UPDATE_PACKAGE_INFO_FULFILLED = 'UPDATE_PACKAGE_INFO_FULFILLED';
 const UPDATE_PACKAGE_INFO_REJECTED = 'UPDATE_PACKAGE_INFO_REJECTED';
 function updatePackageInfo(packageName) {
-  return (dispatch) => {
+
+  // TODO: Dirty implementation, find a way to clean this.
+  return (dispatch, getState) => {
+    const { search: { selectedItemIndex, result } } = getState();
+    const packageToView = selectedItemIndex === null ? packageName : result.results[selectedItemIndex].name;
     dispatch({
       type: UPDATE_PACKAGE_INFO_PENDING,
       payload: {
-        packageName,
+        packageName: packageToView,
       },
     });
-    return view(packageName)
-      .then((result) => {
+    return view(packageToView)
+      .then((packageInfo) => {
         dispatch({
           type: UPDATE_PACKAGE_INFO_FULFILLED,
-          payload: result,
+          payload: packageInfo,
         });
       }).catch((error) => {
         dispatch({

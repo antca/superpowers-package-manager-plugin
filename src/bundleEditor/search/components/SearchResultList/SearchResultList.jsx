@@ -3,14 +3,15 @@ import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 import { renderMarkdown } from '../../../../utils/markdown';
 
-function SearchResultList({ result, onResultSelect }) {
+function SearchResultList({ result, onResultSelect, selectedItemIndex }) {
   if(!result) {
     return <noscript />;
   }
   return (
     <ListGroup>
-      {result.results.map((item) =>
+      {result.results.map((item, index) =>
         <ListGroupItem
+          active={index === selectedItemIndex}
           header={item.name}
           key={item.name}
           onClick={() => onResultSelect(item.name)}

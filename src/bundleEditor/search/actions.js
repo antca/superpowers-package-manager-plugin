@@ -5,7 +5,6 @@ import { autocompleteSearch } from '../../utils/npm';
 const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
 const SEARCH_PACKAGE_FULFILLED = 'SEARCH_PACKAGE_FULFILLED';
 const SEARCH_PACKAGE_REJECTED = 'SEARCH_PACKAGE_REJECTED';
-
 function searchPackage(searchValue) {
   return (dispatch) => {
     autocompleteSearch(searchValue)
@@ -24,9 +23,22 @@ function searchPackage(searchValue) {
   };
 }
 
+const SELECT_RESULT_ITEM = 'SELECT_RESULT_ITEM';
+function selectResultItem(selectedItemIndexShift) {
+  return {
+    type: SELECT_RESULT_ITEM,
+    payload: {
+      selectedItemIndexShift,
+    },
+  };
+}
+
 export {
   SEARCH_PACKAGE_PENDING,
   SEARCH_PACKAGE_FULFILLED,
   SEARCH_PACKAGE_REJECTED,
   searchPackage,
+
+  SELECT_RESULT_ITEM,
+  selectResultItem,
 };
