@@ -36,6 +36,7 @@ function buildWebpack(debug = false) {
       }
       gulpUtil.log('[webpack:build]', stats.toString({
         colors: true,
+        chunks: false,
       }));
       callback();
     });
