@@ -1,3 +1,5 @@
+import path from 'path';
+
 import gulp from 'gulp';
 import gulpBabel from 'gulp-babel';
 import gulpRimraf from 'gulp-rimraf';
@@ -5,13 +7,17 @@ import gulpEslint from 'gulp-eslint';
 import gulpPlumber from 'gulp-plumber';
 import gulpUtil from 'gulp-util';
 import gulpMocha from 'gulp-mocha';
+import gulpInstall from 'gulp-install';
+import gulpZip from 'gulp-zip';
 import webpack from 'webpack';
 
+import pkg from './package';
 import webpackConfig from './webpack.config.babel';
 
 const ROOT_PATH = __dirname;
-
 const SOURCE_PATH = 'src/**/*.{js,jsx}';
+
+const TMP_PACKAGE = 'tmp_package';
 
 const FILES_TO_CLEAN = [
   'public/*',
@@ -25,7 +31,36 @@ const FILES_TO_CLEAN = [
   'utils',
   'settingsEditors',
   'config',
+  TMP_PACKAGE,
 ];
+
+const FOLDERS_TO_PACKAGE = [
+  'api',
+  'bundleEditor',
+  'componentEditor',
+  'components',
+  'config',
+  'data',
+  'public',
+  'runtime',
+  'settingsEditors',
+  'utils',
+];
+
+function createPackageFolder() {
+  return gulp.src(FOLDERS_TO_PACKAGE.map((folder) => `${folder}/**`)
+      .concat('package.json'), { base: '.' })
+    .pipe(gulp.dest(path.join(TMP_PACKAGE, pkg.authorNickname, pkg.name)))
+    .pipe(gulpInstall({ production: true }));
+}
+
+function createPackageZip() {
+  return gulp.src(`${TMP_PACKAGE}/**`)
+    .pipe(gulpZip(`${pkg.name}-v${pkg.version}-${ new Date()
+      .toISOString()
+      .replace(/\W/g, '')}.zip`))
+    .pipe(gulp.dest('releases'));
+}
 
 function buildWebpack(debug = false) {
   const { developement, production } = webpackConfig.configs;
@@ -41,6 +76,11 @@ function buildWebpack(debug = false) {
       callback();
     });
   };
+}
+
+function clean() {
+  return gulp.src(FILES_TO_CLEAN)
+    .pipe(gulpRimraf());
 }
 
 gulp.task('lint', () =>
@@ -63,10 +103,7 @@ gulp.task('watch-test', () => {
 gulp.task('webpack:build-dev', ['babel:build'], buildWebpack(true));
 gulp.task('webpack:build-prod', ['babel:build'], buildWebpack(false));
 
-gulp.task('clean', () =>
-  gulp.src(FILES_TO_CLEAN)
-    .pipe(gulpRimraf())
-);
+gulp.task('clean', clean);
 
 gulp.task('babel:build', () =>
   gulp.src(SOURCE_PATH)
@@ -83,5 +120,10 @@ gulp.task('build-dev', ['babel:build', 'webpack:build-dev']);
 gulp.task('watch', ['build-dev'], () => {
   gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build-dev']);
 });
+
+gulp.task('package:createFolder', ['build'], createPackageFolder);
+gulp.task('package:createZip', ['build', 'package:createFolder'], createPackageZip);
+
+gulp.task('package:build-clean', ['package:createZip'], clean);
 
 gulp.task('default', ['lint', 'build']);
