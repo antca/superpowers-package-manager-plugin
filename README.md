@@ -2,6 +2,7 @@
 
 A plugin to use and manage external packages in superpowers projects.
 
+
 ## Motivation
 
 When using superpowers alone, it can be quite laborious to use external code in your project.
@@ -13,24 +14,11 @@ However, sometimes you need some specific stuff (e.g. An advanced math library),
 It basically let you chose the libraries you need for your project from your favorite package manager (only npm is supported atm, but I know it's your favorite anyway).
 
 
-## Requirements
-
-- nodejs
-- npm
-- superpowers
-
-
 ## Install
 
-There will be a system/plugin manager in superpowers 1.0 but for now, you need to install it manually.
-```bash
-cd ${superpowersPath}/systems/supGame/plugins
-mkdir antca
-cd antca
-git clone git@github.com:antca/superpowers-package-manager-plugin.git
-cd superpowers-package-manager-plugin
-npm install && npm run gulp build
-```
+There will be a system/plugin manager in superpowers 1.0 but for now, you need to install it manually.  
+Go to the [release page](https://github.com/antca/superpowers-package-manager-plugin/releases) and download the latest version.
+Unzip the archive content (take the `antca` folder) in the `${superpowersPath}/resources/app/systems/game/plugins` directory.
 
 Restart the superpowers server and the plugin should be operational.
 
@@ -82,3 +70,28 @@ You can now simply run your project. If you edited the dependency bundle since t
 The way this plugin works is quite simple. It just downloads the dependencies via the npm node API and bundle them with webpack.
 
 For security reasons, the npm install scripts (`preinstall`, `install`, `postinstall`) are not run. If you need it on your server and trust the users using it, you can enable them by editing the `src/config/index.js` file in the plugin's directory (You will need to rebuild the plugin).
+
+## Development
+
+### Requirements
+
+- [nodejs and npm](https://nodejs.org)
+- [superpowers sources](http://docs.superpowers-html5.com/en/development/building-superpowers)
+
+### Building the plugin from sources
+
+```shell
+cd ${superpowersPath}/systems/supGame/plugins
+mkdir antca
+cd antca
+git clone git@github.com:antca/superpowers-package-manager-plugin.git
+cd superpowers-package-manager-plugin
+npm install && NODE_ENV=development npm run build
+```
+
+### Develop with watch mode
+After the initial setup, you can edit the plugin code in watch mode, gulp will rebuild the sources on save.
+
+```shell
+NODE_ENV=development gulp watch
+```
