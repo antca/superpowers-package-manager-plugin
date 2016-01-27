@@ -62,22 +62,6 @@ function createPackageZip() {
     .pipe(gulp.dest('releases'));
 }
 
-function buildWebpack(debug = false) {
-  const { developement, production } = webpackConfig.configs;
-  return (callback) => {
-    webpack(debug ? developement : production).run((err, stats) => {
-      if(err) {
-        throw new gulpUtil.PluginError('webpack:build', err);
-      }
-      gulpUtil.log('[webpack:build]', stats.toString({
-        colors: true,
-        chunks: false,
-      }));
-      callback();
-    });
-  };
-}
-
 function clean() {
   return gulp.src(FILES_TO_CLEAN)
     .pipe(gulpRimraf());
@@ -100,11 +84,6 @@ gulp.task('watch-test', () => {
   gulp.watch(['src/**', 'test/**'], ['test']);
 });
 
-gulp.task('webpack:build-dev', ['babel:build'], buildWebpack(true));
-gulp.task('webpack:build-prod', ['babel:build'], buildWebpack(false));
-
-gulp.task('clean', clean);
-
 gulp.task('babel:build', () =>
   gulp.src(SOURCE_PATH)
     .pipe(gulpPlumber())
@@ -112,13 +91,25 @@ gulp.task('babel:build', () =>
     .pipe(gulp.dest(ROOT_PATH))
 );
 
-gulp.task('webpack:build', ['babel:build', 'webpack:build-dev']);
+gulp.task('webpack:build', ['babel:build'], (callback) => {
+  webpack(webpackConfig).run((err, stats) => {
+    if(err) {
+      throw new gulpUtil.PluginError('webpack:build', err);
+    }
+    gulpUtil.log('[webpack:build]', stats.toString({
+      colors: true,
+      chunks: false,
+    }));
+    callback();
+  });
+});
 
-gulp.task('build', ['babel:build', 'webpack:build-prod']);
-gulp.task('build-dev', ['babel:build', 'webpack:build-dev']);
+gulp.task('clean', clean);
 
-gulp.task('watch', ['build-dev'], () => {
-  gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build-dev']);
+gulp.task('build', ['babel:build', 'webpack:build']);
+
+gulp.task('watch', ['build'], () => {
+  gulp.watch(SOURCE_PATH, ['babel:build', 'webpack:build']);
 });
 
 gulp.task('package:createFolder', ['build'], createPackageFolder);

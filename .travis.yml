@@ -1,6 +1,8 @@
 language: node_js
 node_js:
 - stable
+env:
+  - NODE_ENV=production
 script: npm run build && npm test
 before_deploy: npm run release && mv releases/superpowers-package-manager-plugin*.zip releases/superpowers-package-manager-plugin.zip
 deploy:
