@@ -35,15 +35,11 @@ const FILES_TO_CLEAN = [
 ];
 
 const FOLDERS_TO_PACKAGE = [
-  'api',
   'bundleEditor',
-  'componentEditor',
-  'components',
   'config',
   'data',
   'public',
   'runtime',
-  'settingsEditors',
   'utils',
 ];
 
