@@ -1,6 +1,6 @@
 {
   "name": "superpowers-package-manager-plugin",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A plugin to use and manage external packages in superpowers projects",
   "main": "index.js",
   "scripts": {
