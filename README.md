@@ -18,7 +18,7 @@ It basically let you chose the libraries you need for your project from your fav
 
 There will be a system/plugin manager in superpowers 1.0 but for now, you need to install it manually.  
 Go to the [release page](https://github.com/antca/superpowers-package-manager-plugin/releases) and download the latest version.
-Unzip the archive content (take the `antca` folder) in the `${superpowersPath}/resources/app/systems/game/plugins` directory.
+Create the `antca` directory in `${superpowersPath}/resources/app/systems/game/plugins` if it does not already exists, then unzip the archive content in this directory.
 
 Restart the superpowers server and the plugin should be operational.
 
