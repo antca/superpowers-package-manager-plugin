@@ -35,22 +35,18 @@ const FILES_TO_CLEAN = [
 ];
 
 const FOLDERS_TO_PACKAGE = [
-  'api',
   'bundleEditor',
-  'componentEditor',
-  'components',
   'config',
   'data',
   'public',
   'runtime',
-  'settingsEditors',
   'utils',
 ];
 
 function createPackageFolder() {
   return gulp.src(FOLDERS_TO_PACKAGE.map((folder) => `${folder}/**`)
       .concat('package.json'), { base: '.' })
-    .pipe(gulp.dest(path.join(TMP_PACKAGE, pkg.authorNickname, pkg.name)))
+    .pipe(gulp.dest(path.join(TMP_PACKAGE, pkg.name)))
     .pipe(gulpInstall({ production: true }));
 }
 

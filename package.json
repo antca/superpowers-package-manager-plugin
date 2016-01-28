@@ -15,7 +15,6 @@
     "npm"
   ],
   "author": "Anthony Camboni",
-  "authorNickname": "antca",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.3.21",
