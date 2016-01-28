@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- stable
+env:
+  - NODE_ENV=production
+script: npm run build && npm test
+before_deploy: npm run release && mv releases/superpowers-package-manager-plugin*.zip releases/superpowers-package-manager-plugin.zip
+deploy:
+  provider: releases
+  api_key:
+    secure: kj4vWtHNX7x+Ei3aRPR2jZQuFAbSCVG9C2XGaubN6zEfnltJ466Y6iWF6zzCtdcbhphY7+dwWO9sH/G7xp3axVPIekBfpsUCx6ECVEA07UdI+eA/xFQ2jFYQkCoGAWHcb1ssAlQKQ2Mi1Dy19OcrM+D7DwEuTohrAClVoivBLf4aJlxthN0SbVuS3Y1Rl90xEz0Xn7LLJE0tKDBlEnzkBN2OWMSqZyXjjU2hdEOd+s0of0AG5lY+ap6edQXgpU89pI+8Yct/JFzBpJIq/h0L/k2C6yjOC+givoHY3ch1W/ex1hcpZ/uz1D8rTPpCw1iqWrW3K6iAmZciWj10QK0AJjZT6xjcxXxKu8GrpAFqDixeCRVV2YdDR3BdPx2O5wTVoLLaNuwgvHyFinta/oLq81zROT2+pLBMGXYmjqxp0jlOnGBHRxn6bvHreLFE/h/Pd6J6m4Fy6hp0oq6LD2AFJsTF6BKAiAAXZn8DfPM0nkpLH2tHQcuhDPtjQuWhQReaf6nekTsZeNFJYpjc3K6H/b0GNaZbFUnNvXBJObW6VM2BFqj2nUm0P2+BuVeN5SF/yyadW8q3EaU/qAtrAPGxjxpbfhU9ZQw+Qk3wktIn8uGoxKg3y8omnJA4eqU0BU5Ub4NIOuJkfzeygo5X9z1zINlWLo/1nbbxhm1iXleV89Q=
+  file: releases/superpowers-package-manager-plugin.zip
+  on:
+    tags: true

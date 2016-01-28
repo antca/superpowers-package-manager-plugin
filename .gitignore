@@ -46,3 +46,7 @@ node_modules
 /public/*
 !/public/editors/
 !/public/locales/
+
+# Release build folders
+/tmp_package
+/releases
