@@ -1,10 +1,12 @@
-import reduxThunk from 'redux-thunk';
+import reduxSaga from 'redux-saga';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 
 import dataReducer from '../data/reducer';
 import mainReducer from './main/reducer';
 import searchReducer from './search/reducer';
 import viewReducer from './view/reducer';
+import searchSaga from './search/sagas';
+import viewSaga from './view/sagas';
 
 function createAppStore(reduxDevToolsExtensionHook) {
   const combinedReducers = combineReducers({
@@ -17,7 +19,7 @@ function createAppStore(reduxDevToolsExtensionHook) {
     combinedReducers,
     {},
     compose(
-      applyMiddleware(...[reduxThunk]),
+      applyMiddleware(reduxSaga(searchSaga, viewSaga)),
       reduxDevToolsExtensionHook,
     ),
   );
