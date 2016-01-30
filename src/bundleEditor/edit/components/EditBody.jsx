@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import {
   Glyphicon,
   Button,
@@ -18,6 +18,18 @@ import {
 
 import VersionSelect from './VersionSelect';
 import Bindings from './Bindings';
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onAddBinding: T.func.isRequired,
+  onChangeBinding: T.func.isRequired,
+  onDeleteBinding: T.func.isRequired,
+  onRemoveDependency: T.func.isRequired,
+  onResetBindings: T.func.isRequired,
+  onSelectVersion: T.func.isRequired,
+  packageInfo: T.object,
+};
 
 function EditBody({
   packageInfo,
@@ -76,6 +88,8 @@ function EditBody({
     </div>
   );
 }
+
+Object.assign(EditBody, { propTypes });
 
 export { EditBody };
 export default connect(

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -13,6 +13,15 @@ import ViewBody from '../../view/components/ViewBody';
 
 const INFO_COL_WIDTH = 4;
 const DOC_COL_WIDTH = 8;
+
+const propTypes = {
+  data: T.object.isRequired,
+  i18n: T.func.isRequired,
+  main: T.object.isRequired,
+  onPanelSelect: T.func.isRequired,
+  remoteDispatch: T.func.isRequired,
+  view: T.object.isRequired,
+};
 
 function BundleEditor({ onPanelSelect, main, view, data, remoteDispatch, i18n }) {
   const { activePanel } = main;
@@ -57,6 +66,8 @@ function BundleEditor({ onPanelSelect, main, view, data, remoteDispatch, i18n })
     </Grid>
   );
 }
+
+Object.assign(BundleEditor, { propTypes });
 
 export { BundleEditor };
 export default connect(

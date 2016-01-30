@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 
 import { renderMarkdown } from '../../../utils/markdown';
+
+const propTypes = {
+  children: T.node.isRequired,
+  header: T.string.isRequired,
+  isMarkdown: T.bool,
+};
 
 function PackageProperty({ children, header, isMarkdown = false }) {
   if(!children) {
@@ -26,4 +32,4 @@ function PackageProperty({ children, header, isMarkdown = false }) {
   );
 }
 
-export default PackageProperty;
+export default Object.assign(PackageProperty, { propTypes });

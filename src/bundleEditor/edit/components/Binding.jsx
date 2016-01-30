@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import {
   ListGroupItem,
   Input,
   Glyphicon,
   Button,
 } from 'react-bootstrap';
+
+const propTypes = {
+  binding: T.object.isRequired,
+  bindingId: T.number.isRequired,
+  moduleName: T.string.isRequired,
+  onChangeBinding: T.func.isRequired,
+  onDeleteBinding: T.func.isRequired,
+};
 
 function Binding({ moduleName, binding, bindingId, onChangeBinding, onDeleteBinding }) {
   return (
@@ -47,4 +55,4 @@ function Binding({ moduleName, binding, bindingId, onChangeBinding, onDeleteBind
   );
 }
 
-export default Binding;
+export default Object.assign(Binding, { propTypes });

@@ -1,7 +1,11 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { connect } from 'react-redux';
 import { Alert } from 'react-bootstrap';
+
+const propTypes = {
+  errors: T.array.isRequired,
+};
 
 function ErrorBody({ errors }) {
   return (
@@ -14,6 +18,8 @@ function ErrorBody({ errors }) {
     </div>
   );
 }
+
+Object.assign(ErrorBody, { propTypes });
 
 export { ErrorBody };
 export default connect(

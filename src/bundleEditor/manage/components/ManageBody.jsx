@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -11,6 +11,12 @@ import DependencyEntry from './DependencyEntry';
 function depsArray(dependencies) {
   return _.map(dependencies, (value, key) => Object.assign({}, value, { name: key }));
 }
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onButtonClick: T.func.isRequired,
+};
 
 function ManageBody({ dependencies, onButtonClick, i18n }) {
   if(_.isEmpty(dependencies)) {
@@ -40,6 +46,8 @@ function ManageBody({ dependencies, onButtonClick, i18n }) {
     </div>
   );
 }
+
+Object.assign(ManageBody, { propTypes });
 
 export { ManageBody };
 export default connect(

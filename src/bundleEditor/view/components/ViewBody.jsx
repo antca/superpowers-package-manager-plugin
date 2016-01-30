@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
@@ -9,6 +9,13 @@ import Author from './Author';
 import AddEditButton from './AddEditButton';
 
 const NPM_URL = '//www.npmjs.com/package/';
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onMainButtonClick: T.func.isRequired,
+  packageInfo: T.object,
+};
 
 function ViewBody({ packageInfo, onMainButtonClick, dependencies, i18n }) {
   if(!packageInfo) {
@@ -56,6 +63,8 @@ function ViewBody({ packageInfo, onMainButtonClick, dependencies, i18n }) {
     </div>
   );
 }
+
+Object.assign(ViewBody, { propTypes });
 
 export { ViewBody };
 export default connect(
