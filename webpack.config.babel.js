@@ -81,13 +81,6 @@ const transforms = {
           }),
         ],
       },
-      resolve: {
-        alias: {
-          $merge: {
-            'redux-logger': 'empty/object',
-          },
-        },
-      },
     });
   },
 };
