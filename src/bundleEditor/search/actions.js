@@ -1,11 +1,14 @@
 import serializeError from 'serialize-error';
 
 const CONFIRM_PACKAGE = 'CONFIRM_PACKAGE';
-function confirmPackage(packageName) {
+function confirmPackage(packageName, nextPanel = 'view') {
   return {
     type: CONFIRM_PACKAGE,
     payload: {
       packageName,
+    },
+    meta: {
+      nextPanel,
     },
   };
 }

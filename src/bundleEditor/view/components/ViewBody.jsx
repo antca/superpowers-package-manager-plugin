@@ -1,6 +1,9 @@
 import React from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
+import { addDependency } from '../../../data/actions';
+import { changeActivePanel } from '../../main/actions';
 import PackageProperty from './PackageProperty';
 import Author from './Author';
 import AddEditButton from './AddEditButton';
@@ -54,4 +57,18 @@ function ViewBody({ packageInfo, onMainButtonClick, dependencies, i18n }) {
   );
 }
 
-export default ViewBody;
+export { ViewBody };
+export default connect(
+  ({ view, data }) => ({
+    packageInfo: view.packageInfo,
+    dependencies: data.dependencies,
+  }),
+  (dispatch, { remoteDispatch }) => ({
+    onMainButtonClick: (packageInfo) => {
+      (packageInfo ? remoteDispatch(addDependency(packageInfo)) : Promise.resolve())
+        .then(() =>
+          dispatch(changeActivePanel('edit'))
+        );
+    },
+  })
+)(ViewBody);

@@ -5,8 +5,7 @@
     "react"
   ],
   "plugins": [
-    "transform-runtime",
-    "babel-plugin-transform-decorators-legacy"
+    "transform-runtime"
   ],
   "env": {
     "development": {

@@ -14,14 +14,14 @@ import {
 } from '../main/actions';
 
 function* viewSaga() {
-  const { payload: { packageName } } = yield take(CONFIRM_PACKAGE);
+  const { payload: { packageName }, meta: { nextPanel } } = yield take(CONFIRM_PACKAGE);
 
   yield fork(viewSaga);
 
   try {
     const packageInfo = yield call(view, packageName);
     yield put(updatePackageInfo(packageInfo));
-    yield put(changeActivePanel('view'));
+    yield put(changeActivePanel(nextPanel));
   }
   catch(error) {
     yield put(throwPackageInfoError(error));

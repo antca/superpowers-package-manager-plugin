@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListGroupItem } from 'react-bootstrap';
 
-import { renderMarkdown } from '../../../../utils/markdown';
+import { renderMarkdown } from '../../../utils/markdown';
 
 function PackageProperty({ children, header, isMarkdown = false }) {
   if(!children) {

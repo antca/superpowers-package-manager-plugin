@@ -1,8 +1,9 @@
 import React, { Component, PropTypes as T } from 'react';
+import { connect } from 'react-redux';
 import { Input } from 'react-bootstrap';
-import autobind from 'autobind-decorator';
 
-@autobind
+import { updateSearchBarContent } from '../actions';
+
 class SearchBar extends Component {
   static propTypes = {
     i18n: T.func.isRequired,
@@ -28,4 +29,10 @@ class SearchBar extends Component {
   }
 }
 
-export default SearchBar;
+export { SearchBar };
+export default connect(
+  ({ search }) => search,
+  {
+    onSearchInputChange: updateSearchBarContent,
+  }
+)(SearchBar);

@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { renderMarkdown } from '../../../../utils/markdown';
+import { connect } from 'react-redux';
+import { renderMarkdown } from '../../../utils/markdown';
 
 function ReadmeBody({ packageInfo }) {
   if(!packageInfo) {
@@ -15,4 +15,5 @@ function ReadmeBody({ packageInfo }) {
   );
 }
 
-export default ReadmeBody;
+export { ReadmeBody };
+export default connect(({ view }) => view)(ReadmeBody);

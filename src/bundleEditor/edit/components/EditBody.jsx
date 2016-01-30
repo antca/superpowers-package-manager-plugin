@@ -4,6 +4,17 @@ import {
   Button,
   ButtonGroup,
 } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import {
+  selectVersion,
+  updateBinding,
+  addBinding,
+  deleteBinding,
+  addDependency,
+  removeDependency,
+} from '../../../data/actions';
 
 import VersionSelect from './VersionSelect';
 import Bindings from './Bindings';
@@ -66,4 +77,18 @@ function EditBody({
   );
 }
 
-export default EditBody;
+export { EditBody };
+export default connect(
+  ({ data, view }) => ({
+    packageInfo: view.packageInfo,
+    dependencies: data.dependencies,
+  }),
+  (dispatch, { remoteDispatch }) => bindActionCreators({
+    onResetBindings: addDependency,
+    onRemoveDependency: removeDependency,
+    onSelectVersion: selectVersion,
+    onAddBinding: addBinding,
+    onChangeBinding: updateBinding,
+    onDeleteBinding: deleteBinding,
+  }, remoteDispatch),
+)(EditBody);

@@ -1,10 +1,9 @@
 import React, { Component, PropTypes as T } from 'react';
+import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import autobind from 'autobind-decorator';
 
-import { renderMarkdown } from '../../../../utils/markdown';
+import { renderMarkdown } from '../../../utils/markdown';
 
-@autobind
 class SearchResultList extends Component {
   static propTypes = {
     onResultSelect: T.func.isRequired,
@@ -37,4 +36,7 @@ class SearchResultList extends Component {
   }
 }
 
-export default SearchResultList;
+export { SearchResultList };
+export default connect(
+  ({ search }) => search
+)(SearchResultList);

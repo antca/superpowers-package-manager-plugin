@@ -1,8 +1,9 @@
 import React, { Component, PropTypes as T } from 'react';
-import autobind from 'autobind-decorator';
+import { connect } from 'react-redux';
 
-import SearchBar from '../SearchBar';
-import SearchResultList from '../SearchResultList';
+import { confirmPackage, selectResultItem } from '../actions';
+import SearchBar from './SearchBar';
+import SearchResultList from './SearchResultList';
 
 const ARROW_UP_KEY = 38;
 const ARROW_DOWN_KEY = 40;
@@ -10,7 +11,6 @@ const ENTER_KEY = 13;
 const DECREMENT_INDEX = -1;
 const INCREMENT_INDEX = +1;
 
-@autobind
 class SearchBody extends Component {
   static propTypes = {
     i18n: T.func.isRequired,
@@ -45,7 +45,7 @@ class SearchBody extends Component {
   render() {
     const { onConfirm, i18n } = this.props;
     return (
-      <div onKeyDown={this.handleKeyDown}>
+      <div onKeyDown={(e) => this.handleKeyDown(e)}>
         <SearchBar i18n={i18n} />
         <SearchResultList onResultSelect={onConfirm}/>
       </div>
@@ -53,4 +53,11 @@ class SearchBody extends Component {
   }
 }
 
-export default SearchBody;
+export { SearchBody };
+export default connect(
+  ({ search }) => search,
+  {
+    onConfirm: confirmPackage,
+    onArrowKeySelect: selectResultItem,
+  },
+)(SearchBody);
