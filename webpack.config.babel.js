@@ -53,7 +53,7 @@ const baseConfig = {
 };
 
 const transforms = {
-  developement(base) {
+  development(base) {
     return update(base, {
       debug: { $set: true },
       devtool: { $set: 'eval-source-map' },
