@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import {
   Panel,
   ListGroup,
@@ -8,6 +8,15 @@ import {
 } from 'react-bootstrap';
 
 import Binding from './Binding';
+
+const propTypes = {
+  bindings: T.array.isRequired,
+  label: T.string.isRequired,
+  moduleName: T.string.isRequired,
+  onAddBinding: T.func.isRequired,
+  onChangeBinding: T.func.isRequired,
+  onDeleteBinding: T.func.isRequired,
+};
 
 function Bindings({ moduleName, bindings, onChangeBinding, onAddBinding, onDeleteBinding, label }) {
   return (
@@ -35,4 +44,4 @@ function Bindings({ moduleName, bindings, onChangeBinding, onAddBinding, onDelet
   );
 }
 
-export default Bindings;
+export default Object.assign(Bindings, { propTypes });

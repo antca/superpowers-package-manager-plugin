@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
+import { connect } from 'react-redux';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import { renderMarkdown } from '../../../../utils/markdown';
+import { renderMarkdown } from '../../../utils/markdown';
+
+const propTypes = {
+  onResultSelect: T.func.isRequired,
+  result: T.object,
+  selectedItemIndex: T.number,
+};
 
 function SearchResultList({ result, onResultSelect, selectedItemIndex }) {
   if(!result) {
@@ -25,4 +32,9 @@ function SearchResultList({ result, onResultSelect, selectedItemIndex }) {
   );
 }
 
-export default SearchResultList;
+Object.assign(SearchResultList, { propTypes });
+
+export { SearchResultList };
+export default connect(
+  ({ search }) => search
+)(SearchResultList);

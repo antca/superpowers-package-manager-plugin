@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { ListGroup, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
+import { addDependency } from '../../../data/actions';
+import { changeActivePanel } from '../../main/actions';
 import PackageProperty from './PackageProperty';
 import Author from './Author';
 import AddEditButton from './AddEditButton';
 
 const NPM_URL = '//www.npmjs.com/package/';
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onMainButtonClick: T.func.isRequired,
+  packageInfo: T.object,
+};
 
 function ViewBody({ packageInfo, onMainButtonClick, dependencies, i18n }) {
   if(!packageInfo) {
@@ -54,4 +64,20 @@ function ViewBody({ packageInfo, onMainButtonClick, dependencies, i18n }) {
   );
 }
 
-export default ViewBody;
+Object.assign(ViewBody, { propTypes });
+
+export { ViewBody };
+export default connect(
+  ({ view, data }) => ({
+    packageInfo: view.packageInfo,
+    dependencies: data.dependencies,
+  }),
+  (dispatch, { remoteDispatch }) => ({
+    onMainButtonClick: (packageInfo) => {
+      (packageInfo ? remoteDispatch(addDependency(packageInfo)) : Promise.resolve())
+        .then(() =>
+          dispatch(changeActivePanel('edit'))
+        );
+    },
+  })
+)(ViewBody);

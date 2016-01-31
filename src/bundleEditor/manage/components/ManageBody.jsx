@@ -1,12 +1,22 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import { removeDependency } from '../../../data/actions';
+import { confirmPackage } from '../../search/actions';
 
 import DependencyEntry from './DependencyEntry';
 
 function depsArray(dependencies) {
   return _.map(dependencies, (value, key) => Object.assign({}, value, { name: key }));
 }
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onButtonClick: T.func.isRequired,
+};
 
 function ManageBody({ dependencies, onButtonClick, i18n }) {
   if(_.isEmpty(dependencies)) {
@@ -37,4 +47,17 @@ function ManageBody({ dependencies, onButtonClick, i18n }) {
   );
 }
 
-export default ManageBody;
+Object.assign(ManageBody, { propTypes });
+
+export { ManageBody };
+export default connect(
+  ({ data }) => data,
+  (dispatch, { remoteDispatch }) => ({
+    onButtonClick(packageName, which) {
+      if(which === 'delete') {
+        return remoteDispatch(removeDependency(packageName));
+      }
+      return dispatch(confirmPackage(packageName, which));
+    },
+  })
+)(ManageBody);

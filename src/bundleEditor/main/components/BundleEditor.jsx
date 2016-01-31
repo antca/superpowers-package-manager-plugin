@@ -1,16 +1,27 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Grid, Row, Col, PanelGroup, Panel } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-import EditBody from '../../../edit/components/EditBody';
-import ErrorBody from '../ErrorBody';
-import ManageBody from '../../../manage/components/ManageBody';
-import ReadmeBody from '../../../view/components/ReadmeBody';
-import SearchBody from '../../../search/components/SearchBody';
-import ViewBody from '../../../view/components/ViewBody';
+import { changeActivePanel } from '../actions';
+import EditBody from '../../edit/components/EditBody';
+import ErrorBody from './ErrorBody';
+import ManageBody from '../../manage/components/ManageBody';
+import ReadmeBody from '../../view/components/ReadmeBody';
+import SearchBody from '../../search/components/SearchBody';
+import ViewBody from '../../view/components/ViewBody';
 
 const INFO_COL_WIDTH = 4;
 const DOC_COL_WIDTH = 8;
+
+const propTypes = {
+  data: T.object.isRequired,
+  i18n: T.func.isRequired,
+  main: T.object.isRequired,
+  onPanelSelect: T.func.isRequired,
+  remoteDispatch: T.func.isRequired,
+  view: T.object.isRequired,
+};
 
 function BundleEditor({ onPanelSelect, main, view, data, remoteDispatch, i18n }) {
   const { activePanel } = main;
@@ -56,4 +67,12 @@ function BundleEditor({ onPanelSelect, main, view, data, remoteDispatch, i18n })
   );
 }
 
-export default BundleEditor;
+Object.assign(BundleEditor, { propTypes });
+
+export { BundleEditor };
+export default connect(
+  (store) => store,
+  {
+    onPanelSelect: changeActivePanel,
+  },
+)(BundleEditor);
