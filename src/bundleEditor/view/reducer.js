@@ -1,8 +1,11 @@
 import {
-  UPDATE_PACKAGE_INFO_PENDING,
-  UPDATE_PACKAGE_INFO_FULFILLED,
-  UPDATE_PACKAGE_INFO_REJECTED,
+  UPDATE_PACKAGE_INFO,
+  THROW_PACKAGE_INFO_ERROR,
 } from './actions';
+
+import {
+  CONFIRM_PACKAGE,
+} from '../search/actions';
 
 const initialViewStore = {
   loading: false,
@@ -10,7 +13,7 @@ const initialViewStore = {
 
 function viewReducer(store = initialViewStore, action) {
   return ({
-    [UPDATE_PACKAGE_INFO_PENDING]() {
+    [CONFIRM_PACKAGE]() {
       return {
         ...store,
         error: null,
@@ -18,7 +21,7 @@ function viewReducer(store = initialViewStore, action) {
         loading: true,
       };
     },
-    [UPDATE_PACKAGE_INFO_FULFILLED](packageInfo) {
+    [UPDATE_PACKAGE_INFO](packageInfo) {
       return {
         ...store,
         error: null,
@@ -26,7 +29,7 @@ function viewReducer(store = initialViewStore, action) {
         loading: false,
       };
     },
-    [UPDATE_PACKAGE_INFO_REJECTED](error) {
+    [THROW_PACKAGE_INFO_ERROR](error) {
       return {
         ...store,
         error,

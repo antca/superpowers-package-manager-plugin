@@ -1,10 +1,17 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import {
   ButtonGroup,
   Glyphicon,
   Button,
 } from 'react-bootstrap';
+
+const propTypes = {
+  bindings: T.array.isRequired,
+  name: T.string.isRequired,
+  onButtonClick: T.func.isRequired,
+  version: T.string.isRequired,
+};
 
 function DependencyEntry({ name, version, bindings, onButtonClick }) {
   return (
@@ -43,4 +50,4 @@ function DependencyEntry({ name, version, bindings, onButtonClick }) {
   );
 }
 
-export default DependencyEntry;
+export default Object.assign(DependencyEntry, { propTypes });

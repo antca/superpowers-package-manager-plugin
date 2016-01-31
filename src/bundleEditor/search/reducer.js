@@ -1,10 +1,11 @@
 import _ from 'lodash';
 
 import {
-  SEARCH_PACKAGE_PENDING,
-  SEARCH_PACKAGE_FULFILLED,
-  SEARCH_PACKAGE_REJECTED,
+  CONFIRM_PACKAGE,
+  UPDATE_SEARCH_RESULT,
+  THROW_SEARCH_ERROR,
   SELECT_RESULT_ITEM,
+  UPDATE_SEARCH_BAR_CONTENT,
 } from './actions';
 
 const RESET_INDEX = -1;
@@ -12,25 +13,32 @@ const RESET_INDEX = -1;
 const initialSearchStore = {
   error: null,
   selectedItemIndex: null,
+  searchBarContent: '',
 };
 
 function searchReducer(store = initialSearchStore, action) {
   return ({
-    [SEARCH_PACKAGE_PENDING]() {
+    [CONFIRM_PACKAGE]() {
       return {
         ...store,
         error: null,
         selectedItemIndex: null,
       };
     },
-    [SEARCH_PACKAGE_FULFILLED](result) {
+    [UPDATE_SEARCH_BAR_CONTENT]({ searchBarContent }) {
+      return {
+        ...store,
+        searchBarContent,
+      };
+    },
+    [UPDATE_SEARCH_RESULT](result) {
       return {
         ...store,
         error: null,
         result,
       };
     },
-    [SEARCH_PACKAGE_REJECTED](error) {
+    [THROW_SEARCH_ERROR](error) {
       return {
         ...store,
         error,

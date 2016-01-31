@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import {
   Glyphicon,
   Button,
   ButtonGroup,
 } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import {
+  selectVersion,
+  updateBinding,
+  addBinding,
+  deleteBinding,
+  addDependency,
+  removeDependency,
+} from '../../../data/actions';
 
 import VersionSelect from './VersionSelect';
 import Bindings from './Bindings';
+
+const propTypes = {
+  dependencies: T.object.isRequired,
+  i18n: T.func.isRequired,
+  onAddBinding: T.func.isRequired,
+  onChangeBinding: T.func.isRequired,
+  onDeleteBinding: T.func.isRequired,
+  onRemoveDependency: T.func.isRequired,
+  onResetBindings: T.func.isRequired,
+  onSelectVersion: T.func.isRequired,
+  packageInfo: T.object,
+};
 
 function EditBody({
   packageInfo,
@@ -66,4 +89,20 @@ function EditBody({
   );
 }
 
-export default EditBody;
+Object.assign(EditBody, { propTypes });
+
+export { EditBody };
+export default connect(
+  ({ data, view }) => ({
+    packageInfo: view.packageInfo,
+    dependencies: data.dependencies,
+  }),
+  (dispatch, { remoteDispatch }) => bindActionCreators({
+    onResetBindings: addDependency,
+    onRemoveDependency: removeDependency,
+    onSelectVersion: selectVersion,
+    onAddBinding: addBinding,
+    onChangeBinding: updateBinding,
+    onDeleteBinding: deleteBinding,
+  }, remoteDispatch),
+)(EditBody);

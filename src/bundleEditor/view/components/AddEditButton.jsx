@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Button } from 'react-bootstrap';
+
+const propTypes = {
+  i18n: T.func.isRequired,
+  isDepedencyInstalled: T.bool.isRequired,
+  onClick: T.func.isRequired,
+};
 
 function AddEditButton({ isDepedencyInstalled, onClick, i18n }) {
   return (
@@ -13,4 +19,4 @@ function AddEditButton({ isDepedencyInstalled, onClick, i18n }) {
   );
 }
 
-export default AddEditButton;
+export default Object.assign(AddEditButton, { propTypes });

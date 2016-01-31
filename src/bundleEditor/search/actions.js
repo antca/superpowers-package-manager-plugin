@@ -1,25 +1,41 @@
 import serializeError from 'serialize-error';
 
-import { autocompleteSearch } from '../../utils/npm';
+const CONFIRM_PACKAGE = 'CONFIRM_PACKAGE';
+function confirmPackage(packageName, nextPanel = 'view') {
+  return {
+    type: CONFIRM_PACKAGE,
+    payload: {
+      packageName,
+    },
+    meta: {
+      nextPanel,
+    },
+  };
+}
 
-const SEARCH_PACKAGE_PENDING = 'SEARCH_PACKAGE_PENDING';
-const SEARCH_PACKAGE_FULFILLED = 'SEARCH_PACKAGE_FULFILLED';
-const SEARCH_PACKAGE_REJECTED = 'SEARCH_PACKAGE_REJECTED';
-function searchPackage(searchValue) {
-  return (dispatch) => {
-    autocompleteSearch(searchValue)
-    .then((result) => dispatch({
-      type: SEARCH_PACKAGE_FULFILLED,
-      payload: result,
-    }))
-    .catch((error) => dispatch({
-      type: SEARCH_PACKAGE_REJECTED,
-      payload: serializeError(error),
-      error: true,
-    }));
-    return dispatch({
-      type: SEARCH_PACKAGE_PENDING,
-    });
+const UPDATE_SEARCH_BAR_CONTENT = 'UPDATE_SEARCH_BAR_CONTENT';
+function updateSearchBarContent(searchBarContent) {
+  return {
+    type: UPDATE_SEARCH_BAR_CONTENT,
+    payload: {
+      searchBarContent,
+    },
+  };
+}
+
+const THROW_SEARCH_ERROR = 'THROW_SEARCH_ERROR';
+function throwSearchError(error) {
+  return {
+    type: THROW_SEARCH_ERROR,
+    payload: serializeError(error),
+  };
+}
+
+const UPDATE_SEARCH_RESULT = 'UPDATE_SEARCH_RESULT';
+function updateSearchResult(searchResult) {
+  return {
+    type: UPDATE_SEARCH_RESULT,
+    payload: searchResult,
   };
 }
 
@@ -34,10 +50,17 @@ function selectResultItem(selectedItemIndexShift) {
 }
 
 export {
-  SEARCH_PACKAGE_PENDING,
-  SEARCH_PACKAGE_FULFILLED,
-  SEARCH_PACKAGE_REJECTED,
-  searchPackage,
+  CONFIRM_PACKAGE,
+  confirmPackage,
+
+  UPDATE_SEARCH_BAR_CONTENT,
+  updateSearchBarContent,
+
+  THROW_SEARCH_ERROR,
+  throwSearchError,
+
+  UPDATE_SEARCH_RESULT,
+  updateSearchResult,
 
   SELECT_RESULT_ITEM,
   selectResultItem,

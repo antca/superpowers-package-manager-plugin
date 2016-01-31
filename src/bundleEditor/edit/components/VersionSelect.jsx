@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import { Input } from 'react-bootstrap';
+
+const propTypes = {
+  label: T.string.isRequired,
+  onSelectVersion: T.func.isRequired,
+  packageName: T.string.isRequired,
+  value: T.string.isRequired,
+  versions: T.object.isRequired,
+};
 
 function VersionSelect({ versions, onSelectVersion, value, packageName, label }) {
   return (
@@ -19,4 +27,4 @@ function VersionSelect({ versions, onSelectVersion, value, packageName, label })
   );
 }
 
-export default VersionSelect;
+export default Object.assign(VersionSelect, { propTypes });

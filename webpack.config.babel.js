@@ -45,11 +45,15 @@ const baseConfig = {
       },
     ],
   },
-  plugins: [],
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
+    }),
+  ],
 };
 
 const transforms = {
-  developement(base) {
+  development(base) {
     return update(base, {
       debug: { $set: true },
       devtool: { $set: 'eval-source-map' },
@@ -76,13 +80,6 @@ const transforms = {
             },
           }),
         ],
-      },
-      resolve: {
-        alias: {
-          $merge: {
-            'redux-logger': 'empty/object',
-          },
-        },
       },
     });
   },
