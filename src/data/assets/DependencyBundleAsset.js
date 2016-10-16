@@ -98,11 +98,10 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
 
   server_dispatch(client, action, actionCallback) { // eslint-disable-line camelcase
     // Resend action to all clients
-    actionCallback(null, this.store.dispatch(action));
+    actionCallback(null, true, this.store.dispatch(action));
   }
 
-  client_dispatch() { // eslint-disable-line camelcase
-  }
+  client_dispatch() {} // eslint-disable-line camelcase
 }
 
 export default DependencyBundleAsset;
