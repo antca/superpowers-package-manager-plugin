@@ -106,6 +106,13 @@ function throwError(error) {
   };
 }
 
+const RESET_STATUS = 'RESET_STATUS';
+function resetStatus() {
+  return {
+    type: RESET_STATUS,
+  };
+}
+
 export {
   UPDATE_ASSET_STATE,
   updateAssetState,
@@ -139,4 +146,7 @@ export {
 
   THROW_ERROR,
   throwError,
+
+  RESET_STATUS,
+  resetStatus,
 };
