@@ -7,7 +7,7 @@ import { createStore } from 'redux';
 import dataReducer from '../reducer';
 import { build } from '../../utils/build';
 import { copyFile } from '../../utils/fs';
-import { rebuild, rebuildFinished, rebuildFailed, throwError } from '../actions';
+import { rebuild, rebuildFinished, rebuildFailed, resetStatus, updateAssetState } from '../actions';
 
 const {
   SupCore,
@@ -27,13 +27,18 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
 
   constructor(id, pub, server) {
     super(id, pub, DependencyBundleAsset.schema, server);
+    this.store = createStore(dataReducer, {
+      building: false,
+      dirty: true,
+      error: null,
+      dependencies: {},
+    });
+    this.store.subscribe(() => this.updatePub());
+    this.saveConfig = Promise.promisify((...args) => super.save(...args));
   }
 
-  init(options, callback) {
-    this.pub = {
-      formatVersion: DependencyBundleAsset.currentFormatVersion,
-      state: void 0,
-    };
+  init(asset, callback) {
+    this.updatePub();
     callback();
   }
 
@@ -43,39 +48,33 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
       if (err) {
         throw err;
       }
-
-      this.pub = JSON.parse(json);
-      this.store = createStore(dataReducer, Object.assign({}, this.pub.state, {
-        building: false,
-        dirty: true,
-        error: null,
-      }));
-      this.store.subscribe(() => this.updatePub());
+      this.store.dispatch(updateAssetState(JSON.parse(json).state));
+      this.store.dispatch(resetStatus());
       this.setup();
       this.emit('load');
     });
   }
 
-  publish(buildPath, callback) {
-    const { dirty, building, dependencies } = this.store.getState();
-    const folderPath = path.join(buildPath, 'assets', this.server.data.entries.getStoragePathFromId(this.id));
-    if(building) {
-      const assetPath = this.server.data.entries.getPathFromId(this.id);
-      const error = new Error(`The bundle ${assetPath} is building. Please retry later...`);
-      this.dispatch(throwError(error));
-      return callback(error);
+  save(folderPath, callback) {
+    if(!this.assetPath) {
+      this.assetPath = folderPath;
     }
-    this.dispatch(rebuild());
-    return (dirty ? build(this.id, this.assetPath, dependencies) : Promise.resolve())
-    .then(() => mkdirpAsync(folderPath))
-    .then(() => copyFile(path.join(this.assetPath, BUNDLE_NAME), path.join(folderPath, BUNDLE_NAME)))
+    const { dirty, building, dependencies } = this.pub.state;
+    const cacheFolder = path.join(this.assetPath, 'cache');
+    return this.saveConfig(folderPath)
     .then(() => {
-      this.dispatch(rebuildFinished());
-      return callback();
+      if(dirty && !building) {
+        return mkdirpAsync(cacheFolder)
+        .then(() => this.dispatch(rebuild()))
+        .then(() => build(this.id, cacheFolder, dependencies))
+        .then(() => this.dispatch(rebuildFinished()));
+      }
     })
+    .then(() => copyFile(path.join(cacheFolder, BUNDLE_NAME), path.join(folderPath, BUNDLE_NAME)))
+    .then(() => callback())
     .catch((error) => {
-      this.dispatch(rebuildFailed(error));
-      return callback(error);
+      callback(error);
+      return this.dispatch(rebuildFailed(error));
     });
   }
 
@@ -98,11 +97,10 @@ class DependencyBundleAsset extends SupCore.Data.Base.Asset {
 
   server_dispatch(client, action, actionCallback) { // eslint-disable-line camelcase
     // Resend action to all clients
-    actionCallback(null, this.store.dispatch(action));
+    actionCallback(null, true, this.store.dispatch(action));
   }
 
-  client_dispatch() { // eslint-disable-line camelcase
-  }
+  client_dispatch() {} // eslint-disable-line camelcase
 }
 
 export default DependencyBundleAsset;

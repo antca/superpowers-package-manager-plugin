@@ -3,9 +3,15 @@ import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import Promise from 'bluebird';
-import decache from 'decache';
+import BaseReporter from 'yarn/lib/reporters/base-reporter';
+import Config from 'yarn/lib/config';
+import { run as yarnAdd } from 'yarn/lib/cli/commands/add';
+import { run as yarnInstall } from 'yarn/lib/cli/commands/install';
 
 import { ignoreScripts } from '../config';
+
+const writeFileAsync = Promise.promisify(fs.writeFile);
+const webpackAsync = Promise.promisify(webpack);
 
 function createEntryModule(assetId, dependencies) {
   return `global.__dependencyBundles[${assetId}]={${_.map(dependencies, ({ bindings }, moduleName) =>
@@ -15,28 +21,21 @@ function createEntryModule(assetId, dependencies) {
 }
 
 function install(assetPath, dependencies) {
-  // Hack necessary to avoid wierd bugs
-  decache('npm');
-  const npm = require('npm'); // eslint-disable-line global-require
-  return new Promise((resolve, reject) => {
-    const dependenciesArray = _.map(dependencies, ({ version }, name) => `${name}@${version}`);
-    npm.load({ loglevel: 'silent', 'ignore-scripts': ignoreScripts }, (loadError) => {
-      if(loadError) {
-        return reject(loadError);
-      }
-      const installer = new npm.commands.install.Installer(assetPath, false, dependenciesArray);
-      installer.run((installError) => {
-        if(installError) {
-          return reject(installError);
-        }
-        resolve();
-      });
-    });
-  });
+  if(_.isEmpty(dependencies)) {
+    return Promise.resolve();
+  }
+  const reporter = new BaseReporter();
+  const config = new Config(reporter);
+  return config.init({
+    cwd: assetPath,
+    preferOffline: true,
+    ignoreScripts,
+  })
+  .then(() => yarnAdd(config, reporter, {}, _.map(dependencies, ({ version }, name) => `${name}@${version}`)))
+  .then(() => yarnInstall(config, reporter, {}, []));
 }
 
 function bundle(assetId, assetPath, dependencies) {
-  const writeFileAsync = Promise.promisify(fs.writeFile);
   const config = {
     entry: path.join(assetPath, 'entry.js'),
     output: {
@@ -55,15 +54,8 @@ function bundle(assetId, assetPath, dependencies) {
       ],
     },
   };
-  return writeFileAsync(path.join(config.entry), createEntryModule(assetId, dependencies))
-    .then(() => new Promise((resolve, reject) =>
-      webpack(config, (error, stats) => {
-        if(error) {
-          return reject(error);
-        }
-        return resolve(stats);
-      })
-    ));
+  return writeFileAsync(config.entry, createEntryModule(assetId, dependencies))
+  .then(() => webpackAsync(config));
 }
 
 function build(assetId, assetPath, dependencies) {

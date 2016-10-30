@@ -6,7 +6,7 @@ class AssetManager {
   constructor(SupClient, dispatch) {
     this.SupClient = SupClient;
     this.storeDispatch = dispatch;
-    _.bindAll(this, 'invoke', 'dispatch');
+    _.bindAll(this, 'dispatch');
     this.connect();
   }
 
@@ -34,34 +34,22 @@ class AssetManager {
   }
 
   onAssetEdited(assetId, methodName, action) {
-    this.storeDispatch(Object.assign(action), {
+    return this.storeDispatch(Object.assign(action, {
       meta: {
         ...(action.meta || {}),
         assetId,
         methodName,
       },
-    });
+    }));
   }
 
   onAssetTrashed(...args) {
     this.SupClient.onAssetTrashed(...args);
   }
 
-  invoke(methodName, ...args) {
-    return new Promise((resolve, reject) => {
-      this.socket.emit('edit:assets', this.SupClient.query.asset, methodName, ...args, (err, res) => {
-        if(err) {
-          reject(err);
-        }
-        else {
-          resolve(res);
-        }
-      });
-    });
-  }
-
   dispatch(action) {
-    return this.invoke('dispatch', action);
+    const { asset: assetId } = this.SupClient.query;
+    return new Promise((resolve) => this.projectClient.editAsset(assetId, 'dispatch', action, (ack) => resolve(ack)));
   }
 }
 

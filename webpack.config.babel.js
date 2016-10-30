@@ -20,7 +20,6 @@ const baseConfig = {
   },
   resolve: {
     alias: {
-      npm: 'empty/object',
       webpack: 'empty/object',
       decache: 'empty/object',
     },
@@ -29,7 +28,6 @@ const baseConfig = {
     fs: 'empty',
   },
   module: {
-    preLoaders: [],
     loaders: [
       {
         test: /\.json$/,
@@ -45,6 +43,9 @@ const baseConfig = {
       },
     ],
   },
+  externals: {
+    '../../utils/build': JSON.stringify({}),
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
@@ -55,10 +56,9 @@ const baseConfig = {
 const transforms = {
   development(base) {
     return update(base, {
-      debug: { $set: true },
       devtool: { $set: 'eval-source-map' },
       module: {
-        preLoaders: {
+        loaders: {
           $push: [{
             test: /\.js$/,
             loader: 'source-map',
@@ -87,6 +87,4 @@ const transforms = {
 
 const envConfig = (transforms[process.env.NODE_ENV] || _.identity)(_.cloneDeep(baseConfig));
 
-export default Object.assign(envConfig, {
-  configs: _.mapValues(transforms, (transform) => transform(_.cloneDeep(baseConfig))),
-});
+export default envConfig;
