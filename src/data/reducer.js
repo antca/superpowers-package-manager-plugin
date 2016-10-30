@@ -13,6 +13,7 @@ import {
   REBUILD_FINISHED,
   REBUILD_FAILED,
   THROW_ERROR,
+  RESET_STATUS,
 } from './actions';
 
 const initialDataStore = {
@@ -139,6 +140,14 @@ function dataReducer(store = initialDataStore, action) {
       return {
         ...store,
         error,
+      };
+    },
+    [RESET_STATUS]() {
+      return {
+        ...store,
+        dirty: true,
+        building: false,
+        error: null,
       };
     },
   }[action.type] || (() => void 0))(action.payload, action.meta) || store;
